@@ -28,6 +28,7 @@ import altair as alt
 # ——— Refactored DB imports ———
 from aqualog_db.legacy import fetch_data, fetch_all_tanks
 from aqualog_db.base   import BaseRepository
+from aqualog_db.connection import get_connection
 
 from utils import (
     is_mobile,
