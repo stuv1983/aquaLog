@@ -2,9 +2,8 @@
 
 from typing import Any, Optional
 from config import SAFE_RANGES, TOO_LOW_THRESHOLDS, TOO_HIGH_THRESHOLDS
-rom aqualog_db.legacy import get_custom_range
+from aqualog_db.legacy import get_custom_range
 from .chemistry import nh3_fraction
-
 # Hard physical limits for parameter sanity checks
 HARD_LIMITS: dict[str, tuple[float, float]] = {
     "temperature": (0.0, 40.0),
