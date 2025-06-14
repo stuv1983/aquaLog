@@ -3,11 +3,11 @@ import pandas as pd
 import altair as alt
 from PIL import Image
 
-from aqualog_db.base import BaseRepository
+from aqualog_db.base   import BaseRepository
 from aqualog_db.legacy import fetch_all_tanks
+
 from utils import is_mobile, show_out_of_range_banner, translate, format_with_units
 from config import SAFE_RANGES
-
 def render_overview_tab() -> None:
     """
     Render the overview dashboard with key metrics and trends.
