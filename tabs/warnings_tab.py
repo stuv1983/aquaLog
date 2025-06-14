@@ -1,43 +1,3 @@
-"""
-tabs/warnings_tab.py – collapsible, structured warnings with dosing guidance
-(Arrow-safe & legacy-compatible)
-
-Differences from the previous revision
-──────────────────────────────────────
-• Before sending a parameter to `display_parameter_warning` we now make sure
-  it is in the widget’s own “allowed” list.  Anything else is silently skipped,
-  so the “Invalid parameter” exception cannot fire.
-"""
-
-from __future__ import annotations
-
-from typing import Any, Dict, List
-
-import pandas as pd
-import streamlit as st
-
-from aqualog_db.connection import get_connection
-from aqualog_db.legacy     import fetch_all_tanks
-
-from config import SAFE_RANGES, ACTION_PLANS, CO2_COLOR_ADVICE
-from utils import (
-    translate,
-    arrow_safe,
-    is_out_of_range,
-    nh3_fraction,
-    calculate_alkaline_buffer_dose,
-    calculate_equilibrium_dose,
-)
-from components import display_parameter_warning
-
-print(">>> LOADING", __file__)
-
-# Widget accepts exactly these keys (from its source).
-_ALLOWED_FOR_WIDGET = {
-    "ammonia", "gh", "kh", "nitrate", "nitrite", "ph", "temperature"
-}
-
-
 def warnings_tab() -> None:
     tid: int = st.session_state.get("tank_id", 1)
     if not isinstance(tid, int) or tid == 0:
@@ -94,8 +54,17 @@ def warnings_tab() -> None:
         breaches: List[str] = []
 
         # ── Find breaches ─────────────────────────────────────────────────
-        for param, raw_val in row.items():
-            if param in ("id", "tank_id", "date") or raw_val is None:
+        # First handle special cases (CO2 indicator and ammonia)
+        if "co2_indicator" in row and row["co2_indicator"] not in (None, "Green"):
+            breaches.append("co2_indicator")
+            
+        if "ammonia" in row and row["ammonia"] is not None:
+            breaches.append("ammonia")
+
+        # Then check numeric parameters from the allowed list
+        for param in _ALLOWED_FOR_WIDGET:
+            raw_val = row.get(param)
+            if raw_val is None:
                 continue
 
             cond = is_out_of_range(param, raw_val, tank_id=tid, ph=ph, temp_c=temp)
@@ -150,7 +119,7 @@ def warnings_tab() -> None:
                         pass
                     continue
 
-                # Only feed the widget the params it accepts
+                # Only process parameters that are in the allowed list
                 if param not in _ALLOWED_FOR_WIDGET:
                     continue
 
@@ -182,7 +151,3 @@ def warnings_tab() -> None:
 
     if not warnings_found:
         st.success("✅ No warnings found in the last 10 tests — all parameters within safe range.")
-
-
-# Alias for dynamic loader
-warnings_tab = warnings_tab
