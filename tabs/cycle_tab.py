@@ -6,9 +6,10 @@ import datetime
 import pandas as pd
 import streamlit as st
 
-# Refactored DB imports
-from aqualog_db.legacy import (
+# Cycle functions from legacy
+from legacy import (
     fetch_all_tanks,
+    fetch_data,
     start_cycle,
     get_active_cycle,
     complete_cycle,
@@ -52,14 +53,9 @@ def cycle_tab() -> None:
 
     # Show past cycles
     st.subheader("Past Cycles")
-    # Use fetch_data for cycle history if appropriate
-    with BaseRepository()._connection() as conn:
-        df = pd.read_sql_query(
-            "SELECT date, notes FROM cycles WHERE tank_id = ? ORDER BY date DESC;",
-            conn, params=(selected,)
-        )
-    if not df.empty:
-        df["date"] = pd.to_datetime(df["date"])
-        st.dataframe(df, use_container_width=True)
+    history = fetch_data(start_date.isoformat(), datetime.date.today().isoformat(), selected)
+    if isinstance(history, pd.DataFrame) and not history.empty:
+        history["date"] = pd.to_datetime(history["date"])
+        st.dataframe(history[["date", "notes"]], use_container_width=True)
     else:
         st.info("No past cycle data available.")
