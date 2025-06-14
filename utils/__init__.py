@@ -4,7 +4,7 @@ from .core import (
     is_mobile,
     load_config,
     cache_data,
-    clear_cache,
+    #clear_cache,
 )
 from .validation import (
     validate_numeric,
