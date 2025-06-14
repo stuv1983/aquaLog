@@ -10,7 +10,8 @@ import streamlit as st
 import pandas as pd
 from datetime import date
 
-from db import (
+# ——— Refactored DB imports ———
+from aqualog_db.legacy import (
     save_maintenance,
     get_maintenance,
     delete_maintenance,
