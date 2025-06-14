@@ -1,3 +1,4 @@
+import streamlit as st
 from aqualog_db.connection import get_connection
 
 def cycle_tab() -> None:
