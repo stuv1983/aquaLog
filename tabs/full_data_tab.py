@@ -8,11 +8,15 @@ When importing CSV we back‑fill the same tank.
 
 import datetime
 from datetime import date
+
 import streamlit as st
 import pandas as pd
 import altair as alt
 
-from db import fetch_data, get_connection
+# ——— Refactored DB imports ———
+from aqualog_db.legacy import fetch_data
+from aqualog_db.base   import BaseRepository
+
 from utils import (
     is_mobile,
     show_out_of_range_banner,
