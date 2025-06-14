@@ -8,12 +8,18 @@ from utils import request_rerun
 
 from config import LOCALIZATIONS, UNIT_SYSTEMS, SAFE_RANGES
 from utils import request_rerun
-from db import (
-    add_tank, rename_tank, remove_tank, update_tank_volume,
-    set_custom_range, get_custom_range, get_connection,
-    get_user_email_settings, save_user_email_settings
+from legacy import (
+    add_tank,
+    rename_tank,
+    remove_tank,
+    update_tank_volume,
+    set_custom_range,
+    get_custom_range,
+    # legacy also re-exports email settings:
+    get_user_email_settings,
+    save_user_email_settings,
 )
-# from .clear_tests import render_clear_tests_section
+from aqualog_db.base import BaseRepository   
 
 def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """Render the full settings panel with all subsections."""
