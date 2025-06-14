@@ -82,16 +82,22 @@ def warnings_tab() -> None:
         breaches: List[str] = []
 
         # Find parameters out of range
+        # ── Identify parameters out of range ──────────────────────────────
         for param, raw_val in row.items():
             if param in ("id", "tank_id", "date") or raw_val is None:
                 continue
 
-            # obtain result once
             cond = is_out_of_range(param, raw_val, tank_id=tid, ph=ph, temp_c=temp)
 
-            # cond may be scalar bool OR a 1-element Series → collapse to scalar
+            # `cond` might be a scalar bool, numpy.bool_, OR a 1-element Series.
             if isinstance(cond, pd.Series):
-                cond = cond.any()          # or cond.iloc[0]
+                cond = cond.any()          # collapse to single bool
+            elif not isinstance(cond, (bool, int, float)):
+                # fallback: try to coerce anything else to bool safely
+                try:
+                    cond = bool(cond)
+                except ValueError:
+                    cond = False
 
             if cond:
                 breaches.append(param)
