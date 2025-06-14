@@ -11,12 +11,8 @@ import pandas as pd
 from datetime import date
 
 # ——— Refactored DB imports ———
-from aqualog_db.legacy import (
-    save_maintenance,
-    get_maintenance,
-    delete_maintenance,
-    fetch_all_tanks,
-)
+from aqualog_db.legacy import fetch_all_tanks
+from aqualog_db.base   import BaseRepository
 
 from utils import show_toast
 
