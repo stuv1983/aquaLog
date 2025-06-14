@@ -33,16 +33,13 @@ from config import SAFE_RANGES
 
 print(">>> LOADING", __file__)
 
-def _get_min_max_dates(cur, tank_id: int) -> Tuple[Optional[datetime.date], Optional[datetime.date]]:
-    """Get minimum and maximum dates for a given tank from the database."""
+def _get_min_max_dates(cur, tank_id: int) -> tuple[datetime.date | None, datetime.date | None]:
     cur.execute(
         "SELECT MIN(date), MAX(date) FROM water_tests WHERE tank_id = ?;",
         (tank_id,),
     )
     row = cur.fetchone()
-    
     def _parse(val: str | None) -> datetime.date | None:
-        """Parse date string into date object."""
         if not val:
             return None
         try:
@@ -53,7 +50,6 @@ def _get_min_max_dates(cur, tank_id: int) -> Tuple[Optional[datetime.date], Opti
                 return pd_ts.date() if not pd.isna(pd_ts) else None
             except Exception:
                 return None
-    
     if not row or not row[0]:
         return None, None
     return _parse(row[0]), _parse(row[1])
@@ -73,13 +69,13 @@ def data_analytics_tab() -> None:
         min_date, max_date = _get_min_max_dates(cur, tank_id)
 
     if min_date is None or max_date is None:
-        st.info(f"{translate('No data available for')} {tank_name}.")
+        st.info(translate("No data available for") + f" {tank_name}.")
         return
 
     # 2️⃣ Fetch data
     df = fetch_data(min_date.isoformat(), max_date.isoformat(), tank_id)
     if df.empty:
-        st.info(f"{translate('No data to display for')} {tank_name}.")
+        st.info(translate("No data to display for") + f" {tank_name}.")
         return
 
     df_clean = clean_numeric_df(df).dropna(subset=["date"])
@@ -87,7 +83,7 @@ def data_analytics_tab() -> None:
         c for c in df_clean.columns if c not in ("date", "notes", "id", "tank_id")
     ]
     if not numeric_params:
-        st.info(f"{translate('No numeric parameters found for')} {tank_name}.")
+        st.info(translate("No numeric parameters found for") + f" {tank_name}.")
         return
 
     # 3️⃣ Visualisation controls
@@ -203,13 +199,14 @@ def data_analytics_tab() -> None:
     # -- Full Data Table & CSV
     with st.expander("🗂️ " + translate("Full Data"), expanded=False):
         st.markdown("#### " + translate("Raw Data Table") + " & Download")
-        with get_connection() as conn_full:
-            full_raw = pd.read_sql_query(
-                "SELECT date, ph, ammonia, nitrite, nitrate, kh, gh, co2_indicator, temperature, notes "
-                "FROM water_tests WHERE tank_id = ? ORDER BY date;",
-                conn_full,
-                params=(tank_id,)
-            )
+        conn_full = get_connection()
+        full_raw = pd.read_sql_query(
+            "SELECT date, ph, ammonia, nitrite, nitrate, kh, gh, co2_indicator, temperature, notes "
+            "FROM water_tests WHERE tank_id = ? ORDER BY date;",
+            conn_full,
+            params=(tank_id,)
+        )
+        conn_full.close()
         full_clean = full_raw.copy()
         full_clean["date"] = pd.to_datetime(full_clean["date"], errors="coerce")
         numeric_cols = ["ph", "ammonia", "nitrite", "nitrate", "kh", "gh", "temperature"]
@@ -298,7 +295,6 @@ def data_analytics_tab() -> None:
             st.bar_chart(pd.Series(oor_counts))
         else:
             st.info(translate("No out-of-range events for selected parameters."))
-
     # -- Comparative Analysis
     with st.expander("🔍 " + translate("Compare Two Parameters"), expanded=False):
         if len(numeric_params) < 2:
@@ -357,3 +353,5 @@ def data_analytics_tab() -> None:
                     st.altair_chart(chart, use_container_width=True)
                 except Exception:
                     st.error(translate("Forecasting failed—ensure statsmodels is installed."))
+
+
