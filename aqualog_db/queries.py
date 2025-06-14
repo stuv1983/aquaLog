@@ -38,14 +38,20 @@ def get_custom_ranges(tank_id: int) -> dict[str, tuple[float, float]]:
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT parameter, safe_low, safe_high FROM custom_ranges WHERE tank_id = ?",
+            "SELECT parameter, safe_low, safe_high "
+            "FROM custom_ranges WHERE tank_id = ?",
             (tank_id,)
         )
         rows = cursor.fetchall()
     return {param: (low, high) for param, low, high in rows}
 
 
-def set_custom_range(tank_id: int, parameter: str, safe_low: float, safe_high: float) -> None:
+def set_custom_range(
+    tank_id: int,
+    parameter: str,
+    safe_low: float,
+    safe_high: float
+) -> None:
     """
     Create or update a custom range for a tank and parameter.
     """
