@@ -8,12 +8,11 @@ import streamlit as st
 
 # Refactored DB imports
 from aqualog_db.legacy import (
-    fetch_data,
+    fetch_all_tanks,
     start_cycle,
     get_active_cycle,
     complete_cycle,
     cancel_cycle,
-    fetch_all_tanks,
 )
 from aqualog_db.base import BaseRepository
 
@@ -35,10 +34,10 @@ def cycle_tab() -> None:
         st.subheader("Active Cycle")
         st.write(active)
         if st.button("Complete Cycle"):
-            complete_cycle(active['id'])
+            complete_cycle(active["id"])
             st.success("Cycle completed.")
         if st.button("Cancel Cycle"):
-            cancel_cycle(active['id'])
+            cancel_cycle(active["id"])
             st.warning("Cycle canceled.")
         return
 
@@ -51,12 +50,16 @@ def cycle_tab() -> None:
         st.success("Cycle started.")
         st.experimental_rerun()
 
-    # Show previous cycles
+    # Show past cycles
     st.subheader("Past Cycles")
-    data = fetch_data(start_date.isoformat(), datetime.date.today().isoformat(), selected)
-    if isinstance(data, pd.DataFrame) and not data.empty:
-        data['start_date'] = pd.to_datetime(data['date'])
-        data['notes'] = data.get('notes', '')
-        st.dataframe(data[['start_date', 'notes']], use_container_width=True)
+    # Use fetch_data for cycle history if appropriate
+    with BaseRepository()._connection() as conn:
+        df = pd.read_sql_query(
+            "SELECT date, notes FROM cycles WHERE tank_id = ? ORDER BY date DESC;",
+            conn, params=(selected,)
+        )
+    if not df.empty:
+        df["date"] = pd.to_datetime(df["date"])
+        st.dataframe(df, use_container_width=True)
     else:
         st.info("No past cycle data available.")
