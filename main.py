@@ -51,7 +51,7 @@ def load_tab(func_name: str, rel_path: str):
 overview_tab           = load_tab("overview_tab",        "tabs/overview_tab.py")
 warnings_tab           = load_tab("warnings_tab",        "tabs/warnings_tab.py")
 data_analytics_tab     = load_tab("data_analytics_tab",  "tabs/data_analytics_tab.py")
-cycle_tab              = load_tab("cycle_tab",           "tabs/cycle_tab.py")
+#cycle_tab              = load_tab("cycle_tab",           "tabs/cycle_tab.py")
 failed_tests_tab       = load_tab("failed_tests_tab",    "tabs/failed_tests_tab.py")
 plant_inventory_tab    = load_tab("plant_inventory_tab", "tabs/plant_inventory_tab.py")
 fish_inventory_tab     = load_tab("fish_inventory_tab",  "tabs/fish_inventory_tab.py")
