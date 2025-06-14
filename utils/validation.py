@@ -1,7 +1,7 @@
 from typing import Any, Optional
 from config import SAFE_RANGES, TOO_LOW_THRESHOLDS, TOO_HIGH_THRESHOLDS
 from utils.chemistry import nh3_fraction
-from aqualog_db.repositories import CustomRangeRepository
+from aqualog_db.repositories.custom_range import CustomRangeRepository
 
 HARD_LIMITS = {
     "ph": (0.0, 14.0),
