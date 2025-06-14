@@ -1,14 +1,29 @@
 # aquaLog/sidebar/settings_panel.py
+"""
+Settings panel (refactored, feature-complete).
 
-import streamlit as st
-import pandas as pd
+Features
+────────
+● ➕  Add new tank (with optional initial safe-ranges)
+● ✏️  Rename / Delete tank & edit volume
+● 📊  Custom parameter ranges per tank
+● 🗑️  Clear all tests for current tank
+● ⬇️  CSV import for current tank
+● 🌐  Localisation & unit preferences
+● 📧  Weekly summary email configuration
+"""
+
+from __future__ import annotations
+
+import sqlite3
 from datetime import datetime
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, List
 
-from aqualog_db.base import BaseRepository
-from utils import request_rerun
+import pandas as pd
+import streamlit as st
 
-from config import LOCALIZATIONS, UNIT_SYSTEMS, SAFE_RANGES
+# ─── DB helpers ──────────────────────────────────────────────────────────────
+from aqualog_db.connection import get_connection
 from aqualog_db.legacy import (
     add_tank,
     rename_tank,
@@ -18,98 +33,263 @@ from aqualog_db.legacy import (
     get_custom_range,
     get_user_email_settings,
     save_user_email_settings,
+    fetch_all_tanks,
 )
 
-def render_add_tank_section() -> None:
-    """➕ Add a new tank."""
-    st.subheader("➕ Add New Tank")
-    name = st.text_input("Tank name", key="new_tank_name")
-    volume = st.number_input(
-        "Volume (L)", min_value=0.0, format="%.1f", key="new_tank_volume"
-    )
-    notes = st.text_area("Notes (optional)", key="new_tank_notes")
+# ─── App-level config & utils ────────────────────────────────────────────────
+from config import LOCALIZATIONS, UNIT_SYSTEMS, SAFE_RANGES
+from utils  import request_rerun
 
-    if st.button("Add Tank", key="add_tank_btn"):
-        try:
-            new_tank = add_tank(name, volume if volume > 0 else None, notes)
-            st.success(f"Added tank: **{new_tank['name']}**")
-            request_rerun()
-        except Exception as e:
-            st.error(f"Error adding tank: {e}")
 
+# ════════════════════════════════════════════════════════════════════════════
+# MAIN ENTRY POINT
+# ════════════════════════════════════════════════════════════════════════════
 def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
-    """Render the full settings panel with all subsections."""
+    """Render the entire settings sidebar panel."""
     with st.sidebar.expander("⚙️ Settings", expanded=False):
-        # Add New Tank
         render_add_tank_section()
 
-        # Group edit-related settings
         st.subheader("🔧 Edit Tank Settings")
         render_edit_tank_section(tank_map)
         render_custom_ranges_section(tank_map)
 
-        # Clear tests for the selected tank
         tid = st.session_state.get("tank_id", 0)
         if tid:
             render_clear_tests_section(tid, tank_map)
 
-        # Import from CSV
         render_csv_import_section(tank_map)
-
-        # Localization & Units
         render_localization_section()
-
-        # Weekly Summary Email
         render_weekly_email_section(tank_map)
 
+
+# ════════════════════════════════════════════════════════════════════════════
+# 1) ADD NEW TANK
+# ════════════════════════════════════════════════════════════════════════════
+def render_add_tank_section() -> None:
+    """➕ Add tank (with optional initial parameter ranges)."""
+    st.subheader("➕ Add New Tank")
+
+    name   = st.text_input("Name", key="new_tank_name")
+    volume = st.number_input("Tank Volume (L)", min_value=0.0, step=0.1,
+                             value=st.session_state.get("new_tank_volume", 0.0),
+                             key="new_tank_volume")
+
+    init_ranges = st.checkbox("Set initial parameter ranges", key="addtank_init_ranges")
+    new_ranges: Dict[str, Tuple[float, float]] = {}
+
+    if init_ranges:
+        cols = st.columns(2)
+        for i, param in enumerate([p for p in SAFE_RANGES if p not in ("co2_indicator", "ammonia")]):
+            low_default, high_default = SAFE_RANGES[param]
+            col = cols[i % 2]
+            low  = col.number_input(f"{param.capitalize()} safe low",  value=low_default,
+                                    step=0.1, key=f"new_{param}_low")
+            high = col.number_input(f"{param.capitalize()} safe high", value=high_default,
+                                    step=0.1, key=f"new_{param}_high")
+            new_ranges[param] = (low, high)
+
+    if st.button("Add Tank", key="add_tank_btn"):
+        if not name.strip():
+            st.error("Tank name cannot be empty.")
+        else:
+            new_id = add_tank(name.strip(), volume or None)
+            for param, (low, high) in new_ranges.items():
+                set_custom_range(new_id, param, low, high)
+            st.success(f"Added tank '{name.strip()}' ({volume} L)")
+            request_rerun()
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# 2) EDIT / DELETE / VOLUME
+# ════════════════════════════════════════════════════════════════════════════
 def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
-    """✏️ Rename, update volume, or remove a tank."""
-    # … your existing edit‐tank controls go here …
-    pass
+    """✏️ Rename / Delete tank & edit volume for current tank."""
+    st.subheader("✏️ Rename/Delete & Edit Volume")
 
+    tid = st.session_state.get("tank_id", 0)
+    if tid and tid in tank_map:
+        current = tank_map[tid]
+
+        new_name = st.text_input("New name", value=current["name"], key="rename_tank_field")
+        new_vol  = st.number_input("Volume (L)", min_value=0.0, step=0.1,
+                                   value=current["volume"] or 0.0, key="edit_tank_volume")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Save Changes", key="save_tank_changes_btn"):
+                if new_name.strip() != current["name"]:
+                    rename_tank(tid, new_name.strip())
+                if (current["volume"] or 0) != new_vol:
+                    update_tank_volume(tid, new_vol)
+                st.success(f"Updated tank to '{new_name.strip()}' ({new_vol} L)")
+                request_rerun()
+        with col2:
+            if st.button("Delete This Tank", key="delete_tank_btn"):
+                remove_tank(tid)
+                st.success(f"Deleted tank '{current['name']}'")
+                request_rerun()
+    else:
+        st.info("Select a tank to edit.")
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# 3) CUSTOM RANGES
+# ════════════════════════════════════════════════════════════════════════════
 def render_custom_ranges_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
-    """⚙️ Set custom safe ranges per parameter."""
-    # … your existing custom‐range controls go here …
-    pass
+    """📊 Custom safe ranges for the current tank."""
+    st.subheader("📊 Customize Parameter Ranges")
 
-def render_clear_tests_section(tank_id: int, tank_map: Dict[int, Dict[str, Any]]) -> None:
-    """🗑️ Clear all water tests for current tank."""
-    # … your existing clear‐tests controls go here …
-    pass
+    tid = st.session_state.get("tank_id", 0)
+    if not tid:
+        st.info("Select a tank to customize ranges.")
+        return
 
+    params = [p for p in SAFE_RANGES if p not in ("co2_indicator", "ammonia")]
+    sel_param = st.selectbox("Parameter", options=params, key="param_select")
+
+    if sel_param:
+        low_cur, high_cur = get_custom_range(tid, sel_param) or SAFE_RANGES[sel_param]
+        c1, c2 = st.columns(2)
+        low_new  = c1.number_input("Safe Low",  value=low_cur,  step=0.1, key=f"low_{sel_param}")
+        high_new = c2.number_input("Safe High", value=high_cur, step=0.1, key=f"high_{sel_param}")
+
+        if st.button("Save Custom Range", key="save_custom_range_btn"):
+            set_custom_range(tid, sel_param, low_new, high_new)
+            st.success(f"Custom range for {sel_param} saved")
+            request_rerun()
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# 4) CLEAR ALL TESTS
+# ════════════════════════════════════════════════════════════════════════════
+def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) -> None:
+    """🗑️ Delete every water-test row for the current tank (with confirmation)."""
+    st.subheader("⚠️ Clear Current Tank's Water Tests")
+
+    # Unique keys per tank
+    prep_key   = f"prepare_clear_tests_{tid}"
+    confirm_ck = f"clear_confirm_checkbox_{tid}"
+    yes_key    = f"confirm_delete_tests_{tid}"
+    cancel_key = f"cancel_clear_tests_{tid}"
+    flag_key   = f"clear_flag_{tid}"
+
+    if not st.session_state.get(flag_key):
+        if st.button("Prepare to clear tests", key=prep_key):
+            st.session_state[flag_key] = True
+            request_rerun()
+    else:
+        name = tank_map[tid]["name"]
+        st.warning(
+            f"🚨 Permanently delete **all** tests for '{name}'. "
+            "This action **cannot** be undone."
+        )
+        confirm = st.checkbox(
+            f"I understand and want to delete ALL tests for '{name}'",
+            key=confirm_ck,
+        )
+        col_yes, col_cancel = st.columns(2)
+        with col_yes:
+            if confirm and st.button("Yes, delete all", key=yes_key):
+                with get_connection() as conn:
+                    conn.execute("DELETE FROM water_tests WHERE tank_id = ?;", (tid,))
+                st.success(f"All tests for '{name}' deleted.")
+                st.session_state.pop(flag_key, None)
+                request_rerun()
+        with col_cancel:
+            if st.button("Cancel", key=cancel_key):
+                st.session_state.pop(flag_key, None)
+                st.info("Clear-tests operation cancelled.")
+                request_rerun()
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# 5) CSV IMPORT
+# ════════════════════════════════════════════════════════════════════════════
 def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
-    """⬇️ Import Water Tests from CSV for current tank."""
+    """⬇️ Import CSV data into the current tank."""
     st.subheader("⬇️ Import from CSV")
     tid = st.session_state.get("tank_id", 0)
-    uploaded = st.file_uploader("Upload CSV", type="csv", key="csv_uploader")
-    if st.button("Import from CSV", key="import_csv_btn"):
-        if not uploaded:
-            st.warning("Please upload a CSV first.")
-        else:
-            try:
-                df = pd.read_csv(uploaded)
-                expected = [
-                    "date", "ph", "ammonia", "nitrite", "nitrate",
-                    "kh", "gh", "co2_indicator", "temperature", "notes"
-                ]
-                missing = [c for c in expected if c not in df.columns]
-                if missing:
-                    st.error(f"Missing columns: {', '.join(missing)}")
-                else:
-                    df["tank_id"] = tid
-                    with BaseRepository()._connection() as conn:
-                        df.to_sql("water_tests", conn, if_exists="append", index=False)
-                    st.success(f"Imported {len(df)} records into tank '{tank_map[tid]['name']}'")
-                    request_rerun()
-            except Exception as e:
-                st.error(f"Import error: {e}")
 
+    uploaded = st.file_uploader("Choose CSV", type="csv", key="csv_uploader")
+    if st.button("Import CSV", key="import_csv_btn"):
+        if uploaded is None:
+            st.warning("Upload a CSV first.")
+            return
+        try:
+            df = pd.read_csv(uploaded)
+            required = [
+                "date", "ph", "ammonia", "nitrite", "nitrate",
+                "kh", "gh", "co2_indicator", "temperature", "notes",
+            ]
+            missing = [c for c in required if c not in df.columns]
+            if missing:
+                st.error("Missing columns: " + ", ".join(missing))
+                return
+            df["tank_id"] = tid
+            with get_connection() as conn:
+                df.to_sql("water_tests", conn, if_exists="append", index=False)
+            st.success(f"Imported {len(df)} rows into '{tank_map[tid]['name']}'")
+            request_rerun()
+        except Exception as e:
+            st.error(f"Import error: {e}")
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# 6) LOCALISATION & UNITS
+# ════════════════════════════════════════════════════════════════════════════
 def render_localization_section() -> None:
-    """🌐 Localization & unit preferences."""
-    # … your existing localization controls go here …
-    pass
+    """🌐 Choose language & unit system (stored in session)."""
+    st.subheader("🌐 Localization & Units")
+    st.selectbox("Language", list(LOCALIZATIONS.keys()), key="locale")
+    st.selectbox("Units",    list(UNIT_SYSTEMS.keys()),  key="units")
 
+
+# ════════════════════════════════════════════════════════════════════════════
+# 7) WEEKLY EMAIL
+# ════════════════════════════════════════════════════════════════════════════
 def render_weekly_email_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
-    """✉️ Configure weekly summary emails."""
-    # … your existing email-settings controls go here …
-    pass
+    """📧 Weekly summary email settings."""
+    st.subheader("📧 Weekly Summary Email")
+
+    settings = get_user_email_settings() or {}
+
+    # Email address
+    email = st.text_input("Email", value=settings.get("email", ""), key="email_addr")
+
+    # Tank selection
+    options  = list(tank_map.keys())
+    default  = settings.get("tanks", [])
+    selected = st.multiselect(
+        "Tanks to include",
+        options=options,
+        default=[t for t in default if t in options],
+        format_func=lambda tid: tank_map[tid]["name"],
+        key="email_tanks",
+    )
+
+    # Include switches
+    st.markdown("**Include:**")
+    inc_keys = [
+        ("include_type",  "Maintenance type"),
+        ("include_date",  "Date"),
+        ("include_notes", "Notes"),
+        ("include_cost",  "Cost"),
+        ("include_stats", "Stats"),
+        ("include_cycle", "Cycle status"),
+    ]
+    for key, label in inc_keys:
+        st.checkbox(label, value=settings.get(key, False), key=key)
+
+    if st.button("Save Email Settings", key="save_email_btn"):
+        save_user_email_settings(
+            email=email,
+            tanks=selected,
+            include_type=st.session_state["include_type"],
+            include_date=st.session_state["include_date"],
+            include_notes=st.session_state["include_notes"],
+            include_cost=st.session_state["include_cost"],
+            include_stats=st.session_state["include_stats"],
+            include_cycle=st.session_state["include_cycle"],
+        )
+        st.success("Email settings saved")
+        request_rerun()
