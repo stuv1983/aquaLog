@@ -11,7 +11,7 @@ Key changes:
 import streamlit as st
 from typing import Dict, Any
 
-from db import fetch_all_tanks
+from legacy import fetch_all_tanks
 from .tank_selector import render_tank_selector
 from .water_test_form import render_water_test_form
 from .settings_panel import render_settings_panel
