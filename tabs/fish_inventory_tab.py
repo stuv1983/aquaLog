@@ -16,6 +16,8 @@ from aqualog_db.legacy import fetch_all_tanks
 from aqualog_db.connection import get_connection
 from utils import show_toast
 
+print(">>> LOADING", __file__)
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Helper: ensure owned_fish has tank_id
 # ─────────────────────────────────────────────────────────────────────────────
