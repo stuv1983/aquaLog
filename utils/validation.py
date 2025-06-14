@@ -2,7 +2,7 @@
 
 from typing import Any, Optional
 from config import SAFE_RANGES, TOO_LOW_THRESHOLDS, TOO_HIGH_THRESHOLDS
-from legacy import get_custom_range
+from aqualog.legacy import get_custom_range
 from .chemistry import nh3_fraction
 
 # Hard physical limits for parameter sanity checks
