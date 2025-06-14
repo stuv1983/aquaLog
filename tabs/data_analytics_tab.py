@@ -46,9 +46,9 @@ def _get_min_max_dates(cur, tank_id: int) -> tuple[datetime.date | None, datetim
         (tank_id,),
     )
     row = cur.fetchone()
-    def _parse(val: str | None) -> datetime.date | None:
-        if not val:
-            return None
+def _parse(val: str | None) -> datetime.date | None:
+    if not val:
+        return None
         try:
             return datetime.datetime.fromisoformat(val).date()
         except Exception:
