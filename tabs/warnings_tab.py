@@ -12,7 +12,6 @@ import streamlit as st
 
 # Modern DB imports
 from aqualog_db.connection import get_connection
-from aqualog_db.legacy import fetch_all_tanks, fetch_recent_tests
 
 from config import SAFE_RANGES, ACTION_PLANS
 
@@ -22,14 +21,24 @@ VALID_PARAMETERS = ["ammonia", "gh", "kh", "nitrate", "nitrite", "ph", "temperat
 def warnings_tab() -> None:
     st.header("⚠️ Last 10 Test Warnings")
 
-    # Fetch data
-    tanks = fetch_all_tanks()
-    if not tanks:
+    # Fetch tanks to ensure database is initialized
+    conn = get_connection()
+    tanks_df = pd.read_sql("SELECT id, name FROM tanks", conn)
+    if tanks_df.empty:
         st.warning("No tanks found. Add a tank in Settings first.")
         return
 
-    # For simplicity show warnings across all tanks
-    tests = fetch_recent_tests(limit=10)
+    # Query last 10 tests with tank names
+    query = (
+        "SELECT wt.date, t.name AS tank_name, wt.ammonia, wt.nitrate, wt.nitrite, "
+        "wt.ph, wt.temperature, wt.kh, wt.gh "
+        "FROM water_tests wt "
+        "JOIN tanks t ON wt.tank_id = t.id "
+        "ORDER BY datetime(wt.date) DESC "
+        "LIMIT 10"
+    )
+    tests = pd.read_sql(query, conn)
+
     if tests.empty:
         st.info("No test data available.")
         return
@@ -56,9 +65,7 @@ def warnings_tab() -> None:
 
     # Display collapsible warnings
     for w in warnings:
-        with st.expander(f"Test from {w['date']} ({', '.join(w['warnings'])})"):
-            tank = w['tank']
-            st.write(f"**Tank:** {tank}")
+        with st.expander(f"Test from {w['date']} – {w['tank']} ({', '.join(w['warnings'])})"):
             for param in w['warnings']:
                 plan = ACTION_PLANS.get(param)
                 if plan:
