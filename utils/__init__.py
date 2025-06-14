@@ -1,79 +1,52 @@
-# utils/__init__.py
 """
-utils — Main utility package for AquaLog
+utils/__init__.py – Consolidated utility imports for external modules.
+Refactored: 2025-06-14
 """
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Core utilities
-# ─────────────────────────────────────────────────────────────────────────────
-from .core import cache_data
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Localization & unit conversion
-# ─────────────────────────────────────────────────────────────────────────────
-from .localization import (
+# Core functions
+from .core import (
+    cache_data,
+    clear_cache,
     is_mobile,
-    translate,
-    convert_value,
-    format_with_units,
+    load_config,
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Validation helpers
-# ─────────────────────────────────────────────────────────────────────────────
+# Localization / unit conversion
+from .localization import (
+    translate,
+    format_with_units,
+    convert_temperature,
+    convert_volume,
+)
+
+# Validation
 from .validation import (
-    validate_reading,
-    is_too_low,
-    is_too_high,
+    validate_parameter_value,
     is_out_of_range,
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Chemistry calculations
-# ─────────────────────────────────────────────────────────────────────────────
+# Chemistry
 from .chemistry import (
     nh3_fraction,
-    calculate_alkaline_buffer_dose,
     calculate_equilibrium_dose,
+    calculate_alkaline_buffer_dose,
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Database helpers
-# ─────────────────────────────────────────────────────────────────────────────
-from .database import (
-    get_connection,
-    ensure_custom_ranges_schema,
-    ensure_water_tests_schema,
-)
-
-# ─────────────────────────────────────────────────────────────────────────────
-# UI-related utilities
-# ─────────────────────────────────────────────────────────────────────────────
+# UI elements
 from .ui.alerts import (
-    request_rerun,
-    show_toast,
     show_out_of_range_banner,
-    show_parameter_advice,
+    show_success_banner,
 )
 from .ui.charts import (
-    clean_numeric_df,
-    rolling_summary,
-    multi_param_line_chart,
+    plot_trend_chart,
+    plot_correlation_heatmap,
 )
 
-__all__ = [
-    # core
-    "cache_data",
-    # localization
-    "is_mobile", "translate", "convert_value", "format_with_units",
-    # validation
-    "validate_reading", "is_too_low", "is_too_high", "is_out_of_range",
-    # chemistry
-    "nh3_fraction", "calculate_alkaline_buffer_dose", "calculate_equilibrium_dose",
-    # database
-    "get_connection", "ensure_custom_ranges_schema", "ensure_water_tests_schema",
-    # UI
-    "request_rerun", "show_toast", "show_out_of_range_banner",
-    "show_parameter_advice",
-    "clean_numeric_df", "rolling_summary", "multi_param_line_chart",
-]
+# Database helper aliases for legacy support (refactored)
+from aqualog_db.repositories.water_test import (
+    get_latest_test,
+    get_most_recent_value,
+)
+from aqualog_db.repositories.custom_range import (
+    get_custom_range,
+)
