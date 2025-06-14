@@ -212,44 +212,63 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
 
     uploaded = st.file_uploader("Choose CSV", type="csv", key="csv_uploader")
 
-    if uploaded is not None and st.button("Import CSV", key="import_csv_btn"):
+    if uploaded is None:
+        return
+
+    if st.button("Import CSV", key="import_csv_btn"):
         try:
             df = pd.read_csv(uploaded)
 
-            # 🟢 Normalize the `date` column to an ISO string format
+            # More robust date handling
             if "date" in df.columns:
-                df["date"] = (
-                    pd.to_datetime(df["date"], errors="coerce")
-                      .dt.strftime("%Y-%m-%dT%H:%M:%S")
-                      .fillna("")
-                )
+                try:
+                    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+                    df["date"] = df["date"].dt.strftime("%Y-%m-%dT%H:%M:%S").fillna("")
+                except Exception as e:
+                    st.error(f"Date parsing error: {e}")
+                    return
 
             required = [
                 "date", "ph", "ammonia", "nitrite", "nitrate",
                 "kh", "gh", "co2_indicator", "temperature", "notes",
             ]
-            missing = [c for c in required if c not in df.columns]
-            if missing:
-                st.error("Missing columns: " + ", ".join(missing))
+            
+            # Explicit column check
+            missing = []
+            for col in required:
+                if col not in df.columns:
+                    missing.append(col)
+            
+            if len(missing) > 0:
+                st.error(f"Missing required columns: {', '.join(missing)}")
                 return
 
+            # Ensure all required columns exist before proceeding
             df["tank_id"] = tid
-
+            
             with get_connection() as conn:
-                # First check if table exists
+                # Verify table exists first
                 table_exists = conn.execute(
                     "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
                 ).fetchone()
                 
-                if table_exists:
-                    df.to_sql("water_tests", conn, if_exists="append", index=False)
-                    st.success(f"Imported {len(df)} rows into '{tank_map[tid]['name']}'")
-                    request_rerun()
-                else:
-                    st.error("Error: water_tests table does not exist in the database")
+                if not table_exists:
+                    st.error("Database error: water_tests table doesn't exist")
+                    return
+                
+                # Convert to list of dicts for safer insertion
+                records = df.to_dict('records')
+                conn.executemany(
+                    "INSERT INTO water_tests VALUES (:date, :ph, :ammonia, :nitrite, "
+                    ":nitrate, :kh, :gh, :co2_indicator, :temperature, :notes, :tank_id)",
+                    records
+                )
+                
+            st.success(f"Successfully imported {len(df)} records to {tank_map[tid]['name']}")
+            request_rerun()
 
         except Exception as e:
-            st.error(f"Import error: {e}")
+            st.error(f"Import failed: {str(e)}")
 
 # ════════════════════════════════════════════════════════════════════════════
 # 6) LOCALISATION & UNITS
