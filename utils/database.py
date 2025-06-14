@@ -1,4 +1,4 @@
-from aqualog_db.repositories.custom_range import get_custom_range
+from aqualog_db.repositories import CustomRangeRepository
 
 def ensure_custom_ranges_schema() -> None:
     """Ensures the custom_ranges table exists in the database."""
