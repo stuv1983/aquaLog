@@ -1,31 +1,37 @@
 # aqualog/tabs/overview_tab.py
+"""
+Overview dashboard — multi-tank aware 🏠
 
-import streamlit as st
+•   Latest-test preview is Arrow-safe
+•   Trend chart uses Arrow-safe dataframe
+•   Calls show_out_of_range_banner() with no args
+"""
+
+from __future__ import annotations
+
 import pandas as pd
+import streamlit as st
 import altair as alt
-from PIL import Image
 
 from aqualog_db.base   import BaseRepository
 from aqualog_db.legacy import fetch_all_tanks
-from aqualog_db.connection import get_connection
 
 from utils import (
+    arrow_safe,                       # 🔸 Arrow compatibility helper
     is_mobile,
     show_out_of_range_banner,
     translate,
     format_with_units,
 )
-from config import SAFE_RANGES
 
 print(">>> LOADING", __file__)
 
+# ─────────────────────────────────────────────────────────────────────────────
 def render_overview_tab() -> None:
-    """
-    Render the overview dashboard with key metrics and trends.
-    """
+    """Render the Overview dashboard."""
     st.header("🏠 Overview")
 
-    # Fetch tank list
+    # ── Tank selector ───────────────────────────────────────────────────────
     tanks = fetch_all_tanks()
     tank_options = {t["id"]: t["name"] for t in tanks}
     selected_tank = st.selectbox(
@@ -34,55 +40,57 @@ def render_overview_tab() -> None:
         format_func=lambda tid: tank_options[tid],
     )
 
-    # Latest test details
+    # ── Latest test (single row) ────────────────────────────────────────────
     with BaseRepository()._connection() as conn:
-        df = pd.read_sql_query(
-            "SELECT * FROM water_tests WHERE tank_id = ? ORDER BY date DESC LIMIT 1",
+        df_latest = pd.read_sql_query(
+            "SELECT * FROM water_tests WHERE tank_id = ? ORDER BY date DESC LIMIT 1;",
             conn,
             params=(selected_tank,),
         )
 
-        # 🔧 convert the date column to datetime so Arrow can serialize it
-        if "date" in df.columns:
-            df["date"] = pd.to_datetime(df["date"], errors="coerce")
-
-    if df.empty:
+    if df_latest.empty:
         st.info("No water tests available for this tank.")
         return
 
-    latest = df.iloc[0]
     st.subheader("Latest Water Test")
-    st.write(latest)
+    st.dataframe(arrow_safe(df_latest), use_container_width=True)  # ✔ Arrow-safe
 
-    # Out-of-range warning banner (now one argument)
-    show_out_of_range_banner(latest)
+    # Out-of-range banner (banner itself figures out breaches)
+    show_out_of_range_banner()
 
-    # Time-series parameter trends
+    # ── Parameter trends ────────────────────────────────────────────────────
     with BaseRepository()._connection() as conn:
         df_all = pd.read_sql_query(
             """
             SELECT date, ph, ammonia, nitrite, nitrate
             FROM water_tests
             WHERE tank_id = ?
-            ORDER BY date
+            ORDER BY date;
             """,
             conn,
             params=(selected_tank,),
+            parse_dates=["date"],          # already datetime64[ns]
         )
 
-    df_all["date"] = pd.to_datetime(df_all["date"])
+    df_all = arrow_safe(df_all)            # safety no-op here, but consistent
+
     chart = (
         alt.Chart(df_all)
         .transform_fold(
-            ["ph", "ammonia", "nitrite", "nitrate"], as_=["parameter", "value"]
+            ["ph", "ammonia", "nitrite", "nitrate"],
+            as_=["parameter", "value"],
         )
         .mark_line(point=True)
-        .encode(x="date:T", y="value:Q", color="parameter:N")
+        .encode(
+            x="date:T",
+            y="value:Q",
+            color="parameter:N",
+        )
         .properties(title="Parameter Trends Over Time", height=300)
     )
 
     st.altair_chart(chart, use_container_width=True)
 
 
-# For dynamic loader
+# Alias for dynamic import
 overview_tab = render_overview_tab
