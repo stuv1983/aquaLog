@@ -17,7 +17,7 @@ from aqualog_db.connection import get_connection
 
 from utils import show_toast
 
-
+print(">>> LOADING", __file__)
 # ─────────────────────────────────────────────────────────────────────────────
 # Local DB helpers for maintenance_log  ← ADD THIS BLOCK just after imports
 # ─────────────────────────────────────────────────────────────────────────────
