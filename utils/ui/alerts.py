@@ -44,60 +44,15 @@ def _build_banner_details(param: str, value: float, low: float, high: float) -> 
             f"{format_with_units(high, param)}); " + "; ".join(plan))
 
 
-def show_out_of_range_banner(key_suffix: str = "") -> None:
-    """Displays a warning banner for out-of-range parameters with dismiss functionality.
-    
-    Args:
-        key_suffix: Optional suffix for session state keys to support multiple instances
+# ─────────────────────────────────────────────────────────────────────────────
+# Out-of-range banner — ***DISABLED***
+# ─────────────────────────────────────────────────────────────────────────────
+def show_out_of_range_banner(*_args, **_kwargs) -> None:
     """
-    suffix = f"_{key_suffix}" if key_suffix else ""
-    hide_key = f"hide_banner{suffix}"
-    
-    # Handle banner visibility toggle
-    if st.session_state.get(hide_key, False):
-        if st.button("Show Warnings", key=f"show{suffix}"):
-            st.session_state[hide_key] = False
-            request_rerun()
-        return
-
-    latest = get_latest_test()
-    if not latest or not isinstance(latest, dict):
-        return
-
-    # Process parameter breaches
-    breaches = []
-    details = []
-    tank_id = latest.get("tank_id", 0)
-    
-    for param, (default_low, default_high) in SAFE_RANGES.items():
-        value = latest.get(param)
-        if value is None:
-            continue
-            
-        custom_range = get_custom_range(tank_id, param)
-        low, high = custom_range if custom_range else (default_low, default_high)
-        
-        if is_out_of_range(param, value, tank_id=tank_id,
-                          ph=latest.get("ph"), temp_c=latest.get("temperature")):
-            breaches.append(param.title().replace("_", " "))
-            details.append(_build_banner_details(param, value, low, high))
-
-    # Display warning if breaches exist
-    if breaches:
-        try:
-            test_date = latest.get("date")
-            date_str = (pd.to_datetime(test_date).strftime("%Y-%m-%d") 
-                       if test_date else "N/A")
-        except (ValueError, TypeError):
-            date_str = "N/A"
-            
-        with st.expander(f"⚠️ Latest test ({date_str}) warnings", expanded=True):
-            st.warning(f"Out-of-range parameters: {', '.join(breaches)}")
-            st.markdown("\n".join(details))
-            
-            if st.button("Dismiss", key=f"dismiss{suffix}"):
-                st.session_state[hide_key] = True
-                request_rerun()
+    This banner has been temporarily disabled to avoid runtime issues.
+    Callers can safely import & call it, but it now does nothing.
+    """
+    return  # ← no-op
 
 
 def show_parameter_advice(param: str, value: float) -> None:
