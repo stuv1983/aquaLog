@@ -5,16 +5,17 @@ and a 7-day Holt-Winters forecast for selected parameters.
 Updated: 2025-06-10
 
 """
-import datetime               # For handling dates and time deltas
-import pandas as pd           # Pandas for DataFrame manipulation
-import streamlit as st        # Streamlit for UI components
-import altair as alt          # Altair for interactive charts
+import datetime
+import pandas as pd
+import streamlit as st
+import altair as alt
 
-# Fetch data from SQLite and get raw connection if needed
-from db import fetch_data, get_connection
-# Utility functions: detect mobile viewport, show warnings, clean and type-cast data
+# ——— Refactored DB imports ———
+from aqualog_db.legacy import fetch_data
+from aqualog_db.base   import BaseRepository
+
+# Utility functions & config
 from utils import is_mobile, show_out_of_range_banner, clean_numeric_df
-# Configuration: safe parameter ranges
 from config import SAFE_RANGES
 
 
