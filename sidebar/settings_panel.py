@@ -67,7 +67,9 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                     # Use BaseRepository for connection
                     with BaseRepository()._connection() as conn:
                         df.to_sql("water_tests", conn, if_exists="append", index=False)
-                    st.success(f"Imported {len(df)} records into tank '{tank_map[tid]['name']}'")
+                    st.success(
+                        f"Imported {len(df)} records into tank '{tank_map[tid]['name']}'"
+                    )
                     request_rerun()
             except Exception as e:
                 st.error(f"Import error: {e}")
