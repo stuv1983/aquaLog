@@ -6,12 +6,12 @@ utils — Main utility package for AquaLog
 # ─────────────────────────────────────────────────────────────────────────────
 # Core utilities
 # ─────────────────────────────────────────────────────────────────────────────
-from .core import cache_data, is_mobile, get_viewport_width
+from .core import cache_data
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Localization & unit conversion
 # ─────────────────────────────────────────────────────────────────────────────
-from .localization import translate, convert_value, format_with_units
+from .localization import is_mobile, translate, convert_value, format_with_units
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Validation routines
@@ -31,27 +31,27 @@ from .database import get_connection, ensure_custom_ranges_schema, ensure_water_
 # ─────────────────────────────────────────────────────────────────────────────
 # UI utilities (alerts and rerun)
 # ─────────────────────────────────────────────────────────────────────────────
-from .alerts import request_rerun, show_toast, show_out_of_range_banner, show_parameter_advice
+from .ui.alerts import request_rerun, show_toast, show_out_of_range_banner, show_parameter_advice
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Charting functions
 # ─────────────────────────────────────────────────────────────────────────────
-from .charts import clean_numeric_df, rolling_summary, multi_param_line_chart
+from .ui.charts import clean_numeric_df, rolling_summary, multi_param_line_chart
 
 # Explicit API
 __all__ = [
-    # core
-    "cache_data", "is_mobile", "get_viewport_width",
-    # localization
-    "translate", "convert_value", "format_with_units",
-    # validation
+    # Core
+    "cache_data",
+    # Localization
+    "is_mobile", "translate", "convert_value", "format_with_units",
+    # Validation
     "validate_reading", "is_too_low", "is_too_high", "is_out_of_range",
-    # chemistry
+    # Chemistry
     "nh3_fraction", "calculate_alkaline_buffer_dose", "calculate_equilibrium_dose",
-    # database
+    # Database
     "get_connection", "ensure_custom_ranges_schema", "ensure_water_tests_schema",
     # UI
     "request_rerun", "show_toast", "show_out_of_range_banner", "show_parameter_advice",
-    # charts
+    # Charts
     "clean_numeric_df", "rolling_summary", "multi_param_line_chart",
 ]
