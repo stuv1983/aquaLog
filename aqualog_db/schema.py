@@ -212,9 +212,9 @@ class SchemaManager(BaseRepository):
                 cursor.execute(schema_sql)
 
             # 2) In-place migrations: add missing columns
-            self._ensure_column(cursor, 'water_tests', 'gh',           "REAL DEFAULT 0 CHECK(gh >= 0 AND gh <= 30)")
-            self._ensure_column(cursor, 'water_tests', 'tank_id',      "INTEGER NOT NULL DEFAULT 1")
-            self._ensure_column(cursor, 'water_tests', 'notes',        "TEXT")
+            self._ensure_column(cursor, 'water_tests', 'gh',      "REAL DEFAULT 0 CHECK(gh >= 0 AND gh <= 30)")
+            self._ensure_column(cursor, 'water_tests', 'tank_id', "INTEGER NOT NULL DEFAULT 1")
+            self._ensure_column(cursor, 'water_tests', 'notes',   "TEXT")
 
             for tbl in ('maintenance_log', 'custom_ranges', 'owned_plants', 'owned_fish'):
                 self._ensure_column(cursor, tbl, 'tank_id', "INTEGER NOT NULL DEFAULT 1")
