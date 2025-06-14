@@ -21,35 +21,37 @@ VALID_PARAMETERS = ["ammonia", "gh", "kh", "nitrate", "nitrite", "ph", "temperat
 def warnings_tab() -> None:
     st.header("⚠️ Last 10 Test Warnings")
 
-    # Fetch tanks to ensure database is initialized
-    conn = get_connection()
-    tanks_df = pd.read_sql("SELECT id, name FROM tanks", conn)
+    # Use context manager to get a valid DB connection
+    with get_connection() as conn:
+        tanks_df = pd.read_sql("SELECT id, name FROM tanks", conn)
+        # Query last 10 tests with tank names
+        query = (
+            "SELECT wt.date, t.name AS tank_name, wt.ammonia, wt.nitrate, wt.nitrite, "
+            "wt.ph, wt.temperature, wt.kh, wt.gh "
+            "FROM water_tests wt "
+            "JOIN tanks t ON wt.tank_id = t.id "
+            "ORDER BY datetime(wt.date) DESC "
+            "LIMIT 10"
+        )
+        tests_df = pd.read_sql(query, conn)
+
+    # Ensure tanks exist
     if tanks_df.empty:
         st.warning("No tanks found. Add a tank in Settings first.")
         return
 
-    # Query last 10 tests with tank names
-    query = (
-        "SELECT wt.date, t.name AS tank_name, wt.ammonia, wt.nitrate, wt.nitrite, "
-        "wt.ph, wt.temperature, wt.kh, wt.gh "
-        "FROM water_tests wt "
-        "JOIN tanks t ON wt.tank_id = t.id "
-        "ORDER BY datetime(wt.date) DESC "
-        "LIMIT 10"
-    )
-    tests = pd.read_sql(query, conn)
-
-    if tests.empty:
+    # Ensure tests exist
+    if tests_df.empty:
         st.info("No test data available.")
         return
 
     # Build warnings list
     warnings: List[Dict[str, Any]] = []
-    for _, row in tests.iterrows():
+    for _, row in tests_df.iterrows():
         test_warnings: List[str] = []
         for param in VALID_PARAMETERS:
             value = row.get(param)
-            if value is None or pd.isna(value):
+            if value is None or pd.isna(value):  # Skip missing
                 continue
             low, high = SAFE_RANGES.get(param, (None, None))
             if low is not None and value < low:
