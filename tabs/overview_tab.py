@@ -42,6 +42,10 @@ def render_overview_tab() -> None:
             params=(selected_tank,),
         )
 
+        # 🔧 convert the date column to datetime so Arrow can serialize it
+        if "date" in df.columns:
+            df["date"] = pd.to_datetime(df["date"], errors="coerce")
+
     if df.empty:
         st.info("No water tests available for this tank.")
         return
