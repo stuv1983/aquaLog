@@ -1,3 +1,4 @@
+import pandas as pd
 import streamlit as st
 from aqualog_db.connection import get_connection
 
