@@ -8,18 +8,8 @@ via `st.session_state["tank_id"]` (fallback = 1).
 Updated: 2025-06-11 (added Correlation Heatmap)
 """
 
-"""
-tabs/data_analytics_tab.py – multi-tank aware 🎛️
-Provides the **Data & Analytics** view with visualisation controls, raw-data
-layout, rolling averages, correlation matrix, scatter/regression, basic
-forecasting, and full CSV export. All queries are scoped to the **selected tank**
-via `st.session_state["tank_id"]` (fallback = 1).
-
-Updated: 2025-06-11 (added Correlation Heatmap)
-"""
-
 import datetime
-from typing import List
+from typing import List, Optional, Tuple
 
 import pandas as pd
 import streamlit as st
@@ -27,7 +17,7 @@ import altair as alt
 
 # ——— Refactored DB imports ———
 from aqualog_db.legacy import fetch_data, fetch_all_tanks
-from aqualog_db.base   import BaseRepository
+from aqualog_db.base import BaseRepository
 from aqualog_db.connection import get_connection
 
 from utils import (
@@ -40,15 +30,18 @@ from utils import (
 from config import SAFE_RANGES
 
 
-def _get_min_max_dates(cur, tank_id: int) -> tuple[datetime.date | None, datetime.date | None]:
+def _get_min_max_dates(cur, tank_id: int) -> Tuple[Optional[datetime.date], Optional[datetime.date]]:
+    """Get minimum and maximum dates for a given tank from the database."""
     cur.execute(
         "SELECT MIN(date), MAX(date) FROM water_tests WHERE tank_id = ?;",
         (tank_id,),
     )
     row = cur.fetchone()
-def _parse(val: str | None) -> datetime.date | None:
-    if not val:
-        return None
+    
+    def _parse(val: str | None) -> datetime.date | None:
+        """Parse date string into date object."""
+        if not val:
+            return None
         try:
             return datetime.datetime.fromisoformat(val).date()
         except Exception:
@@ -57,6 +50,7 @@ def _parse(val: str | None) -> datetime.date | None:
                 return pd_ts.date() if not pd.isna(pd_ts) else None
             except Exception:
                 return None
+    
     if not row or not row[0]:
         return None, None
     return _parse(row[0]), _parse(row[1])
@@ -76,13 +70,13 @@ def data_analytics_tab() -> None:
         min_date, max_date = _get_min_max_dates(cur, tank_id)
 
     if min_date is None or max_date is None:
-        st.info(translate("No data available for") + f" {tank_name}.")
+        st.info(f"{translate('No data available for')} {tank_name}.")
         return
 
     # 2️⃣ Fetch data
     df = fetch_data(min_date.isoformat(), max_date.isoformat(), tank_id)
     if df.empty:
-        st.info(translate("No data to display for") + f" {tank_name}.")
+        st.info(f"{translate('No data to display for')} {tank_name}.")
         return
 
     df_clean = clean_numeric_df(df).dropna(subset=["date"])
@@ -90,7 +84,7 @@ def data_analytics_tab() -> None:
         c for c in df_clean.columns if c not in ("date", "notes", "id", "tank_id")
     ]
     if not numeric_params:
-        st.info(translate("No numeric parameters found for") + f" {tank_name}.")
+        st.info(f"{translate('No numeric parameters found for')} {tank_name}.")
         return
 
     # 3️⃣ Visualisation controls
@@ -207,12 +201,12 @@ def data_analytics_tab() -> None:
     with st.expander("🗂️ " + translate("Full Data"), expanded=False):
         st.markdown("#### " + translate("Raw Data Table") + " & Download")
         with get_connection() as conn_full:
-        full_raw = pd.read_sql_query(
-            "SELECT date, ph, ammonia, nitrite, nitrate, kh, gh, co2_indicator, temperature, notes "
-            "FROM water_tests WHERE tank_id = ? ORDER BY date;",
-            conn_full,
-            params=(tank_id,)
-        )
+            full_raw = pd.read_sql_query(
+                "SELECT date, ph, ammonia, nitrite, nitrate, kh, gh, co2_indicator, temperature, notes "
+                "FROM water_tests WHERE tank_id = ? ORDER BY date;",
+                conn_full,
+                params=(tank_id,)
+            )
         full_clean = full_raw.copy()
         full_clean["date"] = pd.to_datetime(full_clean["date"], errors="coerce")
         numeric_cols = ["ph", "ammonia", "nitrite", "nitrate", "kh", "gh", "temperature"]
@@ -301,6 +295,7 @@ def data_analytics_tab() -> None:
             st.bar_chart(pd.Series(oor_counts))
         else:
             st.info(translate("No out-of-range events for selected parameters."))
+
     # -- Comparative Analysis
     with st.expander("🔍 " + translate("Compare Two Parameters"), expanded=False):
         if len(numeric_params) < 2:
@@ -359,5 +354,3 @@ def data_analytics_tab() -> None:
                     st.altair_chart(chart, use_container_width=True)
                 except Exception:
                     st.error(translate("Forecasting failed—ensure statsmodels is installed."))
-
-
