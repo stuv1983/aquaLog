@@ -17,6 +17,67 @@ from aqualog_db.connection import get_connection
 
 from utils import show_toast
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Local DB helpers for maintenance_log  ← ADD THIS BLOCK just after imports
+# ─────────────────────────────────────────────────────────────────────────────
+def save_maintenance(
+    *,
+    tank_id: int,
+    date: str,
+    m_type: str,
+    description: str | None,
+    volume_changed: float | None,
+    cost: float | None,
+    notes: str | None,
+    next_due: str | None,
+) -> None:
+    """Insert a maintenance record for the given tank."""
+    with get_connection() as conn:
+        conn.execute(
+            """
+            INSERT INTO maintenance_log (
+                tank_id, date, maintenance_type, description,
+                volume_changed, cost, notes, next_due
+            ) VALUES (?,?,?,?,?,?,?,?);
+            """,
+            (
+                tank_id,
+                date,
+                m_type.strip(),
+                description.strip() if description else None,
+                volume_changed,
+                cost,
+                notes.strip() if notes else None,
+                next_due,
+            ),
+        )
+        conn.commit()
+
+
+def get_maintenance(*, tank_id: int) -> list[dict]:
+    """Return list of maintenance rows (latest first) for this tank."""
+    with get_connection() as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            """
+            SELECT *
+              FROM maintenance_log
+             WHERE tank_id = ?
+          ORDER BY date DESC, id DESC;
+            """,
+            (tank_id,),
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def delete_maintenance(record_id: int) -> None:
+    """Delete a maintenance row by id."""
+    with get_connection() as conn:
+        conn.execute("DELETE FROM maintenance_log WHERE id = ?;", (record_id,))
+        conn.commit()
+
+
 def maintenance_tab() -> None:
     """Maintenance Log tab (tank-aware; history shown under one expander)."""
     # ──────────────────────────────────────────────
