@@ -17,6 +17,8 @@ import altair as alt
 from aqualog_db.legacy import fetch_data
 from aqualog_db.base   import BaseRepository
 
+from aqualog_db.connection import get_connection
+
 from utils import (
     is_mobile,
     show_out_of_range_banner,
