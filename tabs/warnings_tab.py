@@ -24,6 +24,7 @@ from utils import (
 )
 from components import display_parameter_warning
 
+print(">>> LOADING", __file__)
 
 def warnings_tab() -> None:
     """Render the Warnings & Action-Plan tab for the active tank."""
