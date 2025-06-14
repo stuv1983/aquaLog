@@ -13,6 +13,7 @@ import altair as alt
 # ——— Refactored DB imports ———
 from aqualog_db.legacy import fetch_data
 from aqualog_db.base   import BaseRepository
+from aqualog_db.connection import get_connection
 
 # Utility functions & config
 from utils import is_mobile, show_out_of_range_banner, clean_numeric_df
