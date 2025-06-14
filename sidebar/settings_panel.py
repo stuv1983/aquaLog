@@ -1,3 +1,5 @@
+# aquaLog/sidebar/settings_panel.py
+
 import streamlit as st
 import pandas as pd
 from datetime import datetime
@@ -18,6 +20,23 @@ from aqualog_db.legacy import (
     save_user_email_settings,
 )
 
+def render_add_tank_section() -> None:
+    """➕ Add a new tank."""
+    st.subheader("➕ Add New Tank")
+    name = st.text_input("Tank name", key="new_tank_name")
+    volume = st.number_input(
+        "Volume (L)", min_value=0.0, format="%.1f", key="new_tank_volume"
+    )
+    notes = st.text_area("Notes (optional)", key="new_tank_notes")
+
+    if st.button("Add Tank", key="add_tank_btn"):
+        try:
+            new_tank = add_tank(name, volume if volume > 0 else None, notes)
+            st.success(f"Added tank: **{new_tank['name']}**")
+            request_rerun()
+        except Exception as e:
+            st.error(f"Error adding tank: {e}")
+
 def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """Render the full settings panel with all subsections."""
     with st.sidebar.expander("⚙️ Settings", expanded=False):
@@ -28,6 +47,7 @@ def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
         st.subheader("🔧 Edit Tank Settings")
         render_edit_tank_section(tank_map)
         render_custom_ranges_section(tank_map)
+
         # Clear tests for the selected tank
         tid = st.session_state.get("tank_id", 0)
         if tid:
@@ -42,7 +62,20 @@ def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
         # Weekly Summary Email
         render_weekly_email_section(tank_map)
 
-# Definitions for the subsections...
+def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
+    """✏️ Rename, update volume, or remove a tank."""
+    # … your existing edit‐tank controls go here …
+    pass
+
+def render_custom_ranges_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
+    """⚙️ Set custom safe ranges per parameter."""
+    # … your existing custom‐range controls go here …
+    pass
+
+def render_clear_tests_section(tank_id: int, tank_map: Dict[int, Dict[str, Any]]) -> None:
+    """🗑️ Clear all water tests for current tank."""
+    # … your existing clear‐tests controls go here …
+    pass
 
 def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """⬇️ Import Water Tests from CSV for current tank."""
@@ -64,12 +97,19 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                     st.error(f"Missing columns: {', '.join(missing)}")
                 else:
                     df["tank_id"] = tid
-                    # Use BaseRepository for connection
                     with BaseRepository()._connection() as conn:
                         df.to_sql("water_tests", conn, if_exists="append", index=False)
-                    st.success(
-                        f"Imported {len(df)} records into tank '{tank_map[tid]['name']}'"
-                    )
+                    st.success(f"Imported {len(df)} records into tank '{tank_map[tid]['name']}'")
                     request_rerun()
             except Exception as e:
                 st.error(f"Import error: {e}")
+
+def render_localization_section() -> None:
+    """🌐 Localization & unit preferences."""
+    # … your existing localization controls go here …
+    pass
+
+def render_weekly_email_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
+    """✉️ Configure weekly summary emails."""
+    # … your existing email-settings controls go here …
+    pass
