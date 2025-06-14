@@ -1,5 +1,6 @@
 """
-tank.py - Tank operations with comprehensive validation
+aquaLog/aqualog_db/repositories
+/tank.py - Tank operations with comprehensive validation 
 """
 from typing import List, Dict, Optional, Any, Tuple
 from datetime import datetime
@@ -10,7 +11,7 @@ class TankRepository(BaseRepository):
     
     def fetch_all(self) -> List[Dict[str, Any]]:
         """Fetch all tanks with their information."""
-        return self._query_all("""
+        return super().fetch_all("""
             SELECT id, name, volume_l, start_date, notes, 
                    datetime(created_at) as created_at,
                    datetime(updated_at) as updated_at
@@ -32,7 +33,6 @@ class TankRepository(BaseRepository):
                     """,
                     (name.strip(), volume_l, notes.strip())
                 )
-                # Get the inserted record
                 inserted_id = cursor.lastrowid
                 new_tank = self.fetch_one(
                     "SELECT * FROM tanks WHERE id = ?;",
