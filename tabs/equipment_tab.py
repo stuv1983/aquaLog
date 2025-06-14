@@ -16,7 +16,8 @@ import streamlit as st
 from datetime import date
 import sqlite3
 
-from db import get_connection
+# Refactored DB import
+from aqualog_db.base import BaseRepository
 from utils import show_toast
 
 # ---------------------------------------------------------------------------
@@ -32,7 +33,7 @@ CATEGORIES = [
 
 def _ensure_equipment_schema() -> None:
     """Create equipment table if absent and add `tank_id` column if missing."""
-    with get_connection() as conn:
+    with BaseRepository()._connection() as conn:
         cur = conn.cursor()
         cur.execute(
             """
@@ -52,7 +53,6 @@ def _ensure_equipment_schema() -> None:
         if "tank_id" not in cols:
             cur.execute("ALTER TABLE equipment ADD COLUMN tank_id INTEGER DEFAULT 1;")
         conn.commit()
-
 
 def equipment_tab() -> None:
     """Render the Equipment inventory tab (scoped to selected tank)."""
@@ -75,7 +75,7 @@ def equipment_tab() -> None:
             if not new_name.strip():
                 st.error("⚠️ Equipment name is required.")
             else:
-                with get_connection() as conn:
+                with BaseRepository()._connection() as conn:
                     try:
                         conn.execute(
                             """
@@ -99,7 +99,7 @@ def equipment_tab() -> None:
     st.markdown("---")
 
     # ───────────────────────── “My Equipment” list ──────────────────────────
-    with get_connection() as conn:
+    with BaseRepository()._connection() as conn:
         df = pd.read_sql_query(
             """
             SELECT equipment_id, name, category, purchase_date, notes
@@ -135,7 +135,7 @@ def equipment_tab() -> None:
     # Bulk delete
     if to_remove:
         if st.button("🗑️ Remove Selected", key="eq_remove_btn"):
-            with get_connection() as conn:
+            with BaseRepository()._connection() as conn:
                 try:
                     conn.executemany(
                         "DELETE FROM equipment WHERE equipment_id = ? AND tank_id = ?;",
