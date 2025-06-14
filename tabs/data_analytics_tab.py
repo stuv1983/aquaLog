@@ -206,14 +206,13 @@ def data_analytics_tab() -> None:
     # -- Full Data Table & CSV
     with st.expander("🗂️ " + translate("Full Data"), expanded=False):
         st.markdown("#### " + translate("Raw Data Table") + " & Download")
-        conn_full = get_connection()
+        with get_connection() as conn_full:
         full_raw = pd.read_sql_query(
             "SELECT date, ph, ammonia, nitrite, nitrate, kh, gh, co2_indicator, temperature, notes "
             "FROM water_tests WHERE tank_id = ? ORDER BY date;",
             conn_full,
             params=(tank_id,)
         )
-        conn_full.close()
         full_clean = full_raw.copy()
         full_clean["date"] = pd.to_datetime(full_clean["date"], errors="coerce")
         numeric_cols = ["ph", "ammonia", "nitrite", "nitrate", "kh", "gh", "temperature"]
