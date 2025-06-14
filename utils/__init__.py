@@ -26,7 +26,6 @@ from .chemistry import nh3_fraction, calculate_alkaline_buffer_dose, calculate_e
 # ─────────────────────────────────────────────────────────────────────────────
 # Database utilities
 # ─────────────────────────────────────────────────────────────────────────────
-# For direct DB operations, import from your repository layer
 from aqualog_db.base import BaseRepository
 
 # ─────────────────────────────────────────────────────────────────────────────
