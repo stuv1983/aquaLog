@@ -108,8 +108,8 @@ class SchemaManager(BaseRepository):
             );
         """,
 
-        "maintenance_cycle": """
-            CREATE TABLE IF NOT EXISTS maintenance_cycle (
+        "maintenance_cycles": """
+            CREATE TABLE IF NOT EXISTS maintenance_cycles (
                 id               INTEGER PRIMARY KEY AUTOINCREMENT,
                 tank_id          INTEGER NOT NULL,
                 maintenance_type TEXT    NOT NULL CHECK(length(trim(maintenance_type)) > 0),
@@ -138,7 +138,7 @@ class SchemaManager(BaseRepository):
                 is_completed     BOOLEAN DEFAULT 1,
                 created_at       TEXT    DEFAULT (datetime('now')),
                 FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE,
-                FOREIGN KEY (cycle_id) REFERENCES maintenance_cycle(id) ON DELETE SET NULL
+                FOREIGN KEY (cycle_id) REFERENCES maintenance_cycles(id) ON DELETE SET NULL
             );
         """,
 
@@ -180,7 +180,7 @@ class SchemaManager(BaseRepository):
         "CREATE INDEX IF NOT EXISTS idx_water_tests_date ON water_tests(date);",
         "CREATE INDEX IF NOT EXISTS idx_water_tests_tank_id ON water_tests(tank_id);",
         "CREATE INDEX IF NOT EXISTS idx_maintenance_log_tank_id ON maintenance_log(tank_id);",
-        "CREATE INDEX IF NOT EXISTS idx_maintenance_cycle_tank_id ON maintenance_cycle(tank_id);",
+        "CREATE INDEX IF NOT EXISTS idx_maintenance_cycles_tank_id ON maintenance_cycles(tank_id);",
         "CREATE INDEX IF NOT EXISTS idx_maintenance_log_cycle_id ON maintenance_log(cycle_id);",
         "CREATE INDEX IF NOT EXISTS idx_custom_ranges_tank_id ON custom_ranges(tank_id);",
         "CREATE INDEX IF NOT EXISTS idx_owned_plants_tank_id ON owned_plants(tank_id);",
@@ -216,11 +216,11 @@ class SchemaManager(BaseRepository):
         END;
         """,
         """
-        CREATE TRIGGER IF NOT EXISTS update_maintenance_cycle_timestamp
-        AFTER UPDATE ON maintenance_cycle
+        CREATE TRIGGER IF NOT EXISTS update_maintenance_cycles_timestamp
+        AFTER UPDATE ON maintenance_cycles
         FOR EACH ROW
         BEGIN
-            UPDATE maintenance_cycle SET updated_at = datetime('now') WHERE id = OLD.id;
+            UPDATE maintenance_cycles SET updated_at = datetime('now') WHERE id = OLD.id;
         END;
         """,
         """
@@ -231,7 +231,7 @@ class SchemaManager(BaseRepository):
             UPDATE maintenance_log 
             SET next_due = date(
                 NEW.date, 
-                '+' || (SELECT frequency_days FROM maintenance_cycle WHERE id = NEW.cycle_id) || ' days'
+                '+' || (SELECT frequency_days FROM maintenance_cycles WHERE id = NEW.cycle_id) || ' days'
             )
             WHERE id = NEW.id;
         END;
