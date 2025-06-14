@@ -54,3 +54,6 @@ def render_overview_tab() -> None:
     ).properties(title="Parameter Trends Over Time", height=300)
 
     st.altair_chart(chart, use_container_width=True)
+
+# Alias for loader
+overview_tab = render_overview_tab
