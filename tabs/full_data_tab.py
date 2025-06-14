@@ -27,6 +27,8 @@ from utils import (
     multi_param_line_chart,
 )
 
+print(">>> LOADING", __file__)
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Helper – parse ISO or fuzzy date string → datetime.date
 # ─────────────────────────────────────────────────────────────────────────────
