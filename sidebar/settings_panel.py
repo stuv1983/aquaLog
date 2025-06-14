@@ -211,12 +211,22 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     tid = st.session_state.get("tank_id", 0)
 
     uploaded = st.file_uploader("Choose CSV", type="csv", key="csv_uploader")
+
     if st.button("Import CSV", key="import_csv_btn"):
         if uploaded is None:
             st.warning("Upload a CSV first.")
             return
         try:
             df = pd.read_csv(uploaded)
+
+            # 🟢 Normalize the `date` column to an ISO string format
+            if "date" in df.columns:
+                df["date"] = (
+                    pd.to_datetime(df["date"], errors="coerce")
+                      .dt.strftime("%Y-%m-%dT%H:%M:%S")
+                      .fillna("")
+                )
+
             required = [
                 "date", "ph", "ammonia", "nitrite", "nitrate",
                 "kh", "gh", "co2_indicator", "temperature", "notes",
@@ -225,13 +235,18 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
             if missing:
                 st.error("Missing columns: " + ", ".join(missing))
                 return
+
             df["tank_id"] = tid
+
             with get_connection() as conn:
                 df.to_sql("water_tests", conn, if_exists="append", index=False)
+
             st.success(f"Imported {len(df)} rows into '{tank_map[tid]['name']}'")
             request_rerun()
+
         except Exception as e:
             st.error(f"Import error: {e}")
+
 
 
 # ════════════════════════════════════════════════════════════════════════════
