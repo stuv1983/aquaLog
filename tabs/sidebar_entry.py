@@ -28,6 +28,8 @@ from utils import (
     show_parameter_advice,
 )
 
+print(">>> LOADING", __file__)
+
 def sidebar_entry():
     """
     Render the "Log Water Test" form in the sidebar.
