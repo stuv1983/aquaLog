@@ -15,7 +15,11 @@ Updated: 2025-06-08 (v3.3.0)
 
 import pandas as pd
 import streamlit as st
-from db import get_connection, fetch_all_tanks
+
+# ——— Refactored DB imports ———
+from aqualog_db.legacy import fetch_all_tanks
+from aqualog_db.base   import BaseRepository
+
 from utils import show_toast
 
 # ──────────────────────────────────────────────────────────────────────────
