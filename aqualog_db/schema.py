@@ -108,10 +108,26 @@ class SchemaManager(BaseRepository):
             );
         """,
 
+        "maintenance_cycle": """
+            CREATE TABLE IF NOT EXISTS maintenance_cycle (
+                id               INTEGER PRIMARY KEY AUTOINCREMENT,
+                tank_id          INTEGER NOT NULL,
+                maintenance_type TEXT    NOT NULL CHECK(length(trim(maintenance_type)) > 0),
+                frequency_days   INTEGER NOT NULL CHECK(frequency_days > 0),
+                description      TEXT,
+                notes           TEXT,
+                is_active        BOOLEAN DEFAULT 1,
+                created_at       TEXT    DEFAULT (datetime('now')),
+                updated_at       TEXT    DEFAULT (datetime('now')),
+                FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
+            );
+        """,
+
         "maintenance_log": """
             CREATE TABLE IF NOT EXISTS maintenance_log (
                 id               INTEGER PRIMARY KEY AUTOINCREMENT,
                 tank_id          INTEGER NOT NULL,
+                cycle_id         INTEGER,
                 date             TEXT    NOT NULL,
                 maintenance_type TEXT    NOT NULL CHECK(length(trim(maintenance_type)) > 0),
                 description      TEXT,
@@ -119,8 +135,10 @@ class SchemaManager(BaseRepository):
                 cost             REAL    CHECK(cost IS NULL OR cost >= 0),
                 notes            TEXT,
                 next_due         TEXT,
+                is_completed     BOOLEAN DEFAULT 1,
                 created_at       TEXT    DEFAULT (datetime('now')),
-                FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
+                FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE,
+                FOREIGN KEY (cycle_id) REFERENCES maintenance_cycle(id) ON DELETE SET NULL
             );
         """,
 
@@ -162,6 +180,8 @@ class SchemaManager(BaseRepository):
         "CREATE INDEX IF NOT EXISTS idx_water_tests_date ON water_tests(date);",
         "CREATE INDEX IF NOT EXISTS idx_water_tests_tank_id ON water_tests(tank_id);",
         "CREATE INDEX IF NOT EXISTS idx_maintenance_log_tank_id ON maintenance_log(tank_id);",
+        "CREATE INDEX IF NOT EXISTS idx_maintenance_cycle_tank_id ON maintenance_cycle(tank_id);",
+        "CREATE INDEX IF NOT EXISTS idx_maintenance_log_cycle_id ON maintenance_log(cycle_id);",
         "CREATE INDEX IF NOT EXISTS idx_custom_ranges_tank_id ON custom_ranges(tank_id);",
         "CREATE INDEX IF NOT EXISTS idx_owned_plants_tank_id ON owned_plants(tank_id);",
         "CREATE INDEX IF NOT EXISTS idx_owned_fish_tank_id ON owned_fish(tank_id);"
@@ -194,6 +214,27 @@ class SchemaManager(BaseRepository):
         BEGIN
             UPDATE plants SET updated_at = datetime('now') WHERE plant_id = OLD.plant_id;
         END;
+        """,
+        """
+        CREATE TRIGGER IF NOT EXISTS update_maintenance_cycle_timestamp
+        AFTER UPDATE ON maintenance_cycle
+        FOR EACH ROW
+        BEGIN
+            UPDATE maintenance_cycle SET updated_at = datetime('now') WHERE id = OLD.id;
+        END;
+        """,
+        """
+        CREATE TRIGGER IF NOT EXISTS set_next_maintenance_due
+        AFTER INSERT ON maintenance_log
+        FOR EACH ROW WHEN NEW.cycle_id IS NOT NULL AND NEW.is_completed = 1
+        BEGIN
+            UPDATE maintenance_log 
+            SET next_due = date(
+                NEW.date, 
+                '+' || (SELECT frequency_days FROM maintenance_cycle WHERE id = NEW.cycle_id) || ' days'
+            )
+            WHERE id = NEW.id;
+        END;
         """
     ]
 
@@ -215,6 +256,8 @@ class SchemaManager(BaseRepository):
             self._ensure_column(cursor, 'water_tests', 'gh',      "REAL DEFAULT 0 CHECK(gh >= 0 AND gh <= 30)")
             self._ensure_column(cursor, 'water_tests', 'tank_id', "INTEGER NOT NULL DEFAULT 1")
             self._ensure_column(cursor, 'water_tests', 'notes',   "TEXT")
+            self._ensure_column(cursor, 'maintenance_log', 'cycle_id', "INTEGER")
+            self._ensure_column(cursor, 'maintenance_log', 'is_completed', "BOOLEAN DEFAULT 1")
 
             for tbl in ('maintenance_log', 'custom_ranges', 'owned_plants', 'owned_fish'):
                 self._ensure_column(cursor, tbl, 'tank_id', "INTEGER NOT NULL DEFAULT 1")
