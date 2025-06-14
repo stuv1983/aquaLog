@@ -1,5 +1,5 @@
 # utils/validation.py
-
+import pandas as pd  
 from typing import Any, Optional
 from config import SAFE_RANGES, TOO_LOW_THRESHOLDS, TOO_HIGH_THRESHOLDS
 from aqualog_db.legacy import get_custom_range
@@ -46,30 +46,43 @@ def is_out_of_range(
     *,
     tank_id: int,
     ph: Optional[float] = None,
-    temp_c: Optional[float] = None
+    temp_c: Optional[float] = None,
 ) -> bool:
     """
-    Checks `value` against the safe range for `param`, using either global SAFE_RANGES
-    or per-tank custom ranges (via `get_custom_range`), and special NH₃ logic.
+    Return True if *value* (scalar **or** Series / array) is outside the safe
+    range for *param*.  Always collapses to a single Python bool, so callers
+    can safely use `if is_out_of_range(...):`.
     """
-    # If ammonia, compute unionized NH₃ toxicity instead
-    if param == "ammonia" and ph is not None and temp_c is not None and isinstance(value, (int, float)):
-        return nh3_fraction(value, ph, temp_c) > TOO_HIGH_THRESHOLDS.get("ammonia", 0.02)
 
-    # CO2 indicator is out-of-range if not exactly "Green"
+    # ── Special-case unionised ammonia ────────────────────────────────────
+    if param == "ammonia" and ph is not None and temp_c is not None:
+        # Accept both scalar and vector values
+        try:
+            nh3 = nh3_fraction(value, ph, temp_c)         # may return Series
+            if isinstance(nh3, pd.Series):
+                return nh3.gt(TOO_HIGH_THRESHOLDS.get("ammonia", 0.02)).any()
+            return nh3 > TOO_HIGH_THRESHOLDS.get("ammonia", 0.02)
+        except Exception:
+            return False
+
+    # ── CO₂ indicator is categorical ──────────────────────────────────────
     if param == "co2_indicator":
+        if isinstance(value, pd.Series):
+            return (~value.eq("Green")).any()
         return isinstance(value, str) and value != "Green"
 
-    # Look for a user-defined custom range first
+    # ── Determine safe range (custom > global) ────────────────────────────
     custom = get_custom_range(tank_id, param)
     lo, hi = custom if custom else SAFE_RANGES.get(param, (None, None))
-
-    # If we don’t have valid boundaries, we can’t flag it
     if lo is None or hi is None:
         return False
 
-    # Finally, for numeric types check below/above
-    if isinstance(value, (int, float)) and (value < lo or value > hi):
-        return True
+    # ── Numeric checks – handle scalar & vector uniformly ─────────────────
+    if isinstance(value, pd.Series):
+        return (value.lt(lo) | value.gt(hi)).any()
 
-    return False
+    try:
+        val = float(value)
+        return val < lo or val > hi
+    except (TypeError, ValueError):
+        return False
