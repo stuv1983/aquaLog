@@ -1,10 +1,13 @@
 """
-tabs_driver.py – Main Tabs Driver (v3.3.0)
+tabs_driver.py – Main Tabs Driver (v3.3.1)
 Renders the sidebar and all primary application tabs in the correct order.
-Updated: 2025-06-09
+Updated: 2025-06-15
 """
+from __future__ import annotations
+
 import streamlit as st
 
+# ── individual tab modules ──────────────────────────────────────────────────────
 from tabs.sidebar_entry        import sidebar_entry
 from tabs.overview_tab         import overview_tab
 from tabs.warnings_tab         import warnings_tab
@@ -13,49 +16,36 @@ from tabs.cycle_tab            import cycle_tab
 from tabs.failed_tests_tab     import failed_tests_tab
 from tabs.plant_inventory_tab  import plant_inventory_tab
 from tabs.fish_inventory_tab   import fish_inventory_tab
-from tabs.equipment_tab        import equipment_tab     # <-- new
+from tabs.equipment_tab        import equipment_tab
 from tabs.maintenance_tab      import maintenance_tab
+# ────────────────────────────────────────────────────────────────────────────────
 
-def main():
-    """
-    Entry point for the AquaLog Streamlit app. Renders the sidebar and main tabs.
-    """
-    # 1) Render sidebar (Log Water Test form, release notes, etc.)
+# (label, render-function) pairs - keeping them side-by-side prevents drift
+TAB_DEFS = (
+    ("Overview",       overview_tab),
+    ("Warnings",       warnings_tab),
+    ("Data Analytics", data_analytics_tab),
+    ("Cycle",          cycle_tab),
+    ("Failed Tests",   failed_tests_tab),
+    ("Plants",         plant_inventory_tab),
+    ("Fish",           fish_inventory_tab),
+    ("Equipment",      equipment_tab),
+    ("Maintenance",    maintenance_tab),
+)
+
+
+def render_tabs() -> None:
+    """Kick off sidebar and main-area tabs."""
+    st.set_page_config(page_title="AquaLog", layout="wide")
     sidebar_entry()
 
-    # 2) Define tab titles and their corresponding render functions, in order:
-    tab_titles = [
-        "Overview",          # 0
-        "Warnings",          # 1
-        "Data & Analytics",  # 2
-        "Cycle",             # 3  
-        "Failed Tests",      # 4
-        "Plants",            # 5
-        "Fish",              # 6
-        "Equipment",         # 7  
-        "Maintenance",       # 8
-    ]
+    labels, funcs = zip(*TAB_DEFS)           # 1-to-1 label/function mapping
+    tab_objs = st.tabs(labels)
 
-    tab_funcs = [
-        overview_tab,
-        warnings_tab,
-        data_analytics_tab,
-        cycle_tab,           
-        failed_tests_tab,
-        plant_inventory_tab,
-        fish_inventory_tab,
-        equipment_tab,      
-        maintenance_tab,
-    ]
-
-    # 3) Create Streamlit tabs using the defined titles
-    tabs = st.tabs(tab_titles)
-
-    # 4) For each tab, call its render function inside the with-block
-    for tab_obj, func in zip(tabs, tab_funcs):
-        with tab_obj:
-            func()
+    for tab, fn in zip(tab_objs, funcs):
+        with tab:
+            fn()
 
 
 if __name__ == "__main__":
-    main()
+    render_tabs()
