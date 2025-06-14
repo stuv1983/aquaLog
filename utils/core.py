@@ -1,6 +1,8 @@
 from functools import wraps
 from typing import Callable, Any
 import streamlit as st
+import json
+from pathlib import Path
 
 
 def cache_data(func: Callable) -> Callable:
@@ -20,3 +22,15 @@ def is_mobile() -> bool:
     """
     ua = st.session_state.get("_browser_user_agent", "")
     return any(mob in ua.lower() for mob in ("iphone", "android", "mobile"))
+
+
+def load_config(config_path: str = "config.json") -> dict:
+    """
+    Load configuration from a JSON file.
+    """
+    path = Path(config_path)
+    if not path.exists():
+        st.error(f"Config file not found: {config_path}")
+        return {}
+    with open(path, "r") as f:
+        return json.load(f)
