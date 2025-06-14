@@ -11,6 +11,8 @@ from aqualog_db.legacy import fetch_all_tanks
 from utils import is_mobile, show_out_of_range_banner, translate, format_with_units
 from config import SAFE_RANGES
 
+from aqualog_db.connection import get_connection
+
 def render_overview_tab() -> None:
     """
     Render the overview dashboard with key metrics and trends.
