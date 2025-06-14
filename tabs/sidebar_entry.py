@@ -6,24 +6,25 @@ Updated: 2025-06-10
 """
 
 
-import datetime                       # For timestamping test entries
-from datetime import date            # For today's date input
-import streamlit as st                # Streamlit UI components
+import datetime
+from datetime import date
+import streamlit as st
 
-from db import save_water_test         # Central DB helper (handles tank_id)
+# ——— Refactored DB imports ———
+from aqualog_db.legacy import save_water_test
+
 from config import (
-    SAFE_RANGES,                      # Safe ranges per parameter
-    ACTION_PLANS,                     # Advice for values above high threshold
-    LOW_ACTION_PLANS,                 # Advice for values below low threshold
-    is_too_low,                       # Returns True if value < safe min
-    is_too_high                       # Returns True if value > safe max
+    SAFE_RANGES,
+    ACTION_PLANS,
+    LOW_ACTION_PLANS,
+    is_too_low,
+    is_too_high,
 )
 from utils import (
-    is_mobile,                        # Detect mobile/narrow viewport
-    ensure_water_tests_schema,        # Ensure water_tests table exists and schema is up-to-date
-    show_parameter_advice             # Display parameter-specific advice messages
+    is_mobile,
+    ensure_water_tests_schema,
+    show_parameter_advice,
 )
-
 
 def sidebar_entry():
     """
