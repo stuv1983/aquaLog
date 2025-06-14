@@ -24,6 +24,7 @@ import altair as alt
 from PIL import Image
 
 from db import get_connection, fetch_all_tanks
+from aqualog_db.legacy import fetch_all_tanks
 from utils import is_mobile, show_out_of_range_banner, translate, format_with_units
 from config import SAFE_RANGES
 
