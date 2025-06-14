@@ -85,7 +85,8 @@ def warnings_tab() -> None:
         for param, raw_val in row.items():
             if param in ("id", "tank_id", "date") or raw_val is None:
                 continue
-            if is_out_of_range(param, raw_val, tank_id=tid, ph=ph, temp_c=temp):
+            # ← wrap the function call with bool() so pandas Series can't sneak through
+            if bool(is_out_of_range(param, raw_val, tank_id=tid, ph=ph, temp_c=temp)):
                 breaches.append(param)
 
         if not breaches:
