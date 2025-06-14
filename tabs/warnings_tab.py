@@ -10,7 +10,8 @@ import pandas as pd
 import streamlit as st
 
 # DB helpers
-from db import get_connection, fetch_all_tanks
+from aqualog_db.connection import get_connection
+from aqualog_db.legacy     import fetch_all_tanks
 
 # Config / utility imports
 from config import SAFE_RANGES, ACTION_PLANS, CO2_COLOR_ADVICE
