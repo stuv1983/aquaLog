@@ -7,11 +7,16 @@ from PIL import Image
 
 from aqualog_db.base   import BaseRepository
 from aqualog_db.legacy import fetch_all_tanks
+from aqualog_db.connection import get_connection
 
-from utils import is_mobile, show_out_of_range_banner, translate, format_with_units
+from utils import (
+    is_mobile,
+    show_out_of_range_banner,
+    translate,
+    format_with_units,
+)
 from config import SAFE_RANGES
 
-from aqualog_db.connection import get_connection
 
 def render_overview_tab() -> None:
     """
@@ -25,7 +30,7 @@ def render_overview_tab() -> None:
     selected_tank = st.selectbox(
         "Select tank",
         options=list(tank_options.keys()),
-        format_func=lambda tid: tank_options[tid]
+        format_func=lambda tid: tank_options[tid],
     )
 
     # Latest test details
@@ -33,7 +38,7 @@ def render_overview_tab() -> None:
         df = pd.read_sql_query(
             "SELECT * FROM water_tests WHERE tank_id = ? ORDER BY date DESC LIMIT 1",
             conn,
-            params=(selected_tank,)
+            params=(selected_tank,),
         )
 
     if df.empty:
@@ -44,8 +49,8 @@ def render_overview_tab() -> None:
     st.subheader("Latest Water Test")
     st.write(latest)
 
-    # Out-of-range warning banner
-    show_out_of_range_banner(latest, SAFE_RANGES)
+    # Out-of-range warning banner (now one argument)
+    show_out_of_range_banner(latest)
 
     # Time-series parameter trends
     with BaseRepository()._connection() as conn:
@@ -57,30 +62,22 @@ def render_overview_tab() -> None:
             ORDER BY date
             """,
             conn,
-            params=(selected_tank,)
+            params=(selected_tank,),
         )
 
-    # Convert dates and fold parameters for charting
     df_all["date"] = pd.to_datetime(df_all["date"])
     chart = (
         alt.Chart(df_all)
         .transform_fold(
-            ["ph", "ammonia", "nitrite", "nitrate"],
-            as_=["parameter", "value"]
+            ["ph", "ammonia", "nitrite", "nitrate"], as_=["parameter", "value"]
         )
         .mark_line(point=True)
-        .encode(
-            x="date:T",
-            y="value:Q",
-            color="parameter:N"
-        )
-        .properties(
-            title="Parameter Trends Over Time",
-            height=300
-        )
+        .encode(x="date:T", y="value:Q", color="parameter:N")
+        .properties(title="Parameter Trends Over Time", height=300)
     )
 
     st.altair_chart(chart, use_container_width=True)
 
-# Alias so this can be imported as `overview_tab`
+
+# For dynamic loader
 overview_tab = render_overview_tab
