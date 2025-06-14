@@ -56,20 +56,31 @@ def get_tank(tank_id: int) -> Optional[Dict[str, Any]]:
     return _tank_repo.get_by_id(tank_id)
 
 # ---------------------------------------------------------------------------
-# Water test functions
+# Water-test functions
 # ---------------------------------------------------------------------------
 
 def save_water_test(data: dict, tank_id: int = 1) -> Dict[str, Any]:
     """Save a water test and return the saved record."""
     return _water_test_repo.save(data, tank_id)
 
+
 def fetch_data(start: str, end: str, tank_id: Optional[int] = None) -> pd.DataFrame:
-    """Fetch water tests within a date range."""
-    return _water_test_repo.fetch_by_date_range(start, end, tank_id)
+    """
+    Fetch water tests within a date range and ensure the “date” column is
+    parsed to datetime64[ns] so Arrow/Streamlit never chokes on strings.
+    """
+    df = _water_test_repo.fetch_by_date_range(start, end, tank_id)
+
+    if "date" in df.columns:
+        df["date"] = pd.to_datetime(df["date"], errors="coerce")
+
+    return df
+
 
 def get_latest_test() -> Optional[Dict[str, Any]]:
     """Get the most recent water test."""
     return _water_test_repo.get_latest()
+
 
 def get_latest_test_for_tank(tank_id: int) -> Optional[Dict[str, Any]]:
     """Get the most recent water test for a specific tank."""
