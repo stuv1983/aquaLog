@@ -14,10 +14,10 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 from datetime import date
-import sqlite3
 
-# Refactored DB import
+# ——— Refactored DB imports ———
 from aqualog_db.base import BaseRepository
+
 from utils import show_toast
 
 # ---------------------------------------------------------------------------
