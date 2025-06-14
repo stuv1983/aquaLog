@@ -15,6 +15,20 @@ HARD_LIMITS: dict[str, tuple[float, float]] = {
     "gh":          (0.0, 30.0),
 }
 
+
+
+def arrow_safe(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Return a copy whose ‘date’ column is true datetime64[ns] so
+    Streamlit/Arrow can serialise it.  Call this once before st.dataframe()
+    or Altair charts when the DF was NOT read via read_sql_query(parse_dates).
+    """
+    if "date" in df.columns and df["date"].dtype != "datetime64[ns]":
+        df = df.copy()
+        df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    return df
+
+
 def validate_reading(param: str, value: float) -> None:
     """
     Raises ValueError if `value` sits outside globally plausible limits for `param`.
