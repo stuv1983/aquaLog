@@ -9,8 +9,10 @@ from typing import Any, List, Dict
 import pandas as pd
 import streamlit as st
 
-# Use monolithic db.py exports
-from db import get_connection, fetch_all_tanks
+# Refactored DB imports
+from aqualog_db.base import BaseRepository
+from aqualog_db.legacy import fetch_all_tanks
+
 from config import SAFE_RANGES, ACTION_PLANS, CO2_COLOR_ADVICE
 from utils import (
     translate,
@@ -51,7 +53,7 @@ def warnings_tab() -> None:
         )
 
     # Fetch last 10 tests for this tank, excluding NULL dates
-    with get_connection() as conn:
+    with BaseRepository()._connection() as conn:
         df = pd.read_sql_query(
             """
             SELECT *
@@ -155,3 +157,6 @@ def warnings_tab() -> None:
                     st.markdown("---")
     if not warnings_found:
         st.success("✅ No warnings found in the last 10 tests. All parameters are within safe ranges.")
+
+# Alias for loader
+warnings_tab = warnings_tab
