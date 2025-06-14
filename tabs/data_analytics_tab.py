@@ -15,9 +15,9 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 
-# Refactored DB imports
+# ——— Refactored DB imports ———
 from aqualog_db.legacy import fetch_data, fetch_all_tanks
-from aqualog_db.base import BaseRepository
+from aqualog_db.base   import BaseRepository
 
 from utils import (
     is_mobile,
