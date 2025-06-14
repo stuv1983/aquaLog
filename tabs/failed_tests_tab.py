@@ -14,6 +14,8 @@ import streamlit as st
 # ——— Refactored DB imports ———
 from aqualog_db.legacy import fetch_data, fetch_all_tanks
 
+from aqualog_db.connection import get_connection
+
 from utils import clean_numeric_df, is_mobile, translate, format_with_units
 from config import SAFE_RANGES
 from components import highlight_out_of_range
