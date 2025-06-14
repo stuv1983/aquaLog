@@ -58,14 +58,25 @@ def full_data_tab() -> None:
     # show_out_of_range_banner("full_data")
 
     # 1️⃣  Find min/max dates for *this* tank
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute(
-        "SELECT MIN(date), MAX(date) FROM water_tests WHERE tank_id = ?;",
-        (tank_id,),
-    )
-    min_str, max_str = cur.fetchone() or (None, None)
-    conn.close()
+    # 1️⃣  Find min/max dates for *this* tank
+    with get_connection() as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT MIN(date), MAX(date) FROM water_tests WHERE tank_id = ?;",
+            (tank_id,),
+        )
+        min_str, max_str = cur.fetchone() or (None, None)
+
+    if not min_str:
+        st.info("No data available for this tank.")
+        return
+
+    min_date = _parse_date(min_str)
+    max_date = _parse_date(max_str)
+    if min_date is None or max_date is None:
+        st.error("Unable to parse date range from database.")
+        return
+
 
     if not min_str:
         st.info("No data available for this tank.")
