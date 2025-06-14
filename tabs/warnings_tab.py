@@ -6,11 +6,12 @@ for low KH and GH based on tank volume.
 """
 from __future__ import annotations
 from typing import Any, List, Dict
+
 import pandas as pd
 import streamlit as st
 
-# Refactored DB imports
-from aqualog_db.base import BaseRepository
+# ——— Refactored DB imports ———
+from aqualog_db.base   import BaseRepository
 from aqualog_db.legacy import fetch_all_tanks
 
 from config import SAFE_RANGES, ACTION_PLANS, CO2_COLOR_ADVICE
