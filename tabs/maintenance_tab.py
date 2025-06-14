@@ -5,7 +5,7 @@ Records and displays maintenance entries (water changes, filter cleans, etc.)
 for the selected tank via a dropdown. Logs are stored under the chosen tank
 using `st.session_state["tank_id"]`.
 """
-import sqlite3   
+import sqlite3
 import streamlit as st
 import pandas as pd
 from datetime import date
@@ -19,8 +19,9 @@ from utils import show_toast
 
 print(">>> LOADING", __file__)
 # ─────────────────────────────────────────────────────────────────────────────
-# Local DB helpers for maintenance_log  ← ADD THIS BLOCK just after imports
+# Local DB helpers for maintenance_log
 # ─────────────────────────────────────────────────────────────────────────────
+
 def save_maintenance(
     *,
     tank_id: int,
@@ -132,7 +133,7 @@ def maintenance_tab() -> None:
                 save_maintenance(
                     tank_id=tank_id,
                     date=date_in.isoformat(),
-                    maintenance_type=m_type,
+                    m_type=m_type,
                     description=description or None,
                     volume_changed=volume if volume > 0 else None,
                     cost=cost if cost > 0 else None,
@@ -171,4 +172,3 @@ def maintenance_tab() -> None:
                     delete_maintenance(row['id'])
                     st.warning("Record deleted.")
                     st.experimental_rerun()
-
