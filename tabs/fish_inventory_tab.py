@@ -15,6 +15,8 @@ import streamlit as st
 from aqualog_db.legacy import fetch_all_tanks
 from aqualog_db.base   import BaseRepository
 
+from aqualog_db.connection import get_connection
+
 from utils import show_toast
 
 # ─────────────────────────────────────────────────────────────────────────────
