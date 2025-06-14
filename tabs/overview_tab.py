@@ -17,6 +17,7 @@ from utils import (
 )
 from config import SAFE_RANGES
 
+print(">>> LOADING", __file__)
 
 def render_overview_tab() -> None:
     """
