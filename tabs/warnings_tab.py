@@ -85,8 +85,15 @@ def warnings_tab() -> None:
         for param, raw_val in row.items():
             if param in ("id", "tank_id", "date") or raw_val is None:
                 continue
-            # ← wrap the function call with bool() so pandas Series can't sneak through
-            if bool(is_out_of_range(param, raw_val, tank_id=tid, ph=ph, temp_c=temp)):
+
+            # obtain result once
+            cond = is_out_of_range(param, raw_val, tank_id=tid, ph=ph, temp_c=temp)
+
+            # cond may be scalar bool OR a 1-element Series → collapse to scalar
+            if isinstance(cond, pd.Series):
+                cond = cond.any()          # or cond.iloc[0]
+
+            if cond:
                 breaches.append(param)
 
         if not breaches:
