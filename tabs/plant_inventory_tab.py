@@ -24,6 +24,7 @@ from aqualog_db.connection import get_connection
 
 from utils import show_toast
 
+print(">>> LOADING", __file__)
 # ──────────────────────────────────────────────────────────────────────────
 # Ensure schema: add tank_id to owned_plants if missing
 # ──────────────────────────────────────────────────────────────────────────
