@@ -12,6 +12,8 @@ import streamlit as st
 
 # ——— Refactored DB imports ———
 from aqualog_db.base   import BaseRepository
+
+from aqualog_db.connection import get_connection
 from aqualog_db.legacy import fetch_all_tanks
 
 from config import SAFE_RANGES, ACTION_PLANS, CO2_COLOR_ADVICE
