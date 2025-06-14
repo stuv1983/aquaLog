@@ -1,6 +1,6 @@
 from typing import Any, Optional, Tuple
 from config import SAFE_RANGES, TOO_LOW_THRESHOLDS, TOO_HIGH_THRESHOLDS
-from db import get_custom_range
+from aqualog_db.repositories.custom_range import get_custom_range
 from .chemistry import nh3_fraction
 
 HARD_LIMITS = {
