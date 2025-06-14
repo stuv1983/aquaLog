@@ -13,6 +13,8 @@ import streamlit as st
 # ——— Refactored DB imports ———
 from aqualog_db.legacy import save_water_test
 
+from aqualog_db.connection import get_connection
+
 from config import (
     SAFE_RANGES,
     ACTION_PLANS,
