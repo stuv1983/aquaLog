@@ -11,11 +11,12 @@ import datetime as _dt
 import pandas as _pd
 import streamlit as st
 
-from db import fetch_data, fetch_all_tanks
+# ——— Refactored DB imports ———
+from aqualog_db.legacy import fetch_data, fetch_all_tanks
+
 from utils import clean_numeric_df, is_mobile, translate, format_with_units
 from config import SAFE_RANGES
 from components import highlight_out_of_range
-
 # ─────────────────────────────────────────────────────────────────────────────
 # Helper – get tank‑scoped dataframe of *failed* tests only
 # ─────────────────────────────────────────────────────────────────────────────
