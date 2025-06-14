@@ -1,24 +1,25 @@
 """
-tabs/full_data_tab.py – multi‑tank aware 🗂️
+tabs/full_data_tab.py – multi-tank aware 🗂️
 “Full Water Test Data” – lets the user pick a date range, chart parameters,
 view the raw table, download CSV, and import CSV *for the selected tank*.
-All SQL queries now filter by `tank_id = st.session_state["tank_id"]`.
-When importing CSV we back‑fill the same tank.
+All SQL queries are filtered by `tank_id = st.session_state["tank_id"]`.
+
+Updated: 2025-06-15 – refactored to use `with get_connection()` everywhere.
 """
 
 import datetime
 from datetime import date
+from typing import List
 
 import streamlit as st
 import pandas as pd
 import altair as alt
 
-# ——— Refactored DB imports ———
-from aqualog_db.legacy import fetch_data
-from aqualog_db.base   import BaseRepository
+# ─── DB helpers ──────────────────────────────────────────────────────────────
+from aqualog_db.connection import get_connection           # context-manager
+from aqualog_db.legacy     import fetch_data               # high-level query
 
-from aqualog_db.connection import get_connection
-
+# ─── Local utilities ─────────────────────────────────────────────────────────
 from utils import (
     is_mobile,
     show_out_of_range_banner,
@@ -26,11 +27,9 @@ from utils import (
     multi_param_line_chart,
 )
 
-
 # ─────────────────────────────────────────────────────────────────────────────
-# Helper – parse ISO or fuzzy date
+# Helper – parse ISO or fuzzy date string → datetime.date
 # ─────────────────────────────────────────────────────────────────────────────
-
 def _parse_date(val: str | None) -> date | None:
     if not val:
         return None
@@ -46,18 +45,17 @@ def _parse_date(val: str | None) -> date | None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Tab renderer
+# Main tab renderer
 # ─────────────────────────────────────────────────────────────────────────────
-
 def full_data_tab() -> None:
-    """Render the multi‑tank version of the “Full Data” tab."""
-    tank_id = st.session_state.get("tank_id", 1)
+    """Render the multi-tank “Full Data” tab."""
+    tank_id: int = st.session_state.get("tank_id", 1)
 
     st.header("🗂️ Full Water Test Data")
-    # Optional banner per‑tank (disabled by default to save vert space)
+
+    # Optional banner
     # show_out_of_range_banner("full_data")
 
-    # 1️⃣  Find min/max dates for *this* tank
     # 1️⃣  Find min/max dates for *this* tank
     with get_connection() as conn:
         cur = conn.cursor()
@@ -66,17 +64,6 @@ def full_data_tab() -> None:
             (tank_id,),
         )
         min_str, max_str = cur.fetchone() or (None, None)
-
-    if not min_str:
-        st.info("No data available for this tank.")
-        return
-
-    min_date = _parse_date(min_str)
-    max_date = _parse_date(max_str)
-    if min_date is None or max_date is None:
-        st.error("Unable to parse date range from database.")
-        return
-
 
     if not min_str:
         st.info("No data available for this tank.")
@@ -106,7 +93,7 @@ def full_data_tab() -> None:
         st.info("No data in the selected range.")
         return
 
-    numeric_params = [c for c in df.columns if c not in ("date", "notes", "id", "tank_id")]
+    numeric_params: List[str] = [c for c in df.columns if c not in ("date", "notes", "id", "tank_id")]
 
     # 4️⃣  Parameter selector
     st.markdown("#### Select Parameters to Chart")
@@ -114,9 +101,8 @@ def full_data_tab() -> None:
     chosen = st.multiselect("", opts, default=["All"])
     params = numeric_params if "All" in chosen else [p for p in chosen if p in numeric_params]
 
-    # 5️⃣  Layout (responsive)
-    mobile = is_mobile()
-    if mobile:
+    # 5️⃣  Responsive layout
+    if is_mobile():
         _render_chart(df, params)
         st.divider()
         _render_table_and_download(df, params, start_date, end_date)
@@ -131,15 +117,19 @@ def full_data_tab() -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Helpers to modularise UI blocks
+# Helper UI blocks
 # ─────────────────────────────────────────────────────────────────────────────
-
-def _render_chart(df: pd.DataFrame, params: list[str]) -> None:
+def _render_chart(df: pd.DataFrame, params: List[str]) -> None:
     st.markdown("#### Trend Chart")
     multi_param_line_chart(df, params)
 
 
-def _render_table_and_download(df: pd.DataFrame, params: list[str], start_date, end_date) -> None:
+def _render_table_and_download(
+    df: pd.DataFrame,
+    params: List[str],
+    start_date: date,
+    end_date: date
+) -> None:
     st.markdown("#### Table View")
     st.dataframe(df[["date"] + params], use_container_width=True)
     st.markdown("---")
@@ -196,26 +186,28 @@ def _render_csv_import(all_cols: pd.Index, tank_id: int, key_suffix: str) -> Non
         return
 
     if st.button("✅ Confirm Import", key=f"confirm_{key_suffix}"):
-        conn = get_connection()
-        cur = conn.cursor()
-        try:
-            # Delete existing rows for this tank & matching dates
-            for d in df_csv["date"].unique():
-                cur.execute("DELETE FROM water_tests WHERE date = ? AND tank_id = ?;", (d, tank_id))
+        with get_connection() as conn:
+            cur = conn.cursor()
+            try:
+                # Delete existing rows for this tank & matching dates
+                for d in df_csv["date"].unique():
+                    cur.execute(
+                        "DELETE FROM water_tests WHERE date = ? AND tank_id = ?;",
+                        (d, tank_id)
+                    )
 
-            # Build INSERT stmt
-            insert_cols = valid_cols + ["tank_id"]
-            ph = ", ".join("?" for _ in insert_cols)
-            sql = f"INSERT INTO water_tests ({', '.join(insert_cols)}) VALUES ({ph});"
+                # Build INSERT statement
+                insert_cols = valid_cols + ["tank_id"]
+                ph = ", ".join("?" for _ in insert_cols)
+                sql = f"INSERT INTO water_tests ({', '.join(insert_cols)}) VALUES ({ph});"
 
-            for _, row in df_csv.iterrows():
-                values = [row.get(c, None) for c in valid_cols] + [tank_id]
-                cur.execute(sql, values)
+                for _, row in df_csv.iterrows():
+                    values = [row.get(c, None) for c in valid_cols] + [tank_id]
+                    cur.execute(sql, values)
 
-            conn.commit()
-            st.success(f"Imported {len(df_csv)} rows for tank #{tank_id}.")
-        except Exception as e:
-            conn.rollback()
-            st.error(f"Error during import: {e}")
-        finally:
-            conn.close()
+                conn.commit()
+                st.success(f"Imported {len(df_csv)} rows for tank #{tank_id}.")
+            except Exception as e:
+                conn.rollback()
+                st.error(f"Error during import: {e}")
+        # connection closes automatically here
