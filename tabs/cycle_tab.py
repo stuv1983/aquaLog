@@ -6,8 +6,8 @@ import datetime
 import pandas as pd
 import streamlit as st
 
-# Cycle functions from legacy
-from legacy import (
+# Refactored DB imports
+from aqualog_db.legacy import (
     fetch_all_tanks,
     fetch_data,
     start_cycle,
