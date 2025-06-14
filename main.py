@@ -52,7 +52,7 @@ overview_tab           = load_tab("overview_tab",        "tabs/overview_tab.py")
 warnings_tab           = load_tab("warnings_tab",        "tabs/warnings_tab.py")
 data_analytics_tab     = load_tab("data_analytics_tab",  "tabs/data_analytics_tab.py")
 #cycle_tab              = load_tab("cycle_tab",           "tabs/cycle_tab.py")
-failed_tests_tab       = load_tab("failed_tests_tab",    "tabs/failed_tests_tab.py")
+#failed_tests_tab       = load_tab("failed_tests_tab",    "tabs/failed_tests_tab.py")
 plant_inventory_tab    = load_tab("plant_inventory_tab", "tabs/plant_inventory_tab.py")
 fish_inventory_tab     = load_tab("fish_inventory_tab",  "tabs/fish_inventory_tab.py")
 equipment_tab          = load_tab("equipment_tab",       "tabs/equipment_tab.py")
@@ -141,8 +141,8 @@ def main() -> None:
             "Overview": overview_tab,
             "Warnings": warnings_tab,
             "Data & Analytics": data_analytics_tab,
-            "Cycle": cycle_tab,
-            "Failed Tests": failed_tests_tab,
+           # "Cycle": cycle_tab,
+           # "Failed Tests": failed_tests_tab,
             "Plants": plant_inventory_tab,
             "Fish": fish_inventory_tab,
             "Equipment": equipment_tab,
