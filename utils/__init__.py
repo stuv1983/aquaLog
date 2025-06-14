@@ -1,4 +1,3 @@
-# utils/__init__.py
 """
 utils — Main utility package for AquaLog
 """
@@ -11,17 +10,22 @@ from .core import cache_data
 # ─────────────────────────────────────────────────────────────────────────────
 # Localization & unit conversion
 # ─────────────────────────────────────────────────────────────────────────────
-from .localization import is_mobile, translate, convert_value, format_with_units
+from .localization import (
+    is_mobile,
+    translate,
+    convert_value,
+    format_with_units,
+)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Validation routines
+# Validation & Data-frame helpers
 # ─────────────────────────────────────────────────────────────────────────────
-from .validation import (                       # 🔸 now exports arrow_safe too
+from .validation import (        # ← arrow_safe is part of validation.py
     validate_reading,
     is_too_low,
     is_too_high,
     is_out_of_range,
-    arrow_safe,
+    arrow_safe,                  # 🔸 Arrow-compatibility helper
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -51,10 +55,14 @@ from .ui.alerts import (
 # ─────────────────────────────────────────────────────────────────────────────
 # Charting functions
 # ─────────────────────────────────────────────────────────────────────────────
-from .ui.charts import clean_numeric_df, rolling_summary, multi_param_line_chart
+from .ui.charts import (
+    clean_numeric_df,
+    rolling_summary,
+    multi_param_line_chart,
+)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Exported API
+# Public API
 # ─────────────────────────────────────────────────────────────────────────────
 __all__ = [
     # core
@@ -64,12 +72,12 @@ __all__ = [
     "translate",
     "convert_value",
     "format_with_units",
-    # validation
+    # validation / df helpers
     "validate_reading",
     "is_too_low",
     "is_too_high",
     "is_out_of_range",
-    "arrow_safe",                       # 🔸 new public helper
+    "arrow_safe",                      # ← now publicly exposed
     # chemistry
     "nh3_fraction",
     "calculate_alkaline_buffer_dose",
