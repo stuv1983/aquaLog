@@ -15,6 +15,8 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 
+print(">>> LOADING", __file__)
+
 # ——— Refactored DB imports ———
 from aqualog_db.legacy import fetch_data, fetch_all_tanks
 from aqualog_db.base import BaseRepository
