@@ -11,6 +11,8 @@ import datetime as _dt
 import pandas as _pd
 import streamlit as st
 
+print(">>> LOADING", __file__)
+
 # ——— Refactored DB imports ———
 from aqualog_db.legacy import fetch_data, fetch_all_tanks
 
