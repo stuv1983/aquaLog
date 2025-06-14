@@ -15,7 +15,7 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 
-print(">>> LOADING", __file__)
+
 
 # ——— Refactored DB imports ———
 from aqualog_db.legacy import fetch_data, fetch_all_tanks
@@ -31,6 +31,7 @@ from utils import (
 )
 from config import SAFE_RANGES
 
+print(">>> LOADING", __file__)
 
 def _get_min_max_dates(cur, tank_id: int) -> Tuple[Optional[datetime.date], Optional[datetime.date]]:
     """Get minimum and maximum dates for a given tank from the database."""
