@@ -1,7 +1,7 @@
 import streamlit as st
 from datetime import datetime
 from typing import Dict, Any
-from db import save_water_test
+from legacy import save_water_test
 from utils import show_toast, show_out_of_range_banner
 
 def render_water_test_form(tank_map: Dict[int, Dict[str, Any]]) -> None:
