@@ -212,10 +212,7 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
 
     uploaded = st.file_uploader("Choose CSV", type="csv", key="csv_uploader")
 
-    if st.button("Import CSV", key="import_csv_btn"):
-        if uploaded is None:
-            st.warning("Upload a CSV first.")
-            return
+    if uploaded is not None and st.button("Import CSV", key="import_csv_btn"):
         try:
             df = pd.read_csv(uploaded)
 
@@ -239,15 +236,20 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
             df["tank_id"] = tid
 
             with get_connection() as conn:
-                df.to_sql("water_tests", conn, if_exists="append", index=False)
-
-            st.success(f"Imported {len(df)} rows into '{tank_map[tid]['name']}'")
-            request_rerun()
+                # First check if table exists
+                table_exists = conn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
+                ).fetchone()
+                
+                if table_exists:
+                    df.to_sql("water_tests", conn, if_exists="append", index=False)
+                    st.success(f"Imported {len(df)} rows into '{tank_map[tid]['name']}'")
+                    request_rerun()
+                else:
+                    st.error("Error: water_tests table does not exist in the database")
 
         except Exception as e:
             st.error(f"Import error: {e}")
-
-
 
 # ════════════════════════════════════════════════════════════════════════════
 # 6) LOCALISATION & UNITS
