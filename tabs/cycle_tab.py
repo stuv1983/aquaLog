@@ -17,6 +17,8 @@ from aqualog_db.legacy import (
 )
 from aqualog_db.base import BaseRepository
 
+
+
 from utils import translate, format_with_units
 
 def cycle_tab() -> None:
