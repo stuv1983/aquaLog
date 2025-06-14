@@ -5,7 +5,7 @@ Records and displays maintenance entries (water changes, filter cleans, etc.)
 for the selected tank via a dropdown. Logs are stored under the chosen tank
 using `st.session_state["tank_id"]`.
 """
-
+import sqlite3   
 import streamlit as st
 import pandas as pd
 from datetime import date
