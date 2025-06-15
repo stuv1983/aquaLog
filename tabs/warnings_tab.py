@@ -74,53 +74,66 @@ def warnings_tab(key_prefix=""):
             })
 
     if not warnings:
-        st.success("No warnings found in the last 10 tests for this tank.")
+        st.success("No out-of-range parameters found in the last 10 tests for this tank.")
         return
 
-    for idx, w in enumerate(warnings):
-        all_warning_params = [item['param'] for item in w['low_warnings']] + [item['param'] for item in w['high_warnings']]
-        expander_title = f"Test from {w['date']} – {w['tank']} ({', '.join(all_warning_params)})"
-        
-        with st.expander(expander_title):
-            volume_l = w.get("volume_l")
+    # --- NEW, CLEANER DISPLAY LOGIC ---
+    for warning in warnings:
+        with st.container(border=True):
+            col1, col2 = st.columns(2)
 
-            # --- Low Parameter Warnings & Dosing ---
-            for warning_info in w['low_warnings']:
-                param = warning_info["param"]
-                value = warning_info["value"]
-                plan_list = LOW_ACTION_PLANS.get(param, []).copy()
-                
-                if volume_l and volume_l > 0:
-                    if param == 'kh':
-                        target_kh = 6.0
-                        delta_kh = max(0, target_kh - value)
-                        if delta_kh > 0:
-                            dose = calculate_alkaline_buffer_dose(volume_l, delta_kh)
-                            plan_list.append(f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose:.2f}g** of Alkaline Buffer to reach ~{target_kh} dKH.")
-                    elif param == 'gh':
-                        target_gh = 6.0
-                        delta_gh = max(0, target_gh - value)
-                        if delta_gh > 0:
-                            dose = calculate_equilibrium_dose(volume_l, delta_gh)
-                            plan_list.append(f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose:.2f}g** of Equilibrium to reach ~{target_gh} dGH.")
-                
-                for item in plan_list:
-                    st.markdown(f"- {item}")
-            
-            # --- High Parameter Warnings & Dosing ---
-            for warning_info in w['high_warnings']:
-                param = warning_info["param"]
-                plan_list = ACTION_PLANS.get(param, []).copy()
+            # --- Left Column: The Problem ---
+            with col1:
+                st.subheader(f"Test: {warning['date'][:10]}")
+                st.caption(f"Tank: {warning['tank']}")
+                st.markdown("---")
 
-                # FIX: Calculate and add FritzZyme 7 dosage for ammonia and nitrite
-                if volume_l and volume_l > 0:
-                    if param in ['ammonia', 'nitrite']:
-                        # Assuming a tank with a spike should use the "new system" dosage for safety
+                all_warnings = warning['low_warnings'] + warning['high_warnings']
+                for item in all_warnings:
+                    param = item['param']
+                    value = item['value']
+                    safe_low, safe_high = SAFE_RANGES.get(param, (0, 0))
+                    
+                    st.metric(
+                        label=f"Out of Range: {param.upper()}",
+                        value=f"{value:.2f}",
+                        delta=f"Safe: {safe_low} - {safe_high}",
+                        delta_color="inverse"
+                    )
+
+            # --- Right Column: The Solution ---
+            with col2:
+                st.subheader("Recommended Actions")
+                
+                volume_l = warning.get("volume_l")
+                
+                # Process low warnings
+                for low_item in warning['low_warnings']:
+                    param, value = low_item['param'], low_item['value']
+                    plan_list = LOW_ACTION_PLANS.get(param, []).copy()
+                    
+                    if volume_l and volume_l > 0:
+                        if param == 'kh':
+                            dose = calculate_alkaline_buffer_dose(volume_l, max(0, 6.0 - value))
+                            plan_list.append(f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose:.2f}g** of Alkaline Buffer.")
+                        elif param == 'gh':
+                            dose = calculate_equilibrium_dose(volume_l, max(0, 6.0 - value))
+                            plan_list.append(f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose:.2f}g** of Equilibrium.")
+                    
+                    for step in plan_list:
+                        st.markdown(f" • {step}")
+
+                # Process high warnings
+                for high_item in warning['high_warnings']:
+                    param, value = high_item['param'], high_item['value']
+                    plan_list = ACTION_PLANS.get(param, []).copy()
+                    
+                    if volume_l and volume_l > 0 and param in ['ammonia', 'nitrite']:
                         dose_ml, dose_oz = calculate_fritzzyme7_dose(volume_l, is_new_system=True)
-                        
-                        # Replace the generic advice with the calculated dose
                         plan_list = [item for item in plan_list if "Dose with FritzZyme 7" not in item]
                         plan_list.insert(1, f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose_ml:.0f}ml / {dose_oz:.1f}oz** of FritzZyme 7.")
 
-                for item in plan_list:
-                    st.markdown(f"- {item}")
+                    for step in plan_list:
+                        st.markdown(f" • {step}")
+        
+        st.markdown("<br>", unsafe_allow_html=True) # Add vertical space between cards
