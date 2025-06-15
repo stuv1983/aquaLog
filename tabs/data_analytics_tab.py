@@ -121,11 +121,14 @@ def data_analytics_tab() -> None:
             key="vis_chart_type",
         )
 
-    vis_df = df_clean[(df_clean["date"] >= pd.to_datetime(start_date)) & (df_clean["date"] <= pd.to_datetime(end_date))]
+    vis_df = df_clean[
+        (df_clean["date"] >= pd.to_datetime(start_date)) &
+        (df_clean["date"] <= pd.to_datetime(end_date))
+    ]
 
-    # ... existing summary & chart code unchanged ...
+    # — existing summary & chart code unchanged —
 
-    # -- Full Data Table & CSV
+    # — Full Data Table & CSV —
     with st.expander("🗂️ " + translate("Full Data"), expanded=False):
         st.markdown("#### " + translate("Raw Data Table") + " & Download")
         with get_connection() as conn_full:
@@ -148,11 +151,10 @@ def data_analytics_tab() -> None:
             mime="text/csv",
             use_container_width=True,
         )
-        display_cols = [c for c in full_clean.columns if c not in ("notes")]
+        display_cols = [c for c in full_clean.columns if c != "notes"]
         table_df = full_clean[display_cols].copy()
         for col in numeric_cols:
-            if col in table_df.columns:
-                table_df[col] = table_df[col].apply(lambda v: f"{v:.2f}" if pd.notnull(v) else "N/A")
+            table_df[col] = table_df[col].apply(lambda v: f"{v:.2f}" if pd.notnull(v) else "N/A")
         renames = {
             'date': 'Date',
             'ph': 'pH',
@@ -165,7 +167,7 @@ def data_analytics_tab() -> None:
             'temperature': 'Temperature (°C)',
             'notes': 'Notes'
         }
-        table_df.rename(columns={k: v for k, v in renames.items()}, inplace=True)
+        table_df.rename(columns=renames, inplace=True)
         st.dataframe(table_df, use_container_width=True)
 
     # -- Rolling Averages
