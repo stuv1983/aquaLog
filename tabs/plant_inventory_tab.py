@@ -29,7 +29,6 @@ def _ensure_owned_plants_schema():
             cur.execute("ALTER TABLE owned_plants ADD COLUMN common_name TEXT DEFAULT ''")
         conn.commit()
 
-# FIX: Update function signature to accept key_prefix
 def plant_inventory_tab(key_prefix=""):
     """Manage per-tank plant inventory."""
     try:
@@ -64,7 +63,6 @@ def plant_inventory_tab(key_prefix=""):
 
         # 2️⃣ Search master plant list
         st.subheader('🔍 Search Plant Database')
-        # FIX: Apply key_prefix to the widget key
         query = st.text_input('Search plants...', key=f'{key_prefix}plant_search').strip().lower()
 
         if query:
@@ -86,24 +84,58 @@ def plant_inventory_tab(key_prefix=""):
                         
                         with cols[1]:
                             st.subheader(name)
-                            # ... (display logic)
+                            info_pairs = [
+                                ('Origin', 'origin', 'origin_info'),
+                                ('Growth Rate', 'growth_rate', 'growth_info'),
+                                ('Height', 'height_cm', 'height_info'),
+                                ('Light', 'light_demand', 'light_info'),
+                                ('CO₂', 'co2_demand', 'co2_info'),
+                            ]
+                            for label, val, desc in info_pairs:
+                                if row[val]:
+                                    st.write(f"**{label}:** {row[val]}")
+                                if row[desc]:
+                                    st.text(row[desc])
                         
-                        # FIX: Apply key_prefix to the button key
                         if cols[2].button('➕ Add', key=f'{key_prefix}add_{pid}'):
-                            # ... (database logic)
-                            st.rerun()
+                            try:
+                                with get_connection() as conn:
+                                    conn.execute("""
+                                        INSERT INTO owned_plants (plant_id, common_name, tank_id)
+                                        VALUES (?, ?, ?) ON CONFLICT(plant_id, tank_id) DO NOTHING
+                                    """, (pid, name, tid))
+                                    conn.commit()
+                                show_toast('✅ Added', f'{name} added to {tank_name}')
+                                st.rerun()
+                            except Exception as e:
+                                st.error(f"Couldn't add plant: {str(e)}")
 
         # 3️⃣ Manually add a new plant
         with st.expander('➕ Add New Plant to Database'):
-            # FIX: Apply key_prefix to all widgets in the form
             new_plant_values = {
                 'plant_name': st.text_input('Scientific Name*', key=f'{key_prefix}new_name'),
                 'origin': st.text_input('Origin', key=f'{key_prefix}new_origin'),
-                # ... (other inputs with prefixed keys)
+                'growth_rate': st.text_input('Growth Rate', key=f'{key_prefix}new_growth'),
+                'height_cm': st.text_input('Height (cm)', key=f'{key_prefix}new_height'),
+                'light_demand': st.text_input('Light Needs', key=f'{key_prefix}new_light'),
+                'co2_demand': st.text_input('CO₂ Needs', key=f'{key_prefix}new_co2'),
+                'thumbnail_url': st.text_input('Image URL', key=f'{key_prefix}new_image')
             }
             if st.button('Save New Plant', key=f'{key_prefix}save_new_plant'):
-                # ... (database logic)
-                st.experimental_rerun()
+                if not new_plant_values['plant_name'].strip():
+                    st.error('Scientific name is required')
+                else:
+                    try:
+                        with get_connection() as conn:
+                            conn.execute("""
+                                INSERT INTO plants (plant_name, origin, growth_rate, height_cm, light_demand, co2_demand, thumbnail_url) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?)
+                            """, tuple(new_plant_values.values()))
+                            conn.commit()
+                        st.success('Plant added to database!')
+                        st.experimental_rerun()
+                    except Exception as e:
+                        st.error(f"Couldn't save plant: {str(e)}")
 
         # 4️⃣ List owned plants in the current tank
         st.subheader(f'🌱 Plants in {tank_name}')
@@ -122,21 +154,42 @@ def plant_inventory_tab(key_prefix=""):
         if owned.empty:
             st.info(f"No plants in {tank_name}. Search above to add some.")
         else:
-            # FIX: Apply key_prefix to the filter widget key
             search_term_owned = st.text_input('🔍 Filter your plants', key=f'{key_prefix}filter_owned').strip().lower()
             if search_term_owned:
-                # ... (search logic)
+                search_cols_owned = ["display_name", "origin", "growth_rate"]
+                search_series_owned = owned[search_cols_owned].astype(str).agg(' '.join, axis=1).str.lower()
                 owned = owned[search_series_owned.str.contains(search_term_owned, na=False)]
                 
+                if owned.empty:
+                    st.info('No plants match your filter.')
+
             for _, row in owned.iterrows():
                 with st.container():
-                    # ... (display logic)
+                    cols = st.columns([1, 4, 1])
                     pid = row['plant_id']
-                    # FIX: Apply key_prefix to the delete button key
+                    name = row['display_name']
+                    
+                    if row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
+                        cols[0].image(row['thumbnail_url'], width=80)
+                    
+                    with cols[1]:
+                        st.subheader(name)
+                        if row['origin']:
+                            st.write(f"**Origin:** {row['origin']}")
+                        if row['growth_rate']:
+                            st.write(f"**Growth:** {row['growth_rate']}")
+                    
                     if cols[2].button('🗑️', key=f'{key_prefix}del_{pid}'):
-                        # ... (database logic)
-                        st.experimental_rerun()
+                        try:
+                            with get_connection() as conn:
+                                conn.execute("DELETE FROM owned_plants WHERE plant_id = ? AND tank_id = ?", (pid, tid))
+                                conn.commit()
+                            show_toast('🗑️ Removed', f'{name} removed')
+                            st.experimental_rerun()
+                        except Exception as e:
+                            st.error(f"Couldn't remove plant: {str(e)}")
                     st.divider()
 
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
+        st.error("Please try refreshing the page. If the problem persists, contact support.")

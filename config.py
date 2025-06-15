@@ -81,14 +81,18 @@ ACTION_PLANS: dict[str, list[str]] = {
         "Temperature is high (>28°C). Turn off the aquarium heater and increase surface agitation for better oxygen exchange.",
         "If ambient room temperature is high, use a cooling fan or float sealed bottles of ice to gently lower the temperature.",
     ],
+    # --- UPDATED AMMONIA PLAN ---
     "ammonia": [
         "Ammonia is present. Perform an immediate 50% water change to reduce toxicity.",
-        "Add a detoxifier (e.g., Seachem Prime) and a bacterial starter (e.g., FritzZyme).",
-        "Stop feeding for 24-48 hours and maximize aeration.",
+        "Dose with FritzZyme 7 Live Nitrifying Bacteria: Use 4oz (119ml) per 10 US Gallons for new tanks, or 2oz (60ml) for established tanks.",
+        "Consider using a detoxifier like Seachem Prime for immediate fish protection.",
+        "Stop feeding for 24-48 hours and ensure the tank is well-aerated."
     ],
+    # --- UPDATED NITRITE PLAN ---
     "nitrite": [
-        "Nitrite is present (>0 ppm), which is toxic to fish. Perform a 30-50% water change.",
-        "Add a bacterial starter and ensure high aeration to help process the nitrite.",
+        "Nitrite is present (>0 ppm), which is highly toxic to fish. Perform a 30-50% water change.",
+        "Dose with FritzZyme 7 Live Nitrifying Bacteria to accelerate processing: Use 4oz (119ml) per 10 US Gallons for new tanks, or 2oz (60ml) for established tanks.",
+        "Ensure high aeration to maximize oxygen levels and support the bacteria."
     ],
     "nitrate": [
         "Nitrate is high (>50 ppm). Perform a 30-50% water change to lower levels.",
