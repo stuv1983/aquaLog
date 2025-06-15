@@ -242,34 +242,39 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
             st.error(f"Missing required columns: {', '.join(missing)}")
             return
 
-        # 5) Get a database connection
-        conn = get_connection()
-        try:
-            # a) Verify table exists
-            table_exists = conn.execute(
-                "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
-            ).fetchone()
+        # 5) Handle database connection properly
+        with get_connection() as conn:
+            # Get the actual connection object if it's wrapped in a context manager
+            if hasattr(conn, '__enter__'):
+                conn = conn.__enter__()
             
-            if not table_exists:
-                st.error("Database error: water_tests table doesn't exist")
-                return
+            try:
+                # a) Verify table exists
+                table_exists = conn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
+                ).fetchone()
+                
+                if not table_exists:
+                    st.error("Database error: water_tests table doesn't exist")
+                    return
 
-            # b) Build and execute INSERT for the 11 user fields
-            cols = ", ".join(required)
-            placeholders = ", ".join("?" for _ in required)
-            sql = f"INSERT INTO water_tests ({cols}) VALUES ({placeholders})"
+                # b) Build and execute INSERT for the 11 user fields
+                cols = ", ".join(required)
+                placeholders = ", ".join("?" for _ in required)
+                sql = f"INSERT INTO water_tests ({cols}) VALUES ({placeholders})"
 
-            records = [tuple(row[c] for c in required) for _, row in df.iterrows()]
-            conn.executemany(sql, records)
-            conn.commit()
-            
-            st.success(f"Imported {len(df)} records into “{tank_map[tid]['name']}.”")
-            request_rerun()
-        finally:
-            conn.close()
+                records = [tuple(row[c] for c in required) for _, row in df.iterrows()]
+                conn.executemany(sql, records)
+                conn.commit()
+                
+                st.success(f"Imported {len(df)} records into '{tank_map[tid]['name']}'")
+                request_rerun()
+            except Exception as e:
+                conn.rollback()
+                raise e
 
     except Exception as e:
-        st.error(f"Import failed: {e}")
+        st.error(f"Import failed: {str(e)}")
 
 
 # ════════════════════════════════════════════════════════════════════════════
