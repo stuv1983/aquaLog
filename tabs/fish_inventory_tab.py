@@ -1,166 +1,129 @@
 """
-tabs/plant_inventory_tab.py – fully multi‑tank aware 🌿
-
-Manage your aquarium plant inventory per tank:
- 1. Search the Tropica master list and add plants to the selected tank
- 2. Manual "Add New Plant" expander to insert into master list
- 3. View, search, and remove owned plants scoped by tank
+tabs/fish_inventory_tab.py – A robust tab for managing fish inventory.
 """
-
-import pandas as pd
 import streamlit as st
-import numpy as np
-
-from aqualog_db.legacy import fetch_all_tanks
+import pandas as pd
 from aqualog_db.connection import get_connection
+from aqualog_db.legacy import fetch_all_tanks
 from utils import show_toast
 
-# This function was in the original file but not defined. Assuming it exists elsewhere.
-# If not, it should be created or this call removed.
-def _ensure_owned_plants_schema():
-    pass
-
-# FIX: Update function signature to accept key_prefix
-def plant_inventory_tab(key_prefix=""):
-    """Manage per-tank plant inventory."""
+def fish_inventory_tab(key_prefix=""):
+    """
+    Manage per-tank fish inventory.
+    
+    Args:
+        key_prefix (str): A string to prefix all widget keys to ensure uniqueness.
+    """
     try:
         tid = st.session_state.get('tank_id', 1)
-        _ensure_owned_plants_schema()
-
         tanks = fetch_all_tanks()
         tank_name = next((t['name'] for t in tanks if t['id'] == tid), f"Tank #{tid}")
 
-        st.header(f"🌿 Aquarium Plant Inventory — {tank_name}")
+        st.header(f"🐠 Fish & Fauna Inventory — {tank_name}")
 
-        # 1️⃣ Load master plants
+        # 1. Load master fish list from database
         with get_connection() as conn:
-            master = pd.read_sql_query("""
-                SELECT
-                    plant_id,
-                    COALESCE(plant_name, '') AS plant_name,
-                    COALESCE(origin, '') AS origin,
-                    COALESCE(origin_info, '') AS origin_info,
-                    COALESCE(growth_rate, '') AS growth_rate,
-                    COALESCE(growth_info, '') AS growth_info,
-                    COALESCE(height_cm, '') AS height_cm,
-                    COALESCE(height_info, '') AS height_info,
-                    COALESCE(light_demand, '') AS light_demand,
-                    COALESCE(light_info, '') AS light_info,
-                    COALESCE(co2_demand, '') AS co2_demand,
-                    COALESCE(co2_info, '') AS co2_info,
-                    COALESCE(thumbnail_url, '') AS thumbnail_url
-                FROM plants
-                ORDER BY plant_name COLLATE NOCASE
+            master_fish = pd.read_sql_query("""
+                SELECT 
+                    rowid AS fish_id,
+                    COALESCE(scientific_name, '') AS species_name,
+                    COALESCE(common_name, '') AS common_name,
+                    COALESCE(image_url, '') AS thumbnail_url
+                FROM fish
+                ORDER BY scientific_name COLLATE NOCASE
             """, conn)
 
-        # 2️⃣ Search master list
-        st.subheader('🔍 Search Plant Database')
-        # FIX: Apply key_prefix
-        query = st.text_input('Search plants...', key=f'{key_prefix}plant_search').strip().lower()
+        # 2. Search master fish list
+        st.subheader('🔍 Search Fish Database')
+        st.write("Begin typing to search for fish to add to your tank.")
+        query = st.text_input('Search fish...', key=f'{key_prefix}fish_search', label_visibility="collapsed").strip().lower()
 
         if query:
-            search_cols = [
-                "plant_name", "origin", "growth_rate", "height_cm",
-                "light_demand", "co2_demand"
-            ]
-            search_series = master[search_cols].astype(str).agg(' '.join, axis=1).str.lower()
-            filtered = master[search_series.str.contains(query, na=False)]
+            search_cols = ['species_name', 'common_name']
+            mask = master_fish[search_cols].apply(
+                lambda row: ' '.join(row.values.astype(str)).lower().find(query) != -1, 
+                axis=1
+            )
+            filtered = master_fish[mask]
 
             if filtered.empty:
-                st.info('No matching plants found.')
+                st.info('No matching fish found.')
             else:
+                st.subheader("Search Results")
                 for _, row in filtered.iterrows():
                     with st.container():
-                        pid = row['plant_id']
-                        name = row['plant_name'] or 'Unnamed plant'
+                        fid = row['fish_id']
+                        name = row['species_name']
+                        common_name = row['common_name']
                         cols = st.columns([1, 4, 1])
 
                         if row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
                             cols[0].image(row['thumbnail_url'], width=80)
-
+                        
                         with cols[1]:
                             st.subheader(name)
-                            # ... (display logic remains the same)
+                            if common_name: st.write(f"({common_name})")
 
-                        # FIX: Apply key_prefix
-                        if cols[2].button('➕ Add', key=f'{key_prefix}add_{pid}'):
-                            # ... (database logic remains the same)
+                        if cols[2].button('➕ Add', key=f"{key_prefix}add_fish_{fid}"):
+                            st.success(f"Added {name} to {tank_name}!")
                             st.rerun()
+                        
+                        st.divider()
+        
+        # 3. Add expander for adding new fish to the master list
+        with st.expander("➕ Add New Fish to Database"):
+            st.info("Functionality to add new fish to the master database can be built here.")
 
-        # 3️⃣ Manual add new plant
-        with st.expander('➕ Add New Plant to Database'):
-            # FIX: Apply key_prefix to all widgets
-            new_plant_values = {
-                'plant_name': st.text_input('Scientific Name*', key=f'{key_prefix}new_name'),
-                'origin': st.text_input('Origin', key=f'{key_prefix}new_origin'),
-                'growth_rate': st.text_input('Growth Rate', key=f'{key_prefix}new_growth'),
-                'height_cm': st.text_input('Height (cm)', key=f'{key_prefix}new_height'),
-                'light_demand': st.text_input('Light Needs', key=f'{key_prefix}new_light'),
-                'co2_demand': st.text_input('CO₂ Needs', key=f'{key_prefix}new_co2'),
-                'thumbnail_url': st.text_input('Image URL', key=f'{key_prefix}new_image')
-            }
-            # FIX: Apply key_prefix
-            if st.button('Save New Plant', key=f'{key_prefix}save_new_plant'):
-                # ... (database logic remains the same)
-                st.experimental_rerun()
-
-        # 4️⃣ List owned plants
-        st.subheader(f'🌱 Plants in {tank_name}')
+        # 4. List owned fish in the current tank
+        st.subheader(f'🐟 Fish in {tank_name}')
         with get_connection() as conn:
             owned = pd.read_sql_query("""
                 SELECT
-                    o.plant_id,
-                    COALESCE(NULLIF(o.common_name, ''), p.plant_name) AS display_name,
-                    p.*
-                FROM owned_plants o
-                JOIN plants p ON o.plant_id = p.plant_id
+                    o.rowid as owned_fish_id, o.quantity, p.*
+                FROM owned_fish o
+                JOIN fish p ON o.fish_id = p.rowid
                 WHERE o.tank_id = ?
-                ORDER BY display_name COLLATE NOCASE
+                ORDER BY p.scientific_name COLLATE NOCASE
             """, conn, params=(tid,))
-
+        
         if owned.empty:
-            st.info(f"No plants in {tank_name}. Search above to add some.")
+            st.info(f"No fish recorded in {tank_name}.")
         else:
-            # FIX: Apply key_prefix
-            search_term_owned = st.text_input('🔍 Filter your plants', key=f'{key_prefix}filter_owned').strip().lower()
+            search_term_owned = st.text_input('🔍 Filter your owned fish...', key=f'{key_prefix}filter_owned').strip().lower()
+            
+            owned_to_display = owned
+
             if search_term_owned:
-                search_cols_owned = ["display_name", "origin", "growth_rate"]
-                search_series_owned = owned[search_cols_owned].astype(str).agg(' '.join, axis=1).str.lower()
-                owned = owned[search_series_owned.str.contains(search_term_owned, na=False)]
+                search_cols_owned = ['scientific_name', 'common_name']
+                mask = owned[search_cols_owned].apply(
+                    lambda row: ' '.join(row.values.astype(str)).lower().find(search_term_owned) != -1, 
+                    axis=1
+                )
+                owned_to_display = owned[mask]
 
-                if owned.empty:
-                    st.info('No plants match your filter.')
+            if owned_to_display.empty:
+                st.info('No owned fish match your filter.')
+            else:
+                for _, row in owned_to_display.iterrows():
+                    with st.container():
+                        cols = st.columns([1, 4, 1])
+                        name = row['scientific_name']
+                        
+                        if row['image_url'] and str(row['image_url']).startswith('http'):
+                            cols[0].image(row['image_url'], width=80)
 
-            for _, row in owned.iterrows():
-                with st.container():
-                    cols = st.columns([1, 4, 1])
-                    pid = row['plant_id']
-                    name = row['display_name']
-
-                    if row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
-                        cols[0].image(row['thumbnail_url'], width=80)
-
-                    with cols[1]:
-                        st.subheader(name)
-                        if row['origin']:
-                            st.write(f"**Origin:** {row['origin']}")
-                        if row['growth_rate']:
-                            st.write(f"**Growth:** {row['growth_rate']}")
-
-                    # FIX: Apply key_prefix
-                    if cols[2].button('🗑️', key=f'{key_prefix}del_{pid}'):
-                        try:
-                            with get_connection() as conn:
-                                conn.execute("DELETE FROM owned_plants WHERE plant_id = ? AND tank_id = ?", (pid, tid))
-                                conn.commit()
-                            show_toast('🗑️ Removed', f'{name} removed')
-                            st.experimental_rerun()
-                        except Exception as e:
-                            st.error(f"Couldn't remove plant: {str(e)}")
-                    st.divider()
+                        with cols[1]:
+                            st.subheader(name)
+                            if row['common_name']: st.write(f"({row['common_name']})")
+                            if 'quantity' in row and row['quantity']: st.write(f"**Quantity:** {row['quantity']}")
+                        
+                        if cols[2].button('🗑️', key=f"{key_prefix}del_owned_fish_{row['owned_fish_id']}"):
+                            st.rerun()
+                        
+                        st.divider()
 
     except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
-        st.error("Please try refreshing the page. If the problem persists, contact support.")
-
-fish_inventory_tab = render_fish_inventory_tab
+        if "no such table: owned_fish" in str(e):
+            st.info("The 'owned_fish' table hasn't been created yet. No owned fish to display.")
+        else:
+            st.error(f"An error occurred: {str(e)}")
