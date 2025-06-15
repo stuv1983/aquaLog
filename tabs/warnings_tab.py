@@ -2,7 +2,7 @@
 tabs/warnings_tab.py – collapsible, structured warnings with dosing guidance
 
 Displays structured warnings for the last 10 tests for the currently selected tank,
-including calculated dosages for low KH and GH based on tank volume.
+including calculated dosages for all relevant parameters based on tank volume.
 """
 from __future__ import annotations
 from typing import Any, List, Dict
@@ -12,7 +12,7 @@ import streamlit as st
 
 from aqualog_db.connection import get_connection
 from config import SAFE_RANGES, ACTION_PLANS, LOW_ACTION_PLANS
-from utils.chemistry import calculate_alkaline_buffer_dose, calculate_equilibrium_dose
+from utils.chemistry import calculate_alkaline_buffer_dose, calculate_equilibrium_dose, calculate_fritzzyme7_dose
 
 VALID_PARAMETERS = ["ammonia", "gh", "kh", "nitrate", "nitrite", "ph", "temperature"]
 
@@ -31,7 +31,6 @@ def warnings_tab(key_prefix=""):
         return
 
     with get_connection() as conn:
-        # FIX: Fetch tank volume (volume_l) to use in dosage calculations.
         query = (
             "SELECT wt.date, t.name AS tank_name, t.volume_l, wt.ammonia, wt.nitrate, wt.nitrite, "
             "wt.ph, wt.temperature, wt.kh, wt.gh "
@@ -49,7 +48,6 @@ def warnings_tab(key_prefix=""):
 
     warnings: List[Dict[str, Any]] = []
     for _, row in tests_df.iterrows():
-        # FIX: Store both the parameter name and its value for calculations.
         low_warnings: List[Dict[str, Any]] = []
         high_warnings: List[Dict[str, Any]] = []
 
@@ -84,23 +82,23 @@ def warnings_tab(key_prefix=""):
         expander_title = f"Test from {w['date']} – {w['tank']} ({', '.join(all_warning_params)})"
         
         with st.expander(expander_title):
+            volume_l = w.get("volume_l")
+
             # --- Low Parameter Warnings & Dosing ---
             for warning_info in w['low_warnings']:
                 param = warning_info["param"]
                 value = warning_info["value"]
-                plan_list = LOW_ACTION_PLANS.get(param, []).copy() # Use .copy() to avoid modifying the original
+                plan_list = LOW_ACTION_PLANS.get(param, []).copy()
                 
-                # FIX: Calculate and add dosage advice if tank volume is known
-                volume_l = w.get("volume_l")
                 if volume_l and volume_l > 0:
                     if param == 'kh':
-                        target_kh = 6.0  # Sensible default target
+                        target_kh = 6.0
                         delta_kh = max(0, target_kh - value)
                         if delta_kh > 0:
                             dose = calculate_alkaline_buffer_dose(volume_l, delta_kh)
                             plan_list.append(f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose:.2f}g** of Alkaline Buffer to reach ~{target_kh} dKH.")
                     elif param == 'gh':
-                        target_gh = 6.0  # Sensible default target
+                        target_gh = 6.0
                         delta_gh = max(0, target_gh - value)
                         if delta_gh > 0:
                             dose = calculate_equilibrium_dose(volume_l, delta_gh)
@@ -109,9 +107,20 @@ def warnings_tab(key_prefix=""):
                 for item in plan_list:
                     st.markdown(f"- {item}")
             
-            # --- High Parameter Warnings ---
+            # --- High Parameter Warnings & Dosing ---
             for warning_info in w['high_warnings']:
                 param = warning_info["param"]
-                plan_list = ACTION_PLANS.get(param, [])
+                plan_list = ACTION_PLANS.get(param, []).copy()
+
+                # FIX: Calculate and add FritzZyme 7 dosage for ammonia and nitrite
+                if volume_l and volume_l > 0:
+                    if param in ['ammonia', 'nitrite']:
+                        # Assuming a tank with a spike should use the "new system" dosage for safety
+                        dose_ml, dose_oz = calculate_fritzzyme7_dose(volume_l, is_new_system=True)
+                        
+                        # Replace the generic advice with the calculated dose
+                        plan_list = [item for item in plan_list if "Dose with FritzZyme 7" not in item]
+                        plan_list.insert(1, f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose_ml:.0f}ml / {dose_oz:.1f}oz** of FritzZyme 7.")
+
                 for item in plan_list:
                     st.markdown(f"- {item}")
