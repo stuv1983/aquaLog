@@ -17,9 +17,16 @@ def request_rerun() -> None:
         st.experimental_request_rerun()
 
 
-def show_toast() -> None:
-    """Shows a warning toast notification with consistent styling."""
-    st.toast("⚠️ Check the **Warnings** tab for full details.", icon="⚠️")
+def show_toast(title: str, message: str):
+    """
+    Displays a toast notification with a title and message.
+    
+    Args:
+        title (str): The title of the toast notification (will be bold).
+        message (str): The body content of the toast notification.
+    """
+    st.toast(f"**{title}**\n\n{message}")
+
 
 
 def _build_banner_details(param: str, value: float, low: float, high: float) -> str:

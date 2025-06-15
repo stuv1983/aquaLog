@@ -1,0 +1,543 @@
+fish_id,name_english,name_latin,origin,phmin,phmax,temperature_min,temperature_max,cm_max,tank_size_liter,image_url,swim
+1,Brown-Point Shield Skin,Aspidoras fuscoguttatus,"Brazil, Peru,",6.0,7.2,22.0,25.0,3.8,50.0,https://selectyourfish.com/webps1/1.webp,1
+2,Aspidoras Cory-Cat,Aspidoras raimundi,"Brazil,",6.0,7.5,20.0,25.0,4.5,55.0,https://selectyourfish.com/webps1/2.webp,1
+3,Loach catfish,Aspidoras rochai,"Brazil,",6.0,7.5,21.0,25.0,4.4,55.0,https://selectyourfish.com/webps1/3.webp,1
+4,Sixray cory,Aspidoras pauciradiatus,"Brazil,",5.5,7.2,21.0,27.0,3.5,50.0,https://selectyourfish.com/webps1/4.webp,1
+5,Giant Brochis,Brochis britskii,"Brazil,",6.0,7.5,21.0,26.0,9.0,150.0,https://selectyourfish.com/webps1/5.webp,1
+6,Emerald catfish,Corydoras splendens ,"Brazil, Peru, Ecuador, Colombia,",6.5,7.5,21.0,28.0,8.0,150.0,https://selectyourfish.com/webps1/6.webp,1
+7,Hognosed brochis,Brochis multiradiatus,"Ecuador, Peru,",6.5,7.5,21.0,26.0,9.0,150.0,https://selectyourfish.com/webps1/7.webp,1
+8,Adolfo's cory,Corydoras adolfoi,"Brazil, Colombia,",6.0,7.2,21.0,26.0,6.0,75.0,https://selectyourfish.com/webps1/8.webp,1
+9,Banded cory,Scleromystax barbatus,"Brazil,",6.5,7.8,19.0,24.0,10.0,150.0,https://selectyourfish.com/webps1/9.webp,1
+10,Masked cory,Corydoras metae,"Colombia, Venezuela,",6.0,7.5,21.0,26.0,5.0,55.0,https://selectyourfish.com/webps1/10.webp,1
+11,Barred-tail cory,Corydoras cochui,"Brazil,",6.0,7.5,21.0,28.0,3.5,50.0,https://selectyourfish.com/webps1/11.webp,1
+12,Blackstripe cory,Corydoras bondi,The Guianas,6.0,7.5,21.0,26.0,5.0,55.0,https://selectyourfish.com/webps1/12.webp,1
+13,Blacktop cory,Corydoras acutus,"Brazil, Peru, Ecuador, Bolivia,",6.0,7.5,22.0,28.0,4.4,50.0,https://selectyourfish.com/webps1/13.webp,1
+14,Blue cory,Corydoras nattereri,"Brazil,",6.0,7.5,20.0,23.0,6.5,75.0,https://selectyourfish.com/webps1/14.webp,1
+15,Spotted cory,Corydoras melanistius,The Guianas,6.0,7.5,22.0,26.0,5.5,60.0,https://selectyourfish.com/webps1/15.webp,1
+16,Bronze cory,Corydoras aeneus,South America,6.0,7.5,21.0,27.0,7.5,75.0,https://selectyourfish.com/webps1/16.webp,1
+17,Fairy cory,Corydoras atropersonatus,"Ecuador, Peru,",6.0,7.5,21.0,27.0,5.0,60.0,https://selectyourfish.com/webps1/17.webp,1
+18,Ehrhardt's cory,Corydoras ehrhardti,"Brazil,",6.0,7.5,19.0,25.0,5.0,60.0,https://selectyourfish.com/webps1/18.webp,1
+19,Evelyn's cory,Corydoras evelynae,"Brazil,",6.0,7.5,22.0,26.0,4.0,55.0,https://selectyourfish.com/webps1/19.webp,1
+20,Dirty Bandit Cory,Corydoras loxozonus,"Colombia,",6.0,7.5,21.0,24.0,5.0,60.0,https://selectyourfish.com/webps1/20.webp,1
+21,Nain dwarf cory,Corydoras nanus,The Guianas,6.0,7.5,22.0,26.0,4.5,60.0,https://selectyourfish.com/webps1/21.webp,1
+22,Long nosed arched cory,Corydoras narcissus,"Brazil,",6.0,7.5,23.0,25.0,7.0,115.0,https://selectyourfish.com/webps1/22.webp,1
+23,Dwarf cory,Corydoras hastatus,"Bolivia, Argentina, Paraguay,",6.0,7.5,20.0,26.0,3.2,45.0,https://selectyourfish.com/webps1/23.webp,1
+24,Elegant cory,Corydoras elegans,"Peru, Ecuador, Brazil,",6.0,7.5,20.0,26.0,5.4,60.0,https://selectyourfish.com/webps1/24.webp,1
+25,False network catfish,Corydoras sodalis,"Peru, Brazil,",6.0,7.5,22.0,26.0,5.5,60.0,https://selectyourfish.com/webps1/25.webp,1
+26,Blackfin Cory,Corydoras leucomelas,"Peru,",6.0,7.5,23.0,26.0,4.5,60.0,https://selectyourfish.com/webps1/26.webp,1
+27,Gold laser cory,Corydoras melanotaenia,"Colombia,",6.0,7.5,20.0,23.0,6.0,65.0,https://selectyourfish.com/webps1/27.webp,1
+28,Guapore cory,Corydoras guapore,"Bolivia, Brazil,",6.0,7.5,22.0,28.0,5.0,60.0,https://selectyourfish.com/webps1/28.webp,1
+29,Mosaic cory,Corydoras haraldschultzi,"Bolivia, Brazil,",6.0,7.5,24.0,28.0,7.0,75.0,https://selectyourfish.com/webps1/29.webp,1
+30,Panda cory,Corydoras panda,"Peru,",6.0,7.5,22.0,25.0,5.0,55.0,https://selectyourfish.com/webps1/30.webp,1
+31,Pastaza cory,Corydoras pastazensis,"Ecuador, Peru,",6.0,7.5,22.0,28.0,7.0,85.0,https://selectyourfish.com/webps1/31.webp,1
+32,Peppered cory,Corydoras paleatus,"Uruguay, Paraguay, Argentina,",6.0,7.5,22.0,26.0,7.0,80.0,https://selectyourfish.com/webps1/32.webp,1
+33,Pink cory,Corydoras axelrodi,"Colombia,",6.0,7.5,22.0,26.0,5.0,60.0,https://selectyourfish.com/webps1/33.webp,1
+34,Pygmy cory,Corydoras pygmaeus,"Brazil,",6.0,7.5,22.0,26.0,3.3,50.0,https://selectyourfish.com/webps1/34.webp,1
+35,Sailfin cory,Scleromystax macropterus,"Brazil, Paraguay,",6.0,7.5,18.0,21.0,9.0,165.0,https://selectyourfish.com/webps1/35.webp,1
+36,Salt and pepper cory,Corydoras habrosus,"Colombia, Venezuela,",6.0,7.5,20.0,26.0,3.5,55.0,https://selectyourfish.com/webps1/36.webp,1
+37,Schwartz's catfish,Corydoras schwartzi,"Brazil,",6.0,7.5,22.0,26.0,7.0,75.0,https://selectyourfish.com/webps1/37.webp,1
+38,Spotted cory,Corydoras ambiacus,"Peru,",6.0,7.5,21.0,27.0,6.5,75.0,https://selectyourfish.com/webps1/15.webp,1
+39,Sterba's cory,Corydoras sterbai,"Bolivia, Brazil,",6.0,7.5,24.0,28.0,6.5,75.0,https://selectyourfish.com/webps1/39.webp,1
+40,Sychr's catfish,Corydoras sychri,"Peru,",6.0,7.5,24.0,27.0,4.3,60.0,https://selectyourfish.com/webps1/40.webp,1
+41,Tailspot Cory,Corydoras caudimaculatus,"Bolivia, Brazil,",6.0,7.5,20.0,27.0,5.0,75.0,https://selectyourfish.com/webps1/41.webp,1
+42,Threestripe cory,Corydoras trilineatus,"Colombia, Peru, Brazil,",6.0,7.5,22.0,27.0,5.5,60.0,https://selectyourfish.com/webps1/42.webp,1
+43,Xingu cory,Corydoras xinguensis,"Brazil,",6.0,7.5,22.0,27.0,5.0,70.0,https://selectyourfish.com/webps1/43.webp,1
+44,Julii cory,Corydoras julii,"French Guiana, Brazil,",6.0,7.5,20.0,26.0,5.5,75.0,https://selectyourfish.com/webps1/44.webp,1
+45,Flagtail catfish,Dianema urostriatum,"Brazil,",6.0,8.0,25.0,28.0,12.5,150.0,https://selectyourfish.com/webps1/45.webp,1
+46,Cascarudo,Callichthys callichthys,South America,6.0,8.0,19.0,27.0,20.0,240.0,https://selectyourfish.com/webps1/46.webp,1
+47,Spotted hoplo,Megalechis thoracata,"Venezuela, The Guianas, Colombia,",6.0,8.0,18.0,28.0,15.0,150.0,https://selectyourfish.com/webps1/47.webp,1
+48,Bristlenose pleco,Ancistrus sp.,"Argentina,",6.5,7.5,21.0,26.0,12.5,75.0,https://selectyourfish.com/webps1/48.webp,1
+49,Gold nugget pleco,Baryancistrus sp. cf. xanthellus,"Brazil,",6.0,7.5,27.0,32.0,25.0,210.0,https://selectyourfish.com/webps1/49.webp,1
+50,Whiptail catfish,Rineloricaria* sp,"no natural occurrence,",6.0,7.5,24.0,29.0,11.0,75.0,https://selectyourfish.com/webps1/50.webp,1
+51,Twig catfish,Farlowella vittata,"Colombia, Venezuela,",6.0,7.5,24.0,27.0,15.0,115.0,https://selectyourfish.com/webps1/51.webp,1
+52,snakeskin barb,desmopuntius rhomboocellatus,Borneo,6.0,7.5,22.0,28.0,5.5,75.0,https://selectyourfish.com/webps1/52.webp,2
+53,Melon Barb,Haludaria fasciata,India,6.0,7.5,22.0,26.0,7.0,150.0,https://selectyourfish.com/webps1/53.webp,2
+54,Amazon sailfin catfish,Pterygoplichthys pardalis,"Brazil,",6.5,7.5,22.0,29.0,45.0,380.0,https://selectyourfish.com/webps1/54.webp,1
+55,Yellow Kribensis,Pelvicachromis humilis,"Sierra Leone, Liberia, Guinea,",6.0,7.5,24.0,27.0,12.5,115.0,https://selectyourfish.com/webps1/55.webp,2
+56,Leopard sailfin pleco,Pterygoplichthys gibbiceps,"Brazil, Venezuela,",6.5,7.5,22.0,30.0,48.0,380.0,https://selectyourfish.com/webps1/56.webp,1
+57,Zebra pleco,Hypancistrus zebra,"Brazil,",6.0,7.5,26.0,30.0,8.0,55.0,https://selectyourfish.com/webps1/57.webp,1
+58,Convict Cichlid,Amatitlania nigrofasciata,Central America,6.5,8.0,24.0,28.0,15.0,95.0,https://selectyourfish.com/webps1/58.webp,2
+59,Golden dwarf sucker,Otocinclus macrospilus,"Peru, Colombia, Ecuador,",6.0,7.5,21.0,26.0,3.5,40.0,https://selectyourfish.com/webps1/59.webp,1
+60,Zebra dwarf sucker,Otocinclus cocama,"Peru,",6.0,7.5,21.0,25.0,4.5,40.0,https://selectyourfish.com/webps1/60.webp,1
+61,Bolt catfish,Aguarunichthys torosus,"Peru, Ecuador,",6.0,7.5,22.0,27.0,34.0,455.0,https://selectyourfish.com/webps1/61.webp,1
+62,Vaillant's Chocolate Gourami,Sphaerichthys vaillanti,"Borneo,",5.0,6.5,21.0,25.0,5.5,75.0,https://selectyourfish.com/webps1/62.webp,2
+63,Zebra shovelnose,Brachyplatystoma tigrinum,"Brazil, Colombia, Peru,",6.0,7.5,22.0,32.0,50.0,570.0,https://selectyourfish.com/webps1/63.webp,1
+64,Vulture Catfish,Calophysus macropterus,"Venezuela, Colombia,",6.0,7.5,24.0,29.0,40.0,455.0,https://selectyourfish.com/webps1/64.webp,1
+65,Spotted pimelodus,Pimelodus pictus,"Colombia, Venezuela, Peru,",6.0,7.5,22.0,25.0,14.0,210.0,https://selectyourfish.com/webps1/65.webp,1
+66,Ornate Pimelodus,Pimelodus ornatus,South America,6.0,7.5,24.0,28.0,31.0,245.0,https://selectyourfish.com/webps1/66.webp,1
+67,Zorro Catfish,Platystomatichthys sturio,"Peru,",6.0,7.5,24.0,28.0,40.0,455.0,https://selectyourfish.com/webps1/67.webp,1
+68,Duckbill Catfish,Sorubium lima,South America,6.0,7.5,23.0,30.0,50.0,720.0,https://selectyourfish.com/webps1/68.webp,1
+69,Cuckoo squeaker,Synodontis multipunctatus,"Lake Tanganyika,",7.5,8.5,24.0,28.0,25.0,190.0,https://selectyourfish.com/webps1/69.webp,1
+70,Decorated squeaker,Synodontis decorus,Congo Basin,6.5,7.5,22.0,27.0,30.0,200.0,https://selectyourfish.com/webps1/70.webp,1
+71,Even-Spotted squeaker,Synodontis petricola,"Lake Tanganyika,",7.5,8.5,24.0,28.0,12.0,170.0,https://selectyourfish.com/webps1/71.webp,1
+72,Featherfin squeaker,Synodontis eupterus,"Nigeria, Mali, Chad, Niger,",6.5,7.5,22.0,27.0,20.0,170.0,https://selectyourfish.com/webps1/72.webp,1
+73,Lake Malawi syno,Synodontis njassae,"Lake Malawi,",7.5,6.8,23.0,28.0,19.0,150.0,https://selectyourfish.com/webps1/73.webp,1
+74,Polka dot syno,Synodontis angelicus,Congo Basin,6.0,7.5,24.0,28.0,30.0,210.0,https://selectyourfish.com/webps1/74.webp,1
+75,Common syno,Synodontis nigrita,Africa,6.0,7.5,21.0,28.0,20.0,210.0,https://selectyourfish.com/webps1/75.webp,1
+76,Upside-down catfish,Synodontis nigriventris,Congo Basin,6.0,7.5,24.0,28.0,10.0,115.0,https://selectyourfish.com/webps1/76.webp,1
+77,Three-striped African catfish,Pareutropius buffei,"Nigeria, Niger, Benin, Mali,",6.0,7.5,24.0,28.0,8.0,75.0,https://selectyourfish.com/webps1/77.webp,1
+78,Black lancer catfish,Bagrichthys macracanthus,"Sumatra, Java, Borneo,",6.0,7.5,24.0,28.0,23.0,210.0,https://selectyourfish.com/webps1/78.webp,1
+79,Harlequin lancer catfish,Bagroides melapterus,"Sumatra,",6.5,7.5,24.0,27.0,30.0,455.0,https://selectyourfish.com/webps1/79.webp,1
+80,Shadow catfish,Hyalobagrus flavus,"Sumatra,",5.5,7.5,21.0,26.0,4.5,50.0,https://selectyourfish.com/webps1/80.webp,1
+81,Dwarf bumblebee catfish,Pseudomystus leiacanthus,"Columbia, Venezuela, Peru,",6.0,7.5,21.0,25.0,6.0,75.0,https://selectyourfish.com/webps1/81.webp,1
+82,Asian bumblebee catfish,Pseudomystus siamensis,"Thailand, Laos, Cambodia, Vietnam,",6.0,7.5,20.0,26.0,15.0,115.0,https://selectyourfish.com/webps1/82.webp,1
+83,Glass catfish,Kryptopterus vitreolus,"Thailand,",6.0,7.0,21.0,26.0,7.0,115.0,https://selectyourfish.com/webps1/83.webp,2
+84,Striped glass catfish,Kryptopterus macrocephalus,"Thailand,",6.0,7.0,21.0,26.0,9.0,135.0,https://selectyourfish.com/webps1/84.webp,1
+85,Borneo glass catfish,Ompok eugeneiatus,"Malaysia, Sunda Islands",6.0,7.5,21.0,28.0,16.5,170.0,https://selectyourfish.com/webps1/85.webp,1
+86,Chocolate frogmouth catfish,Chaca bankanensis,"Thailand,",6.0,7.5,24.0,28.0,20.0,170.0,https://selectyourfish.com/webps1/86.webp,1
+87,Asian banjo catfish,Acrochordonichthys rugosus,"Malaysia, Sunda Islands",6.0,7.5,18.0,24.0,11.0,95.0,https://selectyourfish.com/webps1/87.webp,1
+88,Walking catfish,Clarias batrachus,Southeast Asia,6.5,8.0,20.0,26.0,60.0,2270.0,https://selectyourfish.com/webps1/88.webp,1
+89,Stinging catfish,Heteropneustes fossilis,"Iran, Pakistan, India, Nepal",6.0,8.0,21.0,25.0,30.0,245.0,https://selectyourfish.com/webps1/89.webp,1
+90,Sun catfish,Horabagrus brachysoma,"India,",6.5,7.5,23.0,25.0,45.0,645.0,https://selectyourfish.com/webps1/90.webp,1
+91,Colombian shark catfish,Ariopsis seemanni,Central America,7.0,8.5,22.0,26.0,35.0,850.0,https://selectyourfish.com/webps1/91.webp,1
+92,Blue whale catfish,Cetopsis coecutiens,South America,6.0,7.5,22.0,26.0,27.0,265.0,https://selectyourfish.com/webps1/92.webp,1
+93,Banjo catfish,Bunocephalus coracoideus,"Bolivia, Peru, Brazil,",6.0,7.5,22.0,27.0,15.0,95.0,https://selectyourfish.com/webps1/93.webp,1
+94,Striped raphael catfish,Platydoras armatulus,South America,6.0,7.5,24.0,30.0,22.0,170.0,https://selectyourfish.com/webps1/94.webp,1
+95,Spotted raphael catfish,Agamyxis pectinifrons,South America,6.0,7.5,22.0,26.0,15.0,150.0,https://selectyourfish.com/webps1/95.webp,1
+96,Bottlenose catfish,Ageneiosus marmoratus,"Guyana, Suriname,",,7.5,22.0,26.0,20.0,360.0,https://selectyourfish.com/webps1/96.webp,1
+97,Gulper catfish,Asterophysus batrachus,"Brazil, Venezuela,",6.0,7.5,22.0,28.0,25.0,360.0,https://selectyourfish.com/webps1/97.webp,1
+98,Midnight catfish,Auchenipterichthys coracoideus,"Peru, Brazil, Guyana,",6.0,7.5,22.0,25.0,11.0,75.0,https://selectyourfish.com/webps1/98.webp,1
+99,Oil catfish,Centromochlus perugiae,"Peru, Ecuador,",6.0,7.5,24.0,23.0,6.0,55.0,https://selectyourfish.com/webps1/99.webp,1
+100,Jaguar catfish,Liosomadoras oncinus,"Brazil,",6.0,7.5,22.0,28.0,23.0,245.0,https://selectyourfish.com/webps1/100.webp,1
+101,Pygmy driftwood catfish,Trachelyichthys exilis,"Peru,",6.0,7.5,22.0,25.0,8.0,80.0,https://selectyourfish.com/webps1/101.webp,1
+102,Black phantom tetra,Hyphessobrycon megalopterus,"Bolivia, Brazil,",6.0,7.5,21.0,28.0,3.6,65.0,https://selectyourfish.com/webps1/102.webp,2
+103,Black Neon Tetra,Hyphessobrycon herbertaxelrodi,"Brazil,",5.5,7.5,22.0,28.0,3.5,60.0,https://selectyourfish.com/webps1/103.webp,2
+104,Black widow tetra,Gymnocorymbus ternetzi,"Brazil, Bolivia, Argentina,",6.0,7.5,20.0,26.0,6.0,75.0,https://selectyourfish.com/webps1/104.webp,2
+105,Bleeding heart tetra,Hyphessobrycon erythrostigma,"Peru,",6.0,7.5,21.0,27.0,6.0,75.0,https://selectyourfish.com/webps1/105.webp,2
+106,Bloodfin tetra,Aphyocharax anisitsi,"Brazil, Paraguay, Argentina,",6.0,8.0,22.0,28.0,5.5,75.0,https://selectyourfish.com/webps1/106.webp,2
+107,Blue tetra,Knodus borki,"Colombia, Brazil,",5.5,7.0,22.0,26.0,5.0,85.0,https://selectyourfish.com/webps1/107.webp,2
+108,Bucktooth tetra,Exodon paradoxus,"Brazil,",5.5,7.5,23.0,28.0,12.0,170.0,https://selectyourfish.com/webps1/108.webp,2
+109,Buenos Aires tetra,Hyphessobrycon anisitsi,"Brazil, Paraguay, Argentina,",6.0,8.0,19.0,27.0,7.5,95.0,https://selectyourfish.com/webps1/109.webp,2
+110,Cardinal tetra,Paracheirodon axelrodi,"Brazil,",5.0,7.0,23.0,29.0,4.5,60.0,https://selectyourfish.com/webps1/110.webp,2
+111,Blind cave tetra,Astyanax mexicanus,"Mexico,",6.0,8.0,21.0,25.0,12.0,95.0,https://selectyourfish.com/webps1/111.webp,2
+112,Diamond tetra,Moenkhausia pittieri,"Venezuela,",6.0,7.5,24.0,28.0,6.0,75.0,https://selectyourfish.com/webps1/112.webp,2
+113,Ember tetra,Hyphessobrycon amandae,"Brazil,",5.5,7.0,22.0,28.0,2.0,35.0,https://selectyourfish.com/webps1/113.webp,2
+114,Emperor tetra,Nematobrycon palmeri,"Colombia ,",5.5,7.5,23.0,27.0,5.0,75.0,https://selectyourfish.com/webps1/114.webp,2
+115,Flame tetra,Hyphessobrycon flammeus,"Brazil,",5.5,7.5,20.0,26.0,2.5,38.0,https://selectyourfish.com/webps1/115.webp,2
+116,Garnet tetra,Hemigrammus pulcher,"Peru,",5.0,7.0,23.0,28.0,4.5,75.0,https://selectyourfish.com/webps1/116.webp,2
+117,Glass bloodfin tetra,Prionobrama filigera,South America,6.0,7.5,23.0,27.0,6.0,75.0,https://selectyourfish.com/webps1/117.webp,2
+118,Glowlight tetra,Hemigrammus erythrozonus,"Guyana,",6.0,7.5,24.0,28.0,4.0,70.0,https://selectyourfish.com/webps1/118.webp,2
+119,Paradise Threadfin,Polynemus paradiseus,"South Asia, South East Asia",6.5,8.0,24.0,28.0,25.0,285.0,https://selectyourfish.com/webps1/119.webp,1
+120,Green neon tetra,Paracheirodon simulans,"Brazil, Venezuela, Colombia,",5.5,7.5,22.0,30.0,2.5,55.0,https://selectyourfish.com/webps1/120.webp,2
+121,Head-and-taillight tetra,Hemigrammus ocellifer,"The Guianas, Peru, Brazil,",5.5,7.5,24.0,28.0,4.5,65.0,https://selectyourfish.com/webps1/121.webp,2
+122,January tetra,Hemigrammus hyanuary,"Peru, Brazil,",5.5,7.0,23.0,27.0,4.0,65.0,https://selectyourfish.com/webps1/122.webp,2
+123,Lemon tetra,Hyphessobrycon pulchripinnis,"Brazil,",6.0,8.0,22.0,28.0,5.0,65.0,https://selectyourfish.com/webps1/123.webp,2
+124,Neon tetra,Paracheirodon innesi,"Peru, Colombia, Brazil,",5.0,7.5,21.0,25.0,3.75,40.0,https://selectyourfish.com/webps1/124.webp,2
+125,Ornate tetra,Hyphessobrycon bentosi,"Brazil,",5.5,7.5,22.0,28.0,4.5,75.0,https://selectyourfish.com/webps1/125.webp,2
+126,Penguin tetra,Thayeria boehlkei,"Peru, Brazil,",6.0,7.5,22.0,28.0,6.5,75.0,https://selectyourfish.com/webps1/126.webp,2
+127,Red eye tetra,Moenkhausia sanctaefilomenae,"Brazil, Paraguay, Argentina,",6.0,7.5,22.0,26.0,7.0,105.0,https://selectyourfish.com/webps1/127.webp,2
+128,Red phantom tetra,Hyphessobrycon sweglesi,"Venezuela, Colombia,",5.5,7.5,22.0,28.0,4.0,55.0,https://selectyourfish.com/webps1/128.webp,2
+129,Rosy tetra,Hyphessobrycon rosaceus,"Guyana, Suriname, Brazil,",5.5,7.5,24.0,28.0,4.0,55.0,https://selectyourfish.com/webps1/129.webp,2
+130,Royal tetra,Inpaichthys kerri,"Brazil,",5.5,7.5,24.0,27.0,3.5,55.0,https://selectyourfish.com/webps1/130.webp,2
+131,Rummy-nose tetra,Hemigrammus rhodostomus,"Brazil, Venezuela,",5.5,7.0,24.0,27.0,5.0,75.0,https://selectyourfish.com/webps1/131.webp,2
+132,Splash tetra,Copella arnoldi,"Brazil,",5.5,7.0,20.0,28.0,5.5,70.0,https://selectyourfish.com/webps1/132.webp,2
+133,Serpae tetra,Hyphessobrycon serpae,"Brazil, Paraguay, Argentina,",5.5,7.5,20.0,28.0,4.5,65.0,https://selectyourfish.com/webps1/133.webp,2
+134,Silvertip tetra,Hasemania nana,"Brazil,",6.0,8.0,23.0,28.0,4.0,70.0,https://selectyourfish.com/webps1/134.webp,2
+135,X-ray tetra,Pristella maxillaris,"Venezuela, The Guianas",6.0,8.0,22.0,28.0,4.5,70.0,https://selectyourfish.com/webps1/135.webp,2
+136,Congo tetra,Phenacogrammus interruptus,Congo Basin,6.0,7.5,23.0,28.0,8.0,90.0,https://selectyourfish.com/webps1/136.webp,2
+137,Jellybean tetra,Ladigesia roloffi,"Sierra Leone,",6.0,7.5,22.0,27.0,3.0,37.0,https://selectyourfish.com/webps1/137.webp,2
+138,Long-fin tetra,Brycinus longipinnis,Congo Basin,6.0,7.5,22.0,26.0,12.5,190.0,https://selectyourfish.com/webps1/138.webp,2
+139,Niger tetra,Arnoldichthys spilopterus,"Nigeria,",6.0,8.0,24.0,27.0,10.0,190.0,https://selectyourfish.com/webps1/139.webp,2
+140,Yellow-tailed Congo tetra,Alestopetersius caudalis,Congo Basin,6.0,7.5,22.0,26.0,6.0,75.0,https://selectyourfish.com/webps1/140.webp,2
+141,Common hatchetfish,Gasteropelecus sternicla,"Brazil,",5.5,7.0,20.0,28.0,4.0,125.0,https://selectyourfish.com/webps1/141.webp,3
+142,Marbled hatchetfish,Carnegiella strigata,South America,5.5,7.0,20.0,28.0,4.0,120.0,https://selectyourfish.com/webps1/142.webp,3
+143,Blackwing hatchetfish,Carnegiella marthae,"Venezuela, Brazil,",5.5,7.0,20.0,28.0,3.5,115.0,https://selectyourfish.com/webps1/143.webp,3
+144,Pygmy hatchetfish,Carnegiella myersi,"Peru, Bolivia,",5.5,7.0,23.0,26.0,2.5,100.0,https://selectyourfish.com/webps1/144.webp,3
+145,Golden pencilfish,Nannostomus beckfordi,"The Guianas, Brazil, Venezuela,",6.0,7.5,21.0,27.0,6.0,70.0,https://selectyourfish.com/webps1/145.webp,2
+146,Hockeystick pencilfish,Nannostomus eques,"Brazil, Peru, Colombia,",5.0,7.0,22.0,28.0,3.5,55.0,https://selectyourfish.com/webps1/146.webp,2
+147,Barred pencilfish,Nannostomus espei,"Guyana,",5.5,7.0,22.0,28.0,3.0,55.0,https://selectyourfish.com/webps1/147.webp,2
+148,Dwarf pencilfish,Nannostomus marginatus,"Peru, Colombia, Brazil,",5.0,7.0,22.0,28.0,2.5,45.0,https://selectyourfish.com/webps1/148.webp,2
+149,Coral red pencilfish,Nannostomus mortenthaleri,"Peru,",5.5,7.0,24.0,28.0,3.0,55.0,https://selectyourfish.com/webps1/149.webp,2
+150,Three-lined pencilfish,Nannostomus trifasciatus,South America,5.5,7.0,22.0,28.0,3.3,55.0,https://selectyourfish.com/webps1/150.webp,2
+151,One-lined Pencilfish,Nannostomus unifasciatus,"Brazil, Bolivia, Colombia,",5.5,7.0,23.0,28.0,4.0,65.0,https://selectyourfish.com/webps1/151.webp,2
+152,Silver Dollar,Metynnis argenteus,"Brazil,",6.0,7.5,24.0,28.0,15.0,265.0,https://selectyourfish.com/webps1/153.webp,2
+153,Silver Dollar,Metynnis hypsauchen,"Guyana, Brazil, Peru, Bolivia,",6.0,7.5,24.0,28.0,14.0,265.0,https://selectyourfish.com/webps1/153.webp,2
+154,Red-bellied Piranha,Pygocentrus nattereri,South America,6.0,7.5,24.0,28.0,32.0,605.0,https://selectyourfish.com/webps1/154.webp,2
+155,Disk tetra,Myleus schomburgkii,"Venezuela, Peru, Brazil,",5.5,7.0,23.0,27.0,40.0,645.0,https://selectyourfish.com/webps1/155.webp,2
+156,Vampire Tetra,Hydrocyon scomberoides,"Brazil, Bolivia, Peru, Ecuador,",5.0,7.5,24.0,28.0,30.0,700.0,https://selectyourfish.com/webps1/156.webp,2
+157,Hujeta gar,Ctenolucius hujeta,"Venezuela, Colombia,",6.0,7.5,22.0,28.0,25.0,210.0,https://selectyourfish.com/webps1/157.webp,3
+158,Kissing prochilodus,Semaprochilodus insignis,South America,6.0,7.5,23.0,29.0,35.0,510.0,https://selectyourfish.com/webps1/158.webp,2
+159,Marbled headstander,Abramites hypselonotus,South America,6.0,7.5,20.0,30.0,14.0,265.0,https://selectyourfish.com/webps1/159.webp,2
+160,Banded leporinus,Leporinus fasciatus,South America,6.0,7.5,20.0,28.0,27.0,150.0,https://selectyourfish.com/webps1/160.webp,2
+161,Striped headstander,Anostomus anostomus,"Peru, Brazil, Venezuela, Guyana,",6.0,7.5,20.0,28.0,19.0,265.0,https://selectyourfish.com/webps1/161.webp,2
+162,Pink-tail chalceus,Chalceus macrolepidotus,South America,6.0,7.5,23.0,28.0,25.0,240.0,https://selectyourfish.com/webps1/162.webp,2
+163,Red wolf fish,Erythrinus erythrinus,South America,6.0,7.5,22.0,26.0,20.0,150.0,https://selectyourfish.com/webps1/163.webp,1
+164,Red tail barracuda,Acestrorhynchus falcatus,South America,6.0,7.5,22.0,28.0,30.0,380.0,https://selectyourfish.com/webps1/164.webp,2
+165,Spotted headstander,Chilodus punctatus,South America,6.0,7.5,20.0,28.0,8.0,85.0,https://selectyourfish.com/webps1/165.webp,2
+166,Sunshine peacock cichlid,Aulonocara baenschi,"Lake Malawi,",7.5,8.5,25.0,29.0,16.0,240.0,https://selectyourfish.com/webps1/166.webp,2
+167,Pale usisya aulonocara,Aulonocara steveni,"Lake Malawi,",7.5,8.5,24.0,28.0,14.0,240.0,https://selectyourfish.com/webps1/167.webp,2
+168,Red fin hap,Copadichromis borleyi,"Lake Malawi,",7.5,8.5,25.0,29.0,20.0,300.0,https://selectyourfish.com/webps1/168.webp,2
+169,Eureka red peacock,Aulonocara jacobfreibergi,"Lake Malawi,",7.5,8.5,25.0,29.0,17.0,240.0,https://selectyourfish.com/webps1/169.webp,2
+170,Spilo,Champsochromis spilorhynchus,"Lake Malombe, Lake Malawi ,",7.5,8.5,24.0,27.0,40.0,475.0,https://selectyourfish.com/webps1/170.webp,2
+171,Blue dolphin cichlid,Cyrtocara moorii,"Lake Malawi,",7.5,8.5,25.0,29.0,25.0,250.0,https://selectyourfish.com/webps1/171.webp,2
+172,Afra cichlid,Cynotilapia afra,"Lake Malawi,",7.5,8.5,25.0,29.0,10.0,110.0,https://selectyourfish.com/webps1/172.webp,2
+173,Rusty cichlid,Iodotropheus sprengerae,"Lake Malawi,",7.5,8.5,25.0,29.0,10.0,90.0,https://selectyourfish.com/webps1/173.webp,2
+174,Fuelleborn's cichlid,Labeotropheus fuelleborni,"Lake Malawi,",7.5,8.5,24.0,28.0,18.0,175.0,https://selectyourfish.com/webps1/174.webp,2
+175,Electric yellow cichlid,Labidochromis caeruleus,"Lake Malawi,",7.5,8.5,24.0,28.0,12.0,160.0,https://selectyourfish.com/webps1/175.webp,2
+176,Electric Blue Hap,Sciaenochromis fryeri,"Lake Malawi,",7.5,8.5,24.0,28.0,18.0,250.0,https://selectyourfish.com/webps1/176.webp,2
+177,Malawi eyebiter,Dimidiochromis compressiceps,"Lake Malawi,",7.5,8.5,23.0,28.0,25.0,250.0,https://selectyourfish.com/webps1/177.webp,2
+178,Mascara Barb,Dawkinsia assimilis,India,6.5,7.5,19.0,25.0,12.0,200.0,https://selectyourfish.com/webps1/178.webp,2
+179,Odessa Barb,Pethia padamya,Myanmar ,6.0,7.0,16.0,25.0,4.5,75.0,https://selectyourfish.com/webps1/179.webp,2
+180,Auratus cichlid,Melanochromis auratus,"Lake Malawi,",7.5,8.5,24.0,28.0,11.0,200.0,https://selectyourfish.com/webps1/180.webp,2
+181,Chipokee cichlid,Melanochromis chipokae,"Lake Malawi,",7.5,8.5,24.0,28.0,12.0,200.0,https://selectyourfish.com/webps1/181.webp,2
+182,Blue johanni cichlid,Melanochromis cyaneorhabdos,"Lake Malawi,",7.5,8.5,24.0,28.0,10.0,170.0,https://selectyourfish.com/webps1/182.webp,2
+183,Pearl of Likoma,Melanochromis joanjohnsonae,"Lake Malawi,",7.5,8.5,24.0,27.0,10.0,170.0,https://selectyourfish.com/webps1/183.webp,2
+184,Aurora cichlid,Maylandia aurora,"Lake Malawi,",7.5,8.5,24.0,27.0,12.0,115.0,https://selectyourfish.com/webps1/184.webp,2
+185,Red zebra cichlid,Metriaclima estherae,"Lake Malawi,",7.5,8.5,24.0,28.0,10.0,170.0,https://selectyourfish.com/webps1/185.webp,2
+186,Cobalt blue cichlid,Maylandia callainos,"Lake Malawi,",7.5,8.5,24.0,28.0,13.0,170.0,https://selectyourfish.com/webps1/186.webp,2
+187,Kenyi cichlid,Maylandia lombardoi,"Lake Malawi,",7.5,8.5,24.0,28.0,14.0,200.0,https://selectyourfish.com/webps1/187.webp,2
+188,Fusco Hap,Nimbochromis fuscotaeniatus,"Lake Malawi,",7.5,8.5,24.0,28.0,25.0,280.0,https://selectyourfish.com/webps1/188.webp,2
+189,Livingston's cichlid,Nimbochromis livingstonii,"Lake Malawi,",7.5,8.5,24.0,28.0,25.0,280.0,https://selectyourfish.com/webps1/189.webp,2
+190,Kaligono,Nimbochromis polystigma,"Lake Malawi,",7.5,8.5,24.0,28.0,26.0,280.0,https://selectyourfish.com/webps1/190.webp,2
+191,Venustus cichlid,Nimbochromis venustus,"Lake Malawi,",7.5,8.5,24.0,28.0,30.0,280.0,https://selectyourfish.com/webps1/191.webp,2
+192,Red empress cichlid,Protomelas taeniolatus,"Lake Malawi,",7.5,8.5,24.0,28.0,20.0,200.0,https://selectyourfish.com/webps1/192.webp,2
+193,Bumblebee cichlid,Pseudotropheus crabro,"Lake Malawi,",7.5,8.5,24.0,28.0,15.0,200.0,https://selectyourfish.com/webps1/193.webp,2
+194,Yellow-tail acei,Pseudotropheus acei,"Lake Malawi,",7.5,8.5,24.0,28.0,12.0,160.0,https://selectyourfish.com/webps1/194.webp,2
+195,Johanni cichlid,Melanochromis johanni,"Lake Malawi,",7.5,8.5,23.0,27.0,12.0,160.0,https://selectyourfish.com/webps1/195.webp,2
+196,Dwarf Mbuna,Pseudotropheus demasoni,"Lake Malawi,",7.5,8.5,24.0,28.0,10.0,200.0,https://selectyourfish.com/webps1/196.webp,2
+197,Saulosi Mbuna,Pseudotropheus saulosi,"Lake Malawi,",7.5,8.5,23.0,27.0,10.0,160.0,https://selectyourfish.com/webps1/197.webp,2
+198,Malawi barracuda,Rhamphochromis cf. macrophthalmus,"Lake Malawi,",7.5,8.5,23.0,27.0,25.0,300.0,https://selectyourfish.com/webps1/198.webp,2
+199,Frontosa cichild,Cyphotilapia frontosa,"Lake Tanganyika,",7.8,9.0,23.0,27.0,32.0,860.0,https://selectyourfish.com/webps1/199.webp,2
+200,Brown Julie,Julidochromis dickfeldi,"Lake Tanganyika,",7.8,9.0,23.0,27.0,15.0,75.0,https://selectyourfish.com/webps1/200.webp,2
+201,Masked Julie,Julidochromis marlieri,"Lake Tanganyika,",7.8,9.0,23.0,27.0,15.0,110.0,https://selectyourfish.com/webps1/201.webp,2
+202,Golden Julie,Julidochromis ornatus,"Lake Tanganyika,",7.8,9.0,23.0,27.0,8.0,70.0,https://selectyourfish.com/webps1/202.webp,2
+203,Sardine Cichlid,Cyprichromis leptosoma,"Lake Tanganyika,",7.8,9.0,24.0,27.0,11.0,170.0,https://selectyourfish.com/webps1/203.webp,2
+204,Lyretail cichlid,Neolamprologus brichardi,"Lake Tanganyika,",7.8,9.0,23.0,27.0,10.0,110.0,https://selectyourfish.com/webps1/204.webp,2
+205,Lemon cichlid,Neolamprologus leleupi,"Lake Tanganyika,",7.8,9.0,23.0,27.0,11.5,75.0,https://selectyourfish.com/webps1/205.webp,2
+206,Featherfin cichlid,Ophthalmotilapia ventralis,"Lake Tanganyika,",7.8,9.0,23.0,27.0,15.0,230.0,https://selectyourfish.com/webps1/206.webp,2
+207,Zebra obliquidens,Astatotilapia latifasciata,"Lake Kyoga, Lake Nawampas,",7.0,8.0,23.0,28.0,12.5,115.0,https://selectyourfish.com/webps1/207.webp,2
+208,Allauad's haplo,Astatoreochromis alluaudi,"Lake Victoria,",7.0,8.0,23.0,28.0,19.0,210.0,https://selectyourfish.com/webps1/208.webp,2
+209,Hippo Point Salmon,Ptyochromis sp.,"Lake Victoria,",7.0,8.5,23.0,28.0,13.0,115.0,https://selectyourfish.com/webps1/209.webp,2
+210,Flameback cichlid,Pundamilia nyererei,"Lake Victoria,",7.0,8.5,23.0,27.0,9.0,160.0,https://selectyourfish.com/webps1/210.webp,2
+211,African butterfly cichlid,Anomalochromis thomasi,"Sierra Leone, Guinea, Liberia,",6.0,7.5,23.0,27.0,8.0,95.0,https://selectyourfish.com/webps1/211.webp,2
+212,Jewel cichlid,Hemichromis bimaculatus,West Africa,6.0,7.5,22.0,28.0,15.0,115.0,https://selectyourfish.com/webps1/212.webp,2
+213,Blockhead Cichlid,Steatocranus casuarius,Congo Basin,6.5,8.0,24.0,28.0,12.0,95.0,https://selectyourfish.com/webps1/213.webp,2
+214,Blood-red jewel cichlid,Hemichromis lifalili,Congo Basin,6.0,7.5,23.0,26.0,10.0,75.0,https://selectyourfish.com/webps1/214.webp,2
+215,Kribensis,Pelvicachromis pulcher,"Nigeria, Cameroon,",6.0,7.5,24.0,27.0,10.0,75.0,https://selectyourfish.com/webps1/215.webp,2
+216,Guenther's Mouthbrooder,Chromidotilapia guentheri,West Africa,6.0,7.5,24.0,27.0,15.0,115.0,https://selectyourfish.com/webps1/216.webp,2
+217,Agassiz's dwarf cichlid,Apistogramma agassizii,"Brazil,",5.5,7.0,22.0,29.0,9.0,75.0,https://selectyourfish.com/webps1/217.webp,2
+218,Zebra acara,Nannacara adoketa,"Brazil,",5.0,6.5,22.0,28.0,12.0,95.0,https://selectyourfish.com/webps1/218.webp,2
+219,Umbrella Cichlid,Apistogramma borellii,"Brazil, Paraguay, Argentina,",6.0,7.0,20.0,26.0,6.5,70.0,https://selectyourfish.com/webps1/219.webp,2
+220,Cockatoo cichlid,Apistogramma cacatuoides,"Brazil, Peru,",6.0,7.5,22.0,29.0,7.5,70.0,https://selectyourfish.com/webps1/220.webp,2
+221,Panda dwarf cichlid,Apistogramma nijsseni,"Peru,",5.0,6.5,24.0,28.0,8.5,70.0,https://selectyourfish.com/webps1/221.webp,2
+222,Three-Stripe Dwarf Cichlid,Apistogramma trifasciata,"Brazil, Paraguay, Argentina,",5.5,7.0,20.0,25.0,5.5,75.0,https://selectyourfish.com/webps1/222.webp,2
+223,Two-Stripe Dwarf Cichlid,Apistogramma bitaeniata,"Peru, Colombia, Brazil,",5.0,6.5,22.0,29.0,7.5,75.0,https://selectyourfish.com/webps1/223.webp,2
+224,Checkerboard Cichlid,Dicrossus filamentosus,"Colombia, Venezuela, Brazil,",5.0,6.5,26.0,30.0,9.0,75.0,https://selectyourfish.com/webps1/224.webp,2
+225,Blue ram,Mikrogeophagus ramirezi,"Colombia, Venezuela,",5.5,7.0,27.0,30.0,6.0,70.0,https://selectyourfish.com/webps1/225.webp,2
+226,Bolivian ram,Mikrogeophagus altispinosa,"Bolivia, Brazil,",6.0,7.5,24.0,28.0,8.0,170.0,https://selectyourfish.com/webps1/226.webp,2
+227,Dwarf flag cichlid,Laetacara curviceps,"Brazil,",6.0,7.5,20.0,28.0,5.5,75.0,https://selectyourfish.com/webps1/227.webp,2
+228,Gold Saum,Andinoacara rivulatus,"Peru, Ecuador,",6.5,8.0,20.0,24.0,30.0,285.0,https://selectyourfish.com/webps1/228.webp,2
+229,Blue acara,Andinoacara pulcher,"Trinidad and Tobago, Venezuela,",6.5,8.0,22.0,28.0,15.0,160.0,https://selectyourfish.com/webps1/229.webp,2
+230,Threadfin acara,Acarichthys heckelii,"Colombia, Peru, Brazil, Guyana,",6.0,7.5,24.0,30.0,20.0,200.0,https://selectyourfish.com/webps1/230.webp,2
+231,Eartheater cichlid,Geophagus altifrons,"Brazil,",6.0,7.5,26.0,32.0,25.0,435.0,https://selectyourfish.com/webps1/231.webp,2
+232,Cupid cichlid,Biotodoma cupido,"Peru, Bolivia, Guyana, Brazil,",5.5,7.0,20.0,30.0,12.0,200.0,https://selectyourfish.com/webps1/232.webp,2
+233,Keyhole cichlid,Cleithracara maronii,"Venezuela, The Guianas",6.0,7.5,21.0,28.0,11.0,95.0,https://selectyourfish.com/webps1/233.webp,2
+234,Flag cichlid,Mesonauta festivus,South America,6.0,7.5,24.0,28.0,15.0,140.0,https://selectyourfish.com/webps1/234.webp,2
+235,Angelfish,Pterophyllum scalare,South America,6.0,7.5,24.0,30.0,15.0,115.0,https://selectyourfish.com/webps1/235.webp,2
+236,Altum angelfish,Pterophyllum altum,"Colombia, Venezuela,",5.5,6.5,26.0,32.0,18.0,170.0,https://selectyourfish.com/webps1/236.webp,2
+237,Roman Nose Angelfish,Pterophyllum leopoldi,"Brazil, Guyana,",6.0,7.2,22.0,29.0,10.0,115.0,https://selectyourfish.com/webps1/237.webp,2
+238,Discus,Symphysodon aequifasciatus,"Peru, Colombia, Brazil,",6.0,7.0,26.0,32.0,20.0,245.0,https://selectyourfish.com/webps1/238.webp,2
+239,Common pleco,Hypostomus plecostomus,"Brazil, French Guiana, Guyana,",6.5,7.5,22.0,30.0,40.0,320.0,https://selectyourfish.com/webps1/239.webp,1
+240,Oscar,Astronotus ocellatus,South America,6.0,7.5,20.0,28.0,35.0,360.0,https://selectyourfish.com/webps1/240.webp,2
+241,Chocolate cichlid,Hypselecara temporalis,"Peru, Colombia, Venezuela, Brazil,",6.0,7.5,25.0,30.0,30.0,245.0,https://selectyourfish.com/webps1/241.webp,2
+242,Severum,Heros efasciatus,"Brazil,",6.0,7.5,22.0,29.0,30.0,245.0,https://selectyourfish.com/webps1/242.webp,2
+243,Uaru cichlid,Uaru amphiacanthoides,"Brazil, Guyana,",6.0,7.5,27.0,30.0,30.0,245.0,https://selectyourfish.com/webps1/243.webp,2
+244,Canara pearlspot,Etroplus canarensis,"India,",7.0,8.0,22.0,32.0,11.0,210.0,https://selectyourfish.com/webps1/244.webp,2
+245,Green chromide,Etroplus suratensis,"Sri Lanka,",7.0,8.0,20.0,30.0,30.0,550.0,https://selectyourfish.com/webps1/245.webp,2
+246,Orange chromide,Etroplus maculatus,"Sri Lanka, India,",7.0,8.0,20.0,28.0,10.0,210.0,https://selectyourfish.com/webps1/246.webp,2
+247,Pinstripe damba cichlid,Paretroplus menarambo,"Madagascar,",7.0,8.5,26.0,29.0,25.0,360.0,https://selectyourfish.com/webps1/247.webp,2
+248,Sturgeon Catfish,Lamontichthys filamentosus,"Brazil, Bolivia, Peru, Ecuador,",6.0,7.5,22.0,30.0,16.0,135.0,https://selectyourfish.com/webps1/248.webp,1
+249,Redhook,Myloplus rubripinnis,South America,5.5,7.5,23.0,27.0,25.0,265.0,https://selectyourfish.com/webps1/249.webp,2
+250,Silver shark,Balantiocheilus melanopterus,"Borneo, Sumatra,",6.0,7.5,22.0,28.0,40.0,360.0,https://selectyourfish.com/webps1/250.webp,2
+251,Siamese algae eater,Crossocheilus oblongus,"Thailand, Malaysia,",6.0,7.5,20.0,26.0,16.0,140.0,https://selectyourfish.com/webps1/251.webp,1
+252,Flying fox,Epalzeorhynchos kalopterus,"Thailand, Malaysia,",6.5,7.5,20.0,26.0,16.0,140.0,https://selectyourfish.com/webps1/252.webp,1
+253,Red-tailed black shark,Epalzeorhynchos bicolor,"Thailand,",6.5,7.5,20.0,26.0,12.0,115.0,https://selectyourfish.com/webps1/253.webp,1
+254,Rainbow shark,Epalzeorhynchos frenatum,"Thailand, Laos, Cambodia,",6.5,7.5,20.0,26.0,15.0,120.0,https://selectyourfish.com/webps1/254.webp,1
+255,Cambodian log sucker,Garra cambodgiensis,"Thailand, Laos, Cambodia, Vietnam,",6.5,7.5,20.0,27.0,15.0,120.0,https://selectyourfish.com/webps1/255.webp,1
+256,Chinese algae eater,Gyrinocheilus aymonieri,"Cambodia, Laos, Vietnam,",6.5,7.5,22.0,26.0,28.0,175.0,https://selectyourfish.com/webps1/256.webp,1
+257,Espei rasbora,Trigonostigma espei,"Thailand, Cambodia,",6.0,7.0,23.0,28.0,3.8,40.0,https://selectyourfish.com/webps1/257.webp,2
+258,Harlequin rasbora,Trigonostigma heteromorpha,"Thailand, Sunda Islands",6.0,7.0,22.0,28.0,5.0,55.0,https://selectyourfish.com/webps1/258.webp,2
+259,Glowlight rasbora,Trigonostigma hengeli,"Sumatra, Borneo,",6.0,7.0,23.0,28.0,4.0,45.0,https://selectyourfish.com/webps1/259.webp,2
+260,Red-striped rasbora,Trigonopoma pauciperforata,South East Asia,6.0,7.0,21.0,26.0,7.0,85.0,https://selectyourfish.com/webps1/260.webp,2
+261,Dwarf rasbora,Boraras maculatus,"Malaysia, Thailand, Sumatra,",5.0,7.0,22.0,28.0,2.5,25.0,https://selectyourfish.com/webps1/261.webp,2
+262,Eyespot rasbora,Brevibora dorsiocellata,South East Asia,6.0,7.5,20.0,25.0,3.5,35.0,https://selectyourfish.com/webps1/262.webp,2
+263,Brilliant rasbora,Rasbora einthovenii,"Malaysia, Thailand, Sumatra,",6.0,7.5,22.0,28.0,9.0,75.0,https://selectyourfish.com/webps1/263.webp,2
+264,Clown rasbora,Rasbora kalochroma,"Malaysia, Borneo, Sumatra,",6.0,7.5,23.0,28.0,10.0,130.0,https://selectyourfish.com/webps1/264.webp,2
+265,Scissortail rasbora,Rasbora trilineata,South East Asia,6.0,7.5,22.0,25.0,14.0,170.0,https://selectyourfish.com/webps1/265.webp,2
+266,Volcano rasbora,Rasbora vulcanus,"Sumatra,",6.0,7.5,23.0,26.0,4.5,55.0,https://selectyourfish.com/webps1/266.webp,2
+267,Red-tailed rasbora,Rasbora borapetensis,"Thailand, Laos, Cambodia, Vietnam,",6.0,7.5,22.0,26.0,6.0,70.0,https://selectyourfish.com/webps1/267.webp,2
+268,Pearl danio,Danio albolineatus,South East Asia,6.0,7.5,16.0,25.0,6.0,70.0,https://selectyourfish.com/webps1/268.webp,2
+269,Celestial Pearl danio,Danio margaritatus,"Myanmar,",6.5,7.5,22.0,26.0,2.0,35.0,https://selectyourfish.com/webps1/269.webp,2
+270,Bengal danio,Devario devario,"India, Nepal, Bangladesh,",6.0,7.5,15.0,27.0,9.0,130.0,https://selectyourfish.com/webps1/270.webp,2
+271,Giant danio,Devario aequipinnatus,"Pakistan, India, Bangladesh",6.0,7.5,22.0,27.0,15.0,190.0,https://selectyourfish.com/webps1/271.webp,2
+272,Malabar danio,Devario malabaricus,"India,",6.0,7.5,18.0,25.0,13.0,180.0,https://selectyourfish.com/webps1/272.webp,2
+273,Queen danio,Devario regina,"Thailand, Myanmar,",6.0,7.5,20.0,26.0,8.0,115.0,https://selectyourfish.com/webps1/273.webp,2
+274,Spotted danio,Danio nigrofasciatus,"Myanmar,",6.0,7.5,18.0,26.0,3.7,40.0,https://selectyourfish.com/webps1/274.webp,2
+275,Blue danio,Danio kerri,"Thailand,",6.0,7.5,20.0,26.0,4.5,40.0,https://selectyourfish.com/webps1/275.webp,2
+276,Zebra danio,Danio rerio,"Eastern India, Bangladesh,",6.0,7.5,18.0,24.0,5.0,55.0,https://selectyourfish.com/webps1/276.webp,2
+277,Common goldfish,Carassius auratus,"China,",6.0,8.0,4.0,28.0,20.0,90.0,https://selectyourfish.com/webps1/277.webp,2
+278,Rainbow Cichlid,Herotilapia multispinosa,"Honduras, Nicaragua, Costa Rica,",7.0,8.0,22.0,28.0,16.0,100.0,https://selectyourfish.com/webps1/278.webp,2
+279,European Bitterling,Rhodeus amarus,Europe,6.5,8.0,13.0,22.0,10.0,130.0,https://selectyourfish.com/webps1/279.webp,2
+280,White Cloud Mountain minnow,Tanichthys albonubes,"China,",6.0,7.5,14.0,22.0,4.0,45.0,https://selectyourfish.com/webps1/280.webp,2
+281,Red shiner,Cyprinella lutrensis,"United States,",6.5,8.0,14.0,25.0,9.0,135.0,https://selectyourfish.com/webps1/281.webp,2
+282,Western Mosquitofish,Gambusia affinis,"United States, Mexico,",6.0,8.0,18.0,27.0,7.5,25.0,https://selectyourfish.com/webps1/282.webp,2
+283,Fathead minnow,Pimephales promelas,"North America,",6.5,8.0,10.0,22.0,7.5,75.0,https://selectyourfish.com/webps1/283.webp,1
+284,Rainbow shiner,Notropis chrosomus,"United States,",6.0,7.5,10.0,22.0,8.0,75.0,https://selectyourfish.com/webps1/284.webp,2
+285,European minnow,Phoxinus phoxinus,"United States,",6.5,7.5,12.0,20.0,13.0,170.0,https://selectyourfish.com/webps1/285.webp,2
+286,Southern redbelly dace,Phoxinus erythrogaster,"United States,",6.5,7.5,14.0,21.0,10.0,230.0,https://selectyourfish.com/webps1/286.webp,2
+287,Melanzona Guppy,Poecilia parae,"Brazil, The Guianas,",6.5,7.5,24.0,28.0,5.0,55.0,https://selectyourfish.com/webps1/287.webp,2
+288,Blood Parrot Cichlid,A. citrinellus x V. synspilum,"no natural occurrence,",6.5,7.5,22.0,28.0,20.0,120.0,https://selectyourfish.com/webps1/288.webp,2
+289,Saddle-back Loach,Homaloptera orthogoniata,"Borneo,",6.0,7.5,20.0,25.0,11.0,170.0,https://selectyourfish.com/webps1/289.webp,1
+290,Fork-tailed loach,Vaillantella maassi,"Sumatra, Borneo,",6.0,7.5,23.0,29.0,12.0,175.0,https://selectyourfish.com/webps1/290.webp,1
+291,Horseface loach,Acantopsis dialuzona,"Sunda Islands, Thailand,",6.0,7.5,16.0,24.0,20.0,210.0,https://selectyourfish.com/webps1/291.webp,1
+292,Weather Loach,Misgurnus anguillicaudatus,"Korea, Japan, China, Vietnam,",6.0,7.5,10.0,23.0,28.0,210.0,https://selectyourfish.com/webps1/292.webp,1
+293,Kuhli loach,Pangio semicincta,"Sumatra, Malay Peninsula,",6.0,7.5,21.0,26.0,10.0,105.0,https://selectyourfish.com/webps1/293.webp,1
+294,Java loach,Pangio oblonga,"Sunda Islands, Thailand,",6.0,7.5,21.0,26.0,8.0,95.0,https://selectyourfish.com/webps1/294.webp,1
+295,Clown loach,Chromobotia macracanthus,"Sumatra, Borneo,",6.0,7.5,24.0,30.0,30.0,285.0,https://selectyourfish.com/webps1/295.webp,1
+296,Green tiger loach,Syncrossus hymenophysa,"Sumatra, Borneo,",6.0,7.5,25.0,30.0,21.0,150.0,https://selectyourfish.com/webps1/296.webp,1
+297,Banded tiger loach,Syncrossus helodes,"Thailand, Laos, Cambodia, Vietnam,",6.0,7.5,24.0,30.0,30.0,285.0,https://selectyourfish.com/webps1/297.webp,1
+298,Redfin tiger loach,Syncrossus berdmorei,"Myanmar,",6.0,7.5,21.0,26.0,24.0,190.0,https://selectyourfish.com/webps1/298.webp,1
+299,Dwarf botia,Ambastaia sidthimunki,"Thailand,",6.0,7.5,20.0,30.0,6.0,75.0,https://selectyourfish.com/webps1/299.webp,1
+300,Yoyo loach,Botia almorhae,"India, Pakistan ,",6.0,7.5,19.0,27.0,16.0,160.0,https://selectyourfish.com/webps1/300.webp,1
+301,Bengal loach,Botia dario,"India, Bangladesh, Bhutan,",6.0,7.5,23.0,26.0,13.0,140.0,https://selectyourfish.com/webps1/301.webp,1
+302,Polka-Dot Loach,Botia kubotai,"Myanmar, Thailand,",6.0,7.5,22.0,28.0,15.0,160.0,https://selectyourfish.com/webps1/302.webp,1
+303,Gangetic loach,Botia rostrata,"Bangladesh, India,",6.0,7.5,19.0,27.0,20.0,160.0,https://selectyourfish.com/webps1/303.webp,1
+304,Zebra loach,Botia striata,"India,",6.0,7.5,21.0,26.0,9.0,140.0,https://selectyourfish.com/webps1/304.webp,1
+305,Redtail loach,Yasuhikotakia modesta,"Thailand, Laos, Cambodia, Vietnam,",6.0,7.5,23.0,28.0,25.0,285.0,https://selectyourfish.com/webps1/305.webp,1
+306,Skunk loach,Yasuhikotakia morleti,"Laos, Thailand, Cambodia,",6.0,7.5,23.0,28.0,8.5,140.0,https://selectyourfish.com/webps1/306.webp,1
+307,Borneo hillstream loach,Gastromyzon ctenocephalus,"Borneo ,",6.0,7.5,20.0,24.0,4.0,75.0,https://selectyourfish.com/webps1/307.webp,1
+308,Tiger hillstream loach,Sewellia lineolata,"Vietnam,",6.0,7.5,20.0,24.0,6.5,95.0,https://selectyourfish.com/webps1/308.webp,1
+309,Butterfly Loach,Beaufortia kweichowensis,"China,",6.0,7.5,16.0,24.0,7.5,95.0,https://selectyourfish.com/webps1/309.webp,1
+310,Guppy,Poecilia reticulata,"Venezuela, The Guianas,",6.8,7.8,18.0,28.0,6.0,50.0,https://selectyourfish.com/webps1/310.webp,2
+311,Endler's livebearer,Poecilia wingei,"Venezuela,",6.5,7.5,22.0,30.0,4.0,20.0,https://selectyourfish.com/webps1/311.webp,2
+312,Black molly,Poecilia sphenops,"Venezuela, Colombia, Mexico,",7.0,8.0,21.0,28.0,12.0,90.0,https://selectyourfish.com/webps1/312.webp,2
+313,Sailfin molly,Poecilia latipinna,"Mexico,",7.0,8.0,21.0,26.0,12.0,90.0,https://selectyourfish.com/webps1/313.webp,2
+314,Dalmatian molly,Poecilia latipinna,"United States, Mexico,",7.0,8.0,21.0,26.0,12.0,90.0,https://selectyourfish.com/webps1/314.webp,2
+315,Orange Hatchet Danio,Laubuka dadiburjori ,India,6.0,7.5,20.0,24.0,3.0,50.0,https://selectyourfish.com/webps1/315.webp,2
+316,Southern platy,Xiphophorus maculatus,"Mexico, Central America",6.8,8.0,20.0,26.0,7.0,55.0,https://selectyourfish.com/webps1/316.webp,2
+317,Variable platy,Xiphophorus variatus,"Mexico,",6.8,8.0,20.0,26.0,7.0,55.0,https://selectyourfish.com/webps1/317.webp,2
+318,Green swordtail,Xiphophorus hellerii,"Mexico, Central-America,",7.0,8.0,20.0,28.0,15.0,90.0,https://selectyourfish.com/webps1/318.webp,2
+319,Largescale four-eyed fish,Anableps anableps,"Brazil, Venezuela, The Guianas",7.0,8.0,25.0,31.0,30.0,265.0,https://selectyourfish.com/webps1/319.webp,3
+320,Pike topminnow,Belonesox belizanus,"Mexico, Central America",6.5,7.5,23.0,28.0,20.0,165.0,https://selectyourfish.com/webps1/320.webp,3
+321,Cuban limia,Limia vittata,"Cuba,",7.0,8.0,23.0,28.0,6.0,70.0,https://selectyourfish.com/webps1/321.webp,2
+322,Knife livebearer,Alfaro cultratus,"Costa Rica, Nicaragua, Panama,",6.5,7.5,24.0,28.0,7.6,120.0,https://selectyourfish.com/webps1/322.webp,2
+323,Least killifish,Heterandria formosa,"United States,",6.5,7.5,20.0,26.0,3.5,20.0,https://selectyourfish.com/webps1/323.webp,2
+324,Tanganyika killifish,Lamprichthys tanganicanus,"Lake Tanganyika,",7.0,8.0,23.0,25.0,14.0,150.0,https://selectyourfish.com/webps1/324.webp,2
+325,Norman's lampeye,Poropanchax normani,West Africa,6.5,7.5,22.0,26.0,4.0,75.0,https://selectyourfish.com/webps1/325.webp,3
+326,Celebes halfbeak,Nomorhamphus liemi,"Sulawesi,",6.0,7.5,20.0,25.0,9.0,150.0,https://selectyourfish.com/webps1/326.webp,3
+327,Wrestling halfbeak,Dermogenys pusilla,Southeast Asia,6.5,7.5,24.0,28.0,7.0,95.0,https://selectyourfish.com/webps1/327.webp,3
+328,Forest halfbeak,Hemirhamphodon pogonognathus,"Thailand, Sunda Islands",6.0,7.5,24.0,28.0,9.0,130.0,https://selectyourfish.com/webps1/328.webp,3
+329,Steel Blue Killifish,Fundulopanchax gardneri,"Nigeria, Cameroon,",6.5,7.5,21.0,26.0,5.5,80.0,https://selectyourfish.com/webps1/329.webp,2
+330,Clown Killifish,Epiplatys annulatus,"Guinea, Sierra Leone, Liberia,",6.5,7.5,20.0,26.0,3.5,55.0,https://selectyourfish.com/webps1/330.webp,2
+331,Bluefin Notho,Nothobranchius rachovii,"Mozambique,",6.5,7.5,20.0,24.0,6.0,80.0,https://selectyourfish.com/webps1/331.webp,2
+332,Striped panchax,Aplocheilus lineatus,"India, Sri Lanka,",6.0,7.5,22.0,25.0,11.0,115.0,https://selectyourfish.com/webps1/332.webp,3
+333,American Flagfish,Jordanella floridae,"Florida,",7.0,8.0,17.0,23.0,5.5,70.0,https://selectyourfish.com/webps1/333.webp,2
+334,Argentine Pearl Killifish,Austrolebias nigripinnis,"Argentina, Uruguay,",6.5,7.5,18.0,24.0,7.0,70.0,https://selectyourfish.com/webps1/334.webp,2
+335,Golden Toppminnow,Fundulus chrysotus,United States,6.5,8.0,15.0,24.0,7.5,85.0,https://selectyourfish.com/webps1/335.webp,2
+336,Northern Studfish,Fundulus catenatus,United States,6.5,8.0,15.0,25.0,15.0,140.0,https://selectyourfish.com/webps1/336.webp,2
+337,Red-seam Killifish,Aphyosemion calliurum,"Nigeria,",6.0,7.5,24.0,28.0,5.5,75.0,https://selectyourfish.com/webps1/337.webp,2
+338,Arabian toothcarp,Aphanius dispar,Northeast Africa,6.5,7.5,15.0,30.0,7.0,115.0,https://selectyourfish.com/webps1/338.webp,2
+339,Dwarf gourami,Trichogaster lalius,"Pakistan, India, Bangladesh,",6.0,7.5,22.0,27.0,7.5,60.0,https://selectyourfish.com/webps1/339.webp,2
+340,Paradise fish,Macropodus opercularis,"China, Vietnam, Laos,",6.5,7.5,10.0,22.0,8.0,95.0,https://selectyourfish.com/webps1/340.webp,2
+341,Pygmy gourami,Trichopsis pumila,"Thailand, Laos, Cambodia, Vietnam,",6.0,7.5,22.0,28.0,4.0,55.0,https://selectyourfish.com/webps1/341.webp,2
+342,Moonlight gourami,Trichopodus microlepis,"Thailand, Cambodia, Vietnam,",6.0,7.5,25.0,30.0,15.0,115.0,https://selectyourfish.com/webps1/342.webp,2
+343,Snakeskin gourami,Trichopodus pectoralis,"Thailand, Laos, Cambodia, Vietnam,",6.0,7.5,22.0,30.0,25.0,230.0,https://selectyourfish.com/webps1/343.webp,2
+344,Betta,Betta splendens,"Thailand,",6.0,7.5,22.0,30.0,7.5,25.0,https://selectyourfish.com/webps1/344.webp,2
+345,Malay combtail gourami,Belontia hasselti,"Thailand, Sunda Islands",6.0,7.5,21.0,26.0,20.0,170.0,https://selectyourfish.com/webps1/345.webp,2
+346,Slender betta,Betta bellica,"Sumatra, Malay Peninsula",6.0,7.0,25.0,30.0,9.0,75.0,https://selectyourfish.com/webps1/346.webp,2
+347,Scarlet betta,Betta coccina,"Sumatra, Malay Peninsula",6.0,7.0,22.0,30.0,4.0,40.0,https://selectyourfish.com/webps1/347.webp,2
+348,Crescent betta,Betta imbellis,"Malaysia, Thailand, Sumatra,",6.0,7.5,20.0,28.0,6.0,45.0,https://selectyourfish.com/webps1/348.webp,2
+349,Toba betta,Betta rubra,"Sumatra,",6.0,7.5,22.0,27.0,4.0,40.0,https://selectyourfish.com/webps1/349.webp,2
+350,Giant Pikehead,Luciocephalus pulcher,"Thailand, Malaysia, Indonesia,",6.0,7.5,22.0,26.0,20.0,135.0,https://selectyourfish.com/webps1/350.webp,2
+351,Chocolate gourami,Sphaerichthys osphromenoides,"Sumatra, Borneo,",5.5,7.0,26.0,31.0,5.0,65.0,https://selectyourfish.com/webps1/351.webp,2
+352,Pearl gourami,Trichopodus leerii,"Malaysia,Thailand, Sumatra",6.0,7.5,24.0,30.0,12.0,115.0,https://selectyourfish.com/webps1/352.webp,2
+353,Three spot gourami,Trichopodus trichopterus,"China, South East Asia",6.0,7.5,24.0,30.0,13.0,115.0,https://selectyourfish.com/webps1/353.webp,2
+354,Croaking gourami,Trichopsis vittata,South East Asia,6.0,7.5,22.0,28.0,7.0,95.0,https://selectyourfish.com/webps1/354.webp,2
+355,Giant gourami,Osphronemus goramy,South East Asia,6.5,7.5,20.0,30.0,70.0,475.0,https://selectyourfish.com/webps1/355.webp,2
+356,Kissing gourami,Helostoma temminckii,"Java, Sumatra, Borneo ,",6.0,7.5,22.0,30.0,25.0,135.0,https://selectyourfish.com/webps1/356.webp,2
+357,Climbing perch,Anabas testudineus,"South Asia, South East Asia",6.0,7.5,15.0,30.0,20.0,150.0,https://selectyourfish.com/webps1/357.webp,1
+358,Leopard bush fish,Ctenopoma acutirostre,Congo Basin,6.0,7.5,20.0,28.0,16.0,150.0,https://selectyourfish.com/webps1/358.webp,2
+359,African leaf fish,Polycentropsis abbreviata,"Cameroon, Benin, Gabon, Nigeria,",6.0,7.5,26.0,31.0,8.0,75.0,https://selectyourfish.com/webps1/359.webp,2
+360,Bornean leaf fish,Nandus nebulosus,"Thailand, Sunda Islands",6.0,7.5,22.0,26.0,12.0,95.0,https://selectyourfish.com/webps1/360.webp,2
+361,Malayan leaf fish,Pristolepis fasciata,"Thailand,",6.0,7.5,23.0,28.0,20.0,150.0,https://selectyourfish.com/webps1/361.webp,2
+362,Forest snakehead,Channa lucius,South East Asia,6.0,7.5,20.0,30.0,40.0,265.0,https://selectyourfish.com/webps1/362.webp,1
+363,Dwarf snakehead,Channa gachua,"South Asia, South East Asia",6.0,7.5,18.0,28.0,20.0,150.0,https://selectyourfish.com/webps1/363.webp,1
+364,Ocellated snakehead,Channa pleurophthalma,"Sumatra, Borneo,",6.0,7.5,24.0,28.0,40.0,265.0,https://selectyourfish.com/webps1/364.webp,2
+365,African snakehead,Parachanna obscura,West Africa,6.0,7.5,26.0,30.0,45.0,280.0,https://selectyourfish.com/webps1/365.webp,2
+366,Empire gudgeon,Hypseleotris compressa,"Australia, New Guinea,",6.5,7.5,20.0,35.0,12.0,100.0,https://selectyourfish.com/webps1/366.webp,2
+367,Purple spotted gudgeon,Mogurnda mogurnda,"Australia, New Guinea,",6.5,7.5,20.0,26.0,20.0,150.0,https://selectyourfish.com/webps1/367.webp,1
+368,Peacock gudgeon,Tateurndina ocellicauda,"New Guinea,",6.0,7.5,22.0,26.0,7.5,75.0,https://selectyourfish.com/webps1/368.webp,2
+369,Black toraja goby,Mugilogobius sarasinorum,"Sulawesi,",6.5,7.5,26.0,28.0,8.0,80.0,https://selectyourfish.com/webps1/369.webp,1
+370,Bumblebee goby,Brachygobius doriae,"Borneo,",6.5,7.5,22.0,28.0,4.0,45.0,https://selectyourfish.com/webps1/370.webp,1
+371,Knight goby,Stigmatogobius sadanundio,"South Asia, South East Asia",6.5,7.5,20.0,26.0,9.0,80.0,https://selectyourfish.com/webps1/371.webp,1
+372,Rainbow stiphodon,Stiphodon ornatus,"Sumatra,",6.5,7.5,20.0,26.0,6.5,50.0,https://selectyourfish.com/webps1/372.webp,1
+373,Cobalt blue goby,Stiphodon semoni,"Sumatra, New Guinea ,",6.5,7.5,20.0,26.0,4.5,50.0,https://selectyourfish.com/webps1/373.webp,1
+374,Flowerhorn cichlid,Amphilophus hybrid,"no natural occurrence,",6.5,7.8,25.0,31.0,40.0,340.0,https://selectyourfish.com/webps1/374.webp,2
+375,Marbled goby,Oxyeleotris marmorata,"South Asia,",6.0,7.5,22.0,28.0,60.0,550.0,https://selectyourfish.com/webps1/375.webp,1
+376,Doctor Fish,Garra rufa ,"Turkey, Syria, Iraq, Iran",6.5,8.0,14.0,20.0,12.0,110.0,https://selectyourfish.com/webps1/376.webp,1
+377,Filament Barb,Dawkinsia filamentosa,India,6.0,7.5,20.0,25.0,13.0,200.0,https://selectyourfish.com/webps1/377.webp,2
+378,Cardinal toothcarp,Brachyrhaphis roseni,"Costa Rica, Panama",7.0,8.0,22.0,30.0,6.0,60.0,https://selectyourfish.com/webps1/378.webp,2
+379,Fourspotted toothcarp,Phallichthys quadripunctatus,Costa Rica,7.0,8.0,20.0,30.0,3.5,40.0,https://selectyourfish.com/webps1/379.webp,2
+380,Shortfin molly,Poecilia mexicana,"Mexico, Guatemala",7.0,8.5,22.0,28.0,11.0,120.0,https://selectyourfish.com/webps1/380.webp,2
+381,Cauca molly,Poecilia caucana,"Panama, Venezuela, Colombia",7.0,8.5,25.0,30.0,6.0,60.0,https://selectyourfish.com/webps1/381.webp,2
+382,Merry widow livebearer,Phallichthys amates,"Guatemala, Panama",7.0,8.0,22.0,30.0,6.4,60.0,https://selectyourfish.com/webps1/382.webp,2
+383,Pumpkinseed Sunfish,Lepomis gibbosus,"United States, Canada,",6.5,8.5,5.0,23.0,25.0,265.0,https://selectyourfish.com/webps1/383.webp,2
+385,Bluegill Sunfish,Lepomis macrochirus,"United States, Canada,",6.5,8.5,5.0,23.0,35.0,265.0,https://selectyourfish.com/webps1/385.webp,2
+386,Gill's molly,Poecilia gillii,"Costa Rica, Panama",7.0,8.5,22.0,30.0,10.0,100.0,https://selectyourfish.com/webps1/386.webp,2
+387,Golden Tetra,Hemigrammus rodwayi,"The Guianas, Peru, Brazil,",5.5,7.5,24.0,28.0,5.5,75.0,https://selectyourfish.com/webps1/387.webp,2
+388,Mayan Tetra,Hyphessobrycon compressus ,"Mexico, Guatemala, Belize",6.0,7.5,20.0,26.0,4.5,60.0,https://selectyourfish.com/webps1/388.webp,2
+389,Tiger pacu,Acnodon normani,Brazil,6.0,7.5,22.0,28.0,13.0,175.0,https://selectyourfish.com/webps1/389.webp,2
+390,Flag Tetra,Hyphessobrycon heterorhabdus,"Colombia, Brazil",5.5,7.0,21.0,27.0,3.5,60.0,https://selectyourfish.com/webps1/390.webp,2
+391,Drab Sole,Achirus achirus,South America,6.0,7.5,25.0,30.0,37.0,370.0,https://selectyourfish.com/webps1/391.webp,1
+392,Ornate bichir,Polypterus ornatipinnis,West Africa,6.0,8.0,25.0,28.0,55.0,650.0,https://selectyourfish.com/webps1/392.webp,1
+393,West African Bichir,Polypterus retropinnis,"West Africa, Congo Basin",6.0,8.0,25.0,28.0,35.0,200.0,https://selectyourfish.com/webps1/393.webp,1
+394,Barred bichir,Polypterus delhezi,Congo Basin,6.0,8.0,24.0,30.0,35.0,200.0,https://selectyourfish.com/webps1/394.webp,1
+395,Ropefish,Erpetoichthys calabaricus,"Congo Basin, Angola, Nigeria,",6.0,8.0,23.0,30.0,37.0,540.0,https://selectyourfish.com/webps1/395.webp,1
+396,Hingemouth,Phractolaemus ansorgii,Congo Basin,6.0,7.5,23.0,28.0,25.0,135.0,https://selectyourfish.com/webps1/396.webp,1
+397,Blunt-jawed elephantnose,Campylomormyrus tamandua,West Africa,6.0,7.5,23.0,28.0,40.0,650.0,https://selectyourfish.com/webps1/397.webp,2
+398,Peter’s elephantnose,Gnathonemus petersii,Central Africa,6.5,7.5,23.0,28.0,22.5,250.0,https://selectyourfish.com/webps1/398.webp,2
+399,African butterflyfish,Pantodon buchholzi,Central Africa,6.0,7.5,23.0,30.0,12.0,95.0,https://selectyourfish.com/webps1/399.webp,3
+400,African knifefish,Xenomystus nigri,West Africa,6.0,7.5,23.0,28.0,30.0,200.0,https://selectyourfish.com/webps1/400.webp,2
+401,Clown knifefish,Chitala ornata,"Thailand, Laos, Cambodia, Vietnam,",6.0,7.5,20.0,28.0,80.0,475.0,https://selectyourfish.com/webps1/401.webp,1
+402,Freshwater pipefish,Doryichthys martensii,"Thailand, Sunda Islands",6.0,7.5,24.0,28.0,15.0,120.0,https://selectyourfish.com/webps1/402.webp,1
+403,African freshwater pipefish,Enneacampus ansorgii,West Africa,6.0,7.5,24.0,28.0,14.0,120.0,https://selectyourfish.com/webps1/403.webp,1
+404,Peacock Spiny Eel,Macrognathus siamensis,"Sumatra, Malaysia, Thailand,",6.0,7.5,24.0,28.0,30.0,265.0,https://selectyourfish.com/webps1/404.webp,1
+405,Half-banded spiny eel,Macrognathus circumcinctus,"Sumatra, Malaysia, Thailand,",6.0,7.5,24.0,27.0,20.0,215.0,https://selectyourfish.com/webps1/405.webp,1
+406,Lesser spiny eel,Macrognathus aculeatus,"Thailand, Laos, Cambodia, Vietnam,",6.0,7.5,23.0,28.0,38.0,320.0,https://selectyourfish.com/webps1/406.webp,1
+407,Freshwater sole,Brachirus panoides,"Malay Peninsula, Thailand,",6.0,7.5,23.0,28.0,20.0,208.0,https://selectyourfish.com/webps1/407.webp,1
+408,Freshwater needlefish,Xenentodon cancila,"South Asia, Thailand,",6.5,7.5,19.0,30.0,35.0,320.0,https://selectyourfish.com/webps1/408.webp,2
+409,Javanese ricefish,Oryzias javanicus,"Thailand, Sunda Islands",6.0,7.5,24.0,29.0,3.5,40.0,https://selectyourfish.com/webps1/409.webp,2
+410,Daisy's Ricefish,Oryzias woworae,"Muna Island,",7.0,8.0,23.0,27.0,3.0,35.0,https://selectyourfish.com/webps1/410.webp,2
+411,Indian glassy fish,Parambassis ranga,"South Asia, South East Asia",6.0,7.5,20.0,30.0,8.0,75.0,https://selectyourfish.com/webps1/411.webp,2
+412,Amazon leaf fish,Monocirrhus polyacanthus,South America,5.0,6.5,23.0,29.0,9.0,115.0,https://selectyourfish.com/webps1/412.webp,2
+413,Indonesian tigerfish,Datnioides microlepis,"Malaysia, Sumatra, Borneo,",6.5,7.5,20.0,28.0,50.0,680.0,https://selectyourfish.com/webps1/413.webp,2
+414,Spotted Severum,Heros notatus,Brazil,6.0,7.0,22.0,29.0,30.0,220.0,https://selectyourfish.com/webps1/414.webp,2
+415,Panda Garra,Garra flavatra,Myanmar,6.0,7.5,22.0,27.0,9.0,100.0,https://selectyourfish.com/webps1/415.webp,1
+416,Sheepshead minnow,Cyprinodon variegatus ,"United States, Mexico",7.5,8.5,20.0,27.0,7.0,100.0,https://selectyourfish.com/webps1/416.webp,2
+417,Green spotted puffer,Dichotomyctere nigroviridis,"South Asia, South East Asia",7.5,8.5,24.0,28.0,15.0,120.0,https://selectyourfish.com/webps1/417.webp,2
+418,Humpback Puffer,Pao palembangensis,South East Asia,6.5,7.5,24.0,28.0,20.0,120.0,https://selectyourfish.com/webps1/418.webp,1
+419,Red-tail dwarf puffer,Carinotetraodon irrubesco,"Sumatra, Borneo,",6.5,7.5,22.0,28.0,4.5,65.0,https://selectyourfish.com/webps1/419.webp,2
+420,Golden puffer,Auriglobus modestus,"Borneo,",6.0,7.5,23.0,28.0,11.0,85.0,https://selectyourfish.com/webps1/420.webp,2
+421,Figure Eight Puffer,Tetraodon biocellatus,"Cambodia, Malaysia, Borneo,",6.5,7.5,22.0,26.0,8.0,75.0,https://selectyourfish.com/webps1/421.webp,2
+422,Dwarf pufferfish,Carinotetraodon travancoricus,"India,",6.5,7.5,22.0,28.0,2.9,55.0,https://selectyourfish.com/webps1/422.webp,2
+423,Congo pufferfish,Tetraodon miurus,Congo Basin,6.0,7.5,24.0,28.0,15.0,100.0,https://selectyourfish.com/webps1/423.webp,1
+424,Amazon puffer,Colomesus asellus,"Brazil, Colombia, Peru, Ecuador,",6.0,7.5,22.0,28.0,12.0,100.0,https://selectyourfish.com/webps1/424.webp,2
+425,Black devil stingray,Potamotrygon leopoldi,"Brazil,",6.0,7.5,20.0,29.0,60.0,1650.0,https://selectyourfish.com/webps1/425.webp,1
+426,Black ghost knifefish,Apteronotus albifrons,South America,6.0,8.0,24.0,28.0,45.0,320.0,https://selectyourfish.com/webps1/426.webp,2
+427,Brown ghost knifefish,Apteronotus leptorhynchus,"Colombia, Venezuela,",6.5,7.5,24.0,29.0,40.0,320.0,https://selectyourfish.com/webps1/427.webp,2
+428,Glass knifefish,Eigenmannia virescens,South America,6.0,7.5,23.0,28.0,45.0,320.0,https://selectyourfish.com/webps1/428.webp,1
+429,Freshwater blenny,Salaria fluviatilis,"Europe, North Africa",7.0,8.0,12.0,20.0,15.0,95.0,https://selectyourfish.com/webps1/429.webp,1
+430,Brook stickleback,Culaea inconstans,"United States, Canada,",6.5,8.0,10.0,20.0,4.5,75.0,https://selectyourfish.com/webps1/430.webp,2
+431,European Perch,Perca fluviatilis,Europe,6.5,8.0,10.0,22.0,50.0,230.0,https://selectyourfish.com/webps1/431.webp,2
+432,Banded darter,Etheostoma zonale,United States,6.5,8.0,15.0,21.0,7.8,100.0,https://selectyourfish.com/webps1/432.webp,1
+433,Gilt darter,Percina evides,United States,6.5,7.5,15.0,21.0,9.0,110.0,https://selectyourfish.com/webps1/433.webp,1
+434,Orangethroat darter,Etheostoma spectabile,United States,6.0,8.0,15.0,20.0,7.0,95.0,https://selectyourfish.com/webps1/434.webp,1
+435,Rainbow darter,Etheostoma caeruleum,United States,6.5,8.0,10.0,18.0,7.0,95.0,https://selectyourfish.com/webps1/435.webp,1
+436,Redline Torpedo Barb,Sahyadria denisonii,India,6.8,7.8,15.0,25.0,11.0,200.0,https://selectyourfish.com/webps1/436.webp,2
+437,Red rainbowfish,Glossolepis incisus,"New Guinea,",7.0,8.5,22.0,25.0,14.0,130.0,https://selectyourfish.com/webps1/437.webp,2
+438,Lake Wanam rainbowfish,Glossolepis wanamensis,"New Guinea,",7.0,8.0,25.0,30.0,10.0,95.0,https://selectyourfish.com/webps1/438.webp,2
+439,Threadfin rainbowfish,Iriatherina werneri,"New Guinea, Australia,",6.0,7.5,22.0,30.0,4.0,50.0,https://selectyourfish.com/webps1/439.webp,2
+440,New Guinea rainbowfish,Melanotaenia affinis,"New Guinea,",7.0,8.0,20.0,30.0,12.0,115.0,https://selectyourfish.com/webps1/440.webp,2
+441,Western rainbowfish,Melanotaenia australis,"Australia,",6.5,8.0,22.0,27.0,12.0,115.0,https://selectyourfish.com/webps1/441.webp,2
+442,Boeseman's rainbowfish,Melanotaenia boesemani,"New Guinea,",7.0,8.0,27.0,30.0,11.0,115.0,https://selectyourfish.com/webps1/442.webp,2
+443,Duboulayi's rainbowfish,Melanotaenia duboulayi,"Australia,",7.0,8.0,18.0,28.0,12.0,115.0,https://selectyourfish.com/webps1/443.webp,2
+444,Australian rainbowfish,Melanotaenia fluviatilis,"Australia,",6.5,8.0,20.0,25.0,11.0,115.0,https://selectyourfish.com/webps1/444.webp,2
+445,Lake Tebera rainbowfish,Melanotaenia herbertaxelrodi,"New Guinea,",7.0,8.0,20.0,26.0,9.0,95.0,https://selectyourfish.com/webps1/445.webp,2
+446,Lake Kutubu rainbowfish,Melanotaenia lacustris,"New Guinea,",7.0,8.0,20.0,25.0,11.0,110.0,https://selectyourfish.com/webps1/446.webp,2
+447,Lake Kurumoi rainbowfish,Melanotaenia parva,"New Guinea,",7.0,8.0,22.0,26.0,8.0,110.0,https://selectyourfish.com/webps1/447.webp,2
+448,Neon rainbowfish,Melanotaenia praecox,"New Guinea,",6.5,7.5,23.0,28.0,8.0,110.0,https://selectyourfish.com/webps1/448.webp,2
+449,Eastern rainbowfish,Melanotaenia splendida splendida,"Australia,",6.5,8.0,24.0,29.0,15.0,190.0,https://selectyourfish.com/webps1/449.webp,2
+450,Banded rainbowfish,Melanotaenia trifasciata,"Australia,",6.5,8.0,24.0,29.0,15.0,190.0,https://selectyourfish.com/webps1/450.webp,2
+451,Celebes rainbow,Marosatherina ladigesi,"Sulawesi,",7.0,8.0,22.0,28.0,8.0,95.0,https://selectyourfish.com/webps1/451.webp,2
+452,Forktail blue-eye,Pseudomugil furcatus,"New Guinea,",6.0,7.5,24.0,28.0,5.5,85.0,https://selectyourfish.com/webps1/452.webp,2
+453,Spotted blue-eye,Pseudomugil gertrudae,"Australia, Aru Islands,",6.0,7.5,21.0,28.0,3.8,65.0,https://selectyourfish.com/webps1/453.webp,2
+454,Pacific blue-eye,Pseudomugil signifer,"Australia,",6.5,8.0,20.0,26.0,7.0,95.0,https://selectyourfish.com/webps1/454.webp,2
+455,Delicate blue-eye,Pseudomugil tenellus,"Australia, New Guinea,",6.0,7.5,25.0,32.0,5.5,75.0,https://selectyourfish.com/webps1/455.webp,2
+456,Madagascar rainbowfish,Bedotia madagascariensis,"Madagascar,",6.5,7.5,23.0,32.0,8.5,170.0,https://selectyourfish.com/webps1/456.webp,2
+457,Tiger barb,Puntigrus tetrazona,"Sumatra,",6.0,8.0,20.0,26.0,7.0,75.0,https://selectyourfish.com/webps1/457.webp,2
+458,Cherry barb,Puntius titteya,"Sri Lanka,",6.0,8.0,22.0,27.0,5.0,75.0,https://selectyourfish.com/webps1/458.webp,2
+459,Mosquito rasbora,Boraras brigittae,"Borneo,",5.0,7.0,22.0,28.0,2.0,25.0,https://selectyourfish.com/webps1/459.webp,2
+460,Medaka,Oryzias latipes,"Japan, Vietnam, China, Korea,",6.5,7.5,16.0,22.0,3.5,35.0,https://selectyourfish.com/webps1/460.webp,2
+461,Midas Cichlid,Amphilophus citrinellus,"Nicaragua, Costa Rica,",7.0,8.0,21.0,26.0,35.0,300.0,https://selectyourfish.com/webps1/461.webp,2
+462,Redhead Cichlid,Vieja melanurus,"Mexico, Belize, Guatemala,",6.5,8.0,25.0,28.0,37.0,285.0,https://selectyourfish.com/webps1/462.webp,2
+463,Spot-tail Tetra,Brycinus imberi,Africa,6.0,7.5,22.0,27.0,27.0,245.0,https://selectyourfish.com/webps1/463.webp,2
+464,Arrowhead Puffer,Tetraodon suvattii,"Thailand, Laos",6.0,7.5,22.0,26.0,15.0,100.0,https://selectyourfish.com/webps1/464.webp,1
+465,Violet Goby,Gobioides brousonnetti,"United States, Mexico, South America",6.5,8.5,22.0,26.0,55.0,450.0,https://selectyourfish.com/webps1/465.webp,1
+466,Colombian Tetra,Hyphessobrycon columbianus,Colombia,6.0,7.0,23.0,28.0,5.0,75.0,https://selectyourfish.com/webps1/466.webp,2
+467,Texas Cichlid,Herichthys cyanoguttatus,"United States, Mexico",6.0,7.5,20.0,32.0,30.0,250.0,https://selectyourfish.com/webps1/467.webp,2
+468,Salvin's Cichlid,Cichlasoma salvini,"Mexico, Guatemala, Belize",6.5,8.0,22.0,26.0,15.0,100.0,https://selectyourfish.com/webps1/468.webp,2
+469,Pearlscale Cichlid,Herichthys carpintis,Mexico,7.0,8.0,24.0,26.0,30.0,210.0,https://selectyourfish.com/webps1/469.webp,2
+470,Cascajal toothcarp,Brachyrhaphis cascajalensis,Costa Rica,6.5,8.0,24.0,28.0,5.0,40.0,https://selectyourfish.com/webps1/470.webp,2
+471,African Moon Tetra,Bathyaethiops caudomaculatus,Africa,6.5,7.5,22.0,25.0,8.0,85.0,https://selectyourfish.com/webps1/471.webp,2
+472,Spotscale Barb,Barbus holotaenia,Africa,6.0,7.0,24.0,30.0,12.0,120.0,https://selectyourfish.com/webps1/472.webp,2
+473,Badis,Badis badis,"India, Bangladesh, Nepal",6.0,7.5,15.0,25.0,6.0,75.0,https://selectyourfish.com/webps1/473.webp,2
+474,Banded Archerfish,Toxotes jaculatrix,"South Asia, Southeast Asia, Australia",7.0,8.0,25.0,30.0,30.0,450.0,https://selectyourfish.com/webps1/474.webp,3
+475,Paraguay Eartheater,Gymnogeophagus balzanii,"Uruguay, Brazil, Paraguay, Argentina",6.5,7.5,21.0,25.0,14.0,140.0,https://selectyourfish.com/webps1/475.webp,2
+476,Akar Betta,Betta akarensis ,Borneo,5.5,7.0,21.0,27.0,8.0,75.0,https://selectyourfish.com/webps1/476.webp,2
+477,Arulius barb,Dawkinsia arulius,India,6.0,7.5,19.0,25.0,10.0,140.0,https://selectyourfish.com/webps1/477.webp,2
+478,Azureus,Copadichromis azureus,Lake Malawi,7.5,8.5,25.0,28.0,15.0,300.0,https://selectyourfish.com/webps1/478.webp,2
+479,Black Pacu,Colossoma macropomum,South America,5.5,7.5,22.0,28.0,60.0,2500.0,https://selectyourfish.com/webps1/479.webp,2
+480,Black Shark,Labeo chrysophekadion,Southeast Asia,6.0,8.0,20.0,26.0,60.0,2500.0,https://selectyourfish.com/webps1/480.webp,2
+481,Hairy Puffer,Tetraodon baileyi,"Thailand, Laos",6.5,7.5,23.0,27.0,14.0,100.0,https://selectyourfish.com/webps1/481.webp,1
+482,Banded Gourami,Trichogaster fasciata,"Pakistan, India, Nepal",6.0,7.5,21.0,28.0,9.0,100.0,https://selectyourfish.com/webps1/482.webp,2
+483,Balunga Betta,Betta balunga ,Borneo,5.0,7.0,22.0,27.0,5.0,60.0,https://selectyourfish.com/webps1/483.webp,2
+484,Raja Betta,Betta raja ,Sumatra,5.0,7.0,22.0,27.0,7.0,100.0,https://selectyourfish.com/webps1/484.webp,2
+485,Pugnax Betta,Betta pugnax ,Malaysia,5.0,7.5,22.0,28.0,7.0,60.0,https://selectyourfish.com/webps1/485.webp,2
+486,Blackbelt Cichlid,Vieja maculicauda,Central America,6.5,7.5,22.0,28.0,32.0,250.0,https://selectyourfish.com/webps1/486.webp,2
+487,Blue-eyed Tropheus,Tropheus brichardi,Lake Tanganyika,7.8,9.0,23.0,28.0,11.0,140.0,https://selectyourfish.com/webps1/487.webp,2
+488,Blue Neon Cichlid,Paracyprichromis nigripinnis,Lake Tanganyika,7.5,9.0,24.0,27.0,11.0,180.0,https://selectyourfish.com/webps1/488.webp,2
+489,Blue Tetra,Boehlkea fredcochui,Peru,6.0,7.5,22.0,28.0,5.5,75.0,https://selectyourfish.com/webps1/107.webp,2
+490,African Butterfly Barb,Barbus hulstaerti,Central Africa,5.0,6.5,17.0,24.0,3.5,40.0,https://selectyourfish.com/webps1/490.webp,2
+491,Yellow Phantom Tetra,Hyphessobrycon roseus,"Suriname, French Guiana",5.0,7.0,20.0,28.0,2.0,25.0,https://selectyourfish.com/webps1/491.webp,2
+492,African Banded Barb,Barbus fasciolatus,Africa,5.0,6.5,20.0,26.0,6.0,75.0,https://selectyourfish.com/webps1/492.webp,2
+493,Brevis Shell Dweller,Neolamprologus brevis,Lake Tanganyika,7.5,9.0,23.0,27.0,6.0,60.0,https://selectyourfish.com/webps1/493.webp,2
+494,Brittan’s rasbora,Kottelatia brittani,Malaysia,6.0,7.5,20.0,26.0,6.0,60.0,https://selectyourfish.com/webps1/494.webp,2
+495,Ceros Tetra,Moenkhausia ceros,"Peru, Brazil",5.5,7.0,24.0,28.0,5.0,60.0,https://selectyourfish.com/webps1/495.webp,2
+496,Checkered Barb,Oliotius oligolepis ,Sumatra,5.5,7.5,20.0,26.0,4.5,60.0,https://selectyourfish.com/webps1/496.webp,2
+497,Crocodile Catfish,Bagarius suchus,"Thailand, Laos, Cambodia",65.0,7.5,18.0,23.0,70.0,2500.0,https://selectyourfish.com/webps1/497.webp,1
+498,White-Spotted Cichlid,Tropheus duboisi,Lake Tanganyika,7.5,9.0,23.0,28.0,12.0,110.0,https://selectyourfish.com/webps1/498.webp,2
+499,Chukai Betta,Betta tussyae,Malaysia,5.0,6.5,23.0,28.0,4.0,40.0,https://selectyourfish.com/webps1/499.webp,2
+500,Clown Barb,Barbodes everetti ,Bornea,6.0,7.0,18.0,28.0,12.0,150.0,https://selectyourfish.com/webps1/500.webp,2
+501,Burmese Badis,Badis ruber ,"Myanmar, Thailand, Laos",6.5,7.5,18.0,25.0,5.0,75.0,https://selectyourfish.com/webps1/501.webp,2
+900,Cherry Shrimp,Neocaridina davidi,Taiwan,6.5,8.0,15.0,29.0,4.0,20.0,,1
+901,Amano Shrimp,Caridina multidentata,Japan,6.0,7.5,15.0,27.0,5.0,30.0,,1
+902,Bamboo Shrimp,Atyopsis moluccensis,Southeast Asia,6.5,7.5,22.0,29.0,10.0,50.0,,1
+903,Ghost Shrimp,Palaemon paludosus,North America,7.0,8.0,18.0,29.0,4.0,20.0,,1
+904,Bee Shrimp,Caridina cantonensis,"Taiwan, Southern China",5.5,7.5,19.0,26.0,3.0,20.0,,1
+905,Tiger Shrimp,Caridina mariae,Taiwan,6.0,7.5,18.0,23.0,4.0,25.0,,1
+906,Vampire Shrimp,Atya gabonensis,West Africa,6.5,7.5,24.0,28.0,13.0,75.0,,1
+907,Riceland prawn,Macrobrachium lanchesteri,Southeast Asia,6.5,8.0,24.0,30.0,9.0,60.0,,1
+908,Sulawesi Shrimp,Caridina dennerli,Sulawesi,7.5,8.5,26.0,31.0,2.5,20.0,,1
+909,Rili Shrimp,Neocaridina davidi,Taiwan,6.5,8.0,15.0,29.0,3.8,20.0,,1
+910,Blue Velvet Shrimp,Neocaridina davidi,Taiwan,6.5,8.0,15.0,29.0,4.0,20.0,,1
+911,Yellow Neocaridina,Neocaridina davidi,Taiwan,6.5,8.0,15.0,29.0,4.0,20.0,,1
+912,Orange Neocaridina,Neocaridina davidi,Taiwan,6.5,8.0,15.0,29.0,4.0,20.0,,1
+913,Crystal Red Shrimp,Caridina cantonensis,"Taiwan, Southern China",5.5,7.5,19.0,26.0,4.0,30.0,,1
+914,Bladder Snail,Physella acuta,Europe,6.5,8.0,14.0,30.0,1.5,20.0,,1
+915,Zebra Nerite,Vittina natalensis,Africa,6.5,8.0,19.0,29.0,2.5,20.0,,1
+916,Assassin Snail,Anentome helena,"Malaysia, Thailand, Indonesia",6.5,8.0,22.0,27.0,2.5,20.0,,1
+917,Mystery Snail,Pomacea diffusa,South America,6.5,8.0,21.0,26.0,5.0,20.0,,1
+918,Giant Colombian Ramshorn,Marisa cornuarietis,"Central America, South America",6.5,8.0,23.0,27.0,5.0,20.0,,1
+919,Great Ramshorn,Planorbarius corneus,"Europe, Middle East",6.5,8.0,18.0,25.0,4.0,20.0,,1
+920,Seminole Ramshorn,Planorbella duryi,Florida,6.5,8.0,20.0,28.0,2.5,20.0,,1
+921,Black Devil Snail,Faunus ater,Southeast Asia,6.5,7.5,22.0,30.0,10.0,50.0,,1
+922,Japanese Trapdoor Snail,Cipangopaludina malleat,Japan,6.5,8.0,18.0,25.0,5.0,30.0,,1
+923,Malaysian Trumpet Snail,Melanoides tuberculata,Southeast Asia,6.5,8.0,21.0,25.0,3.0,20.0,,1
+924,Pagoda Snail,Brotia pagoluda,"Thailand, Laos, Cambodia",6.8,8.0,22.0,28.0,6.0,20.0,,1
+925,Great  Pond Snail,Lymnaea stagnalis,Europe,6.5,8.0,18.0,24.0,6.0,20.0,,1
+926,White Spotted Rabbit Snail,Tylomelania towutica,Sulawesi,7.0,8.5,24.0,29.0,11.0,60.0,,1
+927,Triangle Rabbit Snail,Tylomelania sinabartfeldi,Sulawesi,7.0,8.5,24.0,30.0,5.0,20.0,,1
+929,Green Jade Shrimp,Neocaridina davidi,Taiwan,6.5,8.0,15.0,29.0,4.0,20.0,,1
+930,Wandering Snail,Ampullaceana balthica,Europe,6.5,8.0,10.0,29.0,7.0,40.0,,1
+931,Marbled Limpet Nerite,Septaria porcellana,Southeast Asia,6.5,8.0,23.0,28.0,3.0,20.0,,1
+932,White Wizard Snail,Filopaludina martensi,Southeast Asia,6.5,8.0,22.0,26.0,5.0,40.0,,1
+933,Gold Rabbit Snail,Tylomelania gemmifera,Sulawesi,7.0,8.5,24.0,28.0,7.0,60.0,,1
+934,Himalayan Rabbit Snail,Tylomelania marwotoae,Sulawesi,7.0,8.5,25.0,30.0,5.0,40.0,,1
+935,Dusky Nerite Snail,Neritina pulligera,"Southeast Asia, Northern Australia",6.5,8.0,22.0,28.0,4.0,20.0,,1
+936,Apple Snail ,Pomacea canaliculata,South America,6.5,8.0,18.0,27.0,15.0,80.0,,1
+937,Thai Micro Crab,Limnopilos Naiyanetri,Thailand,6.5,7.5,22.0,28.0,2.5,20.0,,1
+938,Pom Pom Crab,Ptychognathus Barbatus,"Southeast Asia, South Asia",6.5,7.5,22.0,28.0,4.0,20.0,,1
+939,Tanganyika Crab,Platythelphusa Sp.,Africa,7.0,8.5,24.0,28.0,10.0,60.0,,1
+940,Panther Crab,Parathelphusa Pantherina,Sulawesi,7.5,8.5,24.0,30.0,11.0,85.0,,1
+941,Matano Crab,Syntripsa Matannensis,Sulawesi,7.3,8.5,24.0,30.0,11.0,85.0,,1
+942,test,,,,,,,,,,1

@@ -11,11 +11,12 @@ New for v3.3.2:
  • Improved error handling
  • Automatic schema upgrades
 
-Updated: 2025-06-15 (v3.3.2)
+Updated: 2025-06-15 (v3.3.2) - Final fix for st.image bug
 """
 
 import pandas as pd
 import streamlit as st
+import numpy as np
 
 from aqualog_db.legacy import fetch_all_tanks
 from aqualog_db.connection import get_connection
@@ -29,23 +30,14 @@ print(">>> LOADING", __file__)
 def _ensure_owned_plants_schema():
     with get_connection() as conn:
         cur = conn.cursor()
-        # Check if columns exist
         cur.execute("PRAGMA table_info(owned_plants);")
         cols = {row[1] for row in cur.fetchall()}
         
-        # Add missing columns with proper defaults
         if 'tank_id' not in cols:
-            cur.execute("""
-                ALTER TABLE owned_plants 
-                ADD COLUMN tank_id INTEGER NOT NULL DEFAULT 1
-            """)
+            cur.execute("ALTER TABLE owned_plants ADD COLUMN tank_id INTEGER NOT NULL DEFAULT 1")
         
         if 'common_name' not in cols:
-            cur.execute("""
-                ALTER TABLE owned_plants 
-                ADD COLUMN common_name TEXT DEFAULT ''
-            """)
-            # Backfill existing records
+            cur.execute("ALTER TABLE owned_plants ADD COLUMN common_name TEXT DEFAULT ''")
             cur.execute("""
                 UPDATE owned_plants 
                 SET common_name = (
@@ -57,36 +49,14 @@ def _ensure_owned_plants_schema():
         conn.commit()
 
 # ──────────────────────────────────────────────────────────────────────────
-# Fuzzy match helper (now handles None values)
-# ──────────────────────────────────────────────────────────────────────────
-SEARCH_COLS = [
-    "plant_name",
-    "common_name",
-    "origin",
-    "growth_rate",
-    "height_cm",
-    "light_demand",
-    "co2_demand",
-]
-
-def _matches(row: pd.Series, term: str) -> bool:
-    term = term.lower()
-    return any(
-        str(row.get(col, '')).lower().find(term) >= 0
-        for col in SEARCH_COLS
-    )
-
-# ──────────────────────────────────────────────────────────────────────────
 # Main tab with robust error handling
 # ──────────────────────────────────────────────────────────────────────────
 def plant_inventory_tab():
     """Manage per-tank plant inventory."""
     try:
-        # Active tank
         tid = st.session_state.get('tank_id', 1)
         _ensure_owned_plants_schema()
 
-        # Resolve current tank name
         tanks = fetch_all_tanks()
         tank_name = next((t['name'] for t in tanks if t['id'] == tid), f"Tank #{tid}")
 
@@ -97,7 +67,7 @@ def plant_inventory_tab():
             master = pd.read_sql_query("""
                 SELECT
                     plant_id,
-                    plant_name,
+                    COALESCE(plant_name, '') AS plant_name,
                     COALESCE(origin, '') AS origin,
                     COALESCE(origin_info, '') AS origin_info,
                     COALESCE(growth_rate, '') AS growth_rate,
@@ -115,10 +85,16 @@ def plant_inventory_tab():
 
         # 2️⃣ Search master list
         st.subheader('🔍 Search Plant Database')
-        query = st.text_input('Search plants...', key='plant_search').strip()
+        query = st.text_input('Search plants...', key='plant_search').strip().lower()
 
         if query:
-            filtered = master[master.apply(lambda r: _matches(r, query), axis=1)]
+            search_cols = [
+                "plant_name", "origin", "growth_rate", "height_cm", 
+                "light_demand", "co2_demand"
+            ]
+            search_series = master[search_cols].astype(str).agg(' '.join, axis=1).str.lower()
+            filtered = master[search_series.str.contains(query, na=False)]
+            
             if filtered.empty:
                 st.info('No matching plants found.')
             else:
@@ -128,8 +104,8 @@ def plant_inventory_tab():
                         name = row['plant_name'] or 'Unnamed plant'
                         cols = st.columns([1, 4, 1])
                         
-                        # Thumbnail
-                        if row['thumbnail_url']:
+                        # Thumbnail - with validation to prevent crash
+                        if row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
                             cols[0].image(row['thumbnail_url'], width=80)
                         
                         # Details
@@ -146,27 +122,25 @@ def plant_inventory_tab():
                                 if row[val]:
                                     st.write(f"**{label}:** {row[val]}")
                                 if row[desc]:
-                                    st.caption(row[desc])
+                                    st.text(row[desc])
                         
                         # Add button
                         if cols[2].button('➕ Add', key=f'add_{pid}'):
                             try:
                                 with get_connection() as conn:
                                     conn.execute("""
-                                        INSERT INTO owned_plants 
-                                        (plant_id, common_name, tank_id)
-                                        VALUES (?, ?, ?)
-                                        ON CONFLICT(plant_id, tank_id) DO NOTHING
+                                        INSERT INTO owned_plants (plant_id, common_name, tank_id)
+                                        VALUES (?, ?, ?) ON CONFLICT(plant_id, tank_id) DO NOTHING
                                     """, (pid, name, tid))
                                     conn.commit()
                                 show_toast('✅ Added', f'{name} added to {tank_name}')
-                                st.experimental_rerun()
+                                st.rerun()
                             except Exception as e:
                                 st.error(f"Couldn't add plant: {str(e)}")
 
         # 3️⃣ Manual add new plant
         with st.expander('➕ Add New Plant to Database'):
-            new_plant = {
+            new_plant_values = {
                 'plant_name': st.text_input('Scientific Name*', key='new_name'),
                 'origin': st.text_input('Origin', key='new_origin'),
                 'growth_rate': st.text_input('Growth Rate', key='new_growth'),
@@ -175,20 +149,16 @@ def plant_inventory_tab():
                 'co2_demand': st.text_input('CO₂ Needs', key='new_co2'),
                 'thumbnail_url': st.text_input('Image URL', key='new_image')
             }
-            
             if st.button('Save New Plant'):
-                if not new_plant['plant_name'].strip():
+                if not new_plant_values['plant_name'].strip():
                     st.error('Scientific name is required')
                 else:
                     try:
                         with get_connection() as conn:
                             conn.execute("""
-                                INSERT INTO plants (
-                                    plant_name, origin, growth_rate,
-                                    height_cm, light_demand, co2_demand,
-                                    thumbnail_url
-                                ) VALUES (?, ?, ?, ?, ?, ?, ?)
-                            """, tuple(new_plant.values()))
+                                INSERT INTO plants (plant_name, origin, growth_rate, height_cm, light_demand, co2_demand, thumbnail_url) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?)
+                            """, tuple(new_plant_values.values()))
                             conn.commit()
                         st.success('Plant added to database!')
                         st.experimental_rerun()
@@ -212,9 +182,12 @@ def plant_inventory_tab():
         if owned.empty:
             st.info(f"No plants in {tank_name}. Search above to add some.")
         else:
-            search_term = st.text_input('🔍 Filter your plants', key='filter_owned').strip().lower()
-            if search_term:
-                owned = owned[owned.apply(lambda r: _matches(r, search_term), axis=1)]
+            search_term_owned = st.text_input('🔍 Filter your plants', key='filter_owned').strip().lower()
+            if search_term_owned:
+                search_cols_owned = ["display_name", "origin", "growth_rate"]
+                search_series_owned = owned[search_cols_owned].astype(str).agg(' '.join, axis=1).str.lower()
+                owned = owned[search_series_owned.str.contains(search_term_owned, na=False)]
+                
                 if owned.empty:
                     st.info('No plants match your filter.')
 
@@ -224,11 +197,9 @@ def plant_inventory_tab():
                     pid = row['plant_id']
                     name = row['display_name']
                     
-                    # Thumbnail
-                    if row['thumbnail_url']:
+                    if row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
                         cols[0].image(row['thumbnail_url'], width=80)
                     
-                    # Details
                     with cols[1]:
                         st.subheader(name)
                         if row['origin']:
@@ -236,14 +207,10 @@ def plant_inventory_tab():
                         if row['growth_rate']:
                             st.write(f"**Growth:** {row['growth_rate']}")
                     
-                    # Remove button
                     if cols[2].button('🗑️', key=f'del_{pid}'):
                         try:
                             with get_connection() as conn:
-                                conn.execute("""
-                                    DELETE FROM owned_plants 
-                                    WHERE plant_id = ? AND tank_id = ?
-                                """, (pid, tid))
+                                conn.execute("DELETE FROM owned_plants WHERE plant_id = ? AND tank_id = ?", (pid, tid))
                                 conn.commit()
                             show_toast('🗑️ Removed', f'{name} removed')
                             st.experimental_rerun()
