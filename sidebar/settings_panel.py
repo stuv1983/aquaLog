@@ -205,17 +205,15 @@ def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) ->
 # ════════════════════════════════════════════════════════════════════════════
 # 5) CSV IMPORT
 # ════════════════════════════════════════════════════════════════════════════
-import os
-import pandas as pd
-import sqlite3
-
 def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """⬇️ Import CSV data into the current tank."""
     st.subheader("⬇️ Import from CSV")
     tid = st.session_state.get("tank_id", 0)
+
     uploaded = st.file_uploader("Choose CSV", type="csv", key="csv_uploader")
     if not uploaded:
         return
+
     if not st.button("Import CSV", key="import_csv_btn"):
         return
 
@@ -242,39 +240,30 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
             st.error(f"Missing required columns: {', '.join(missing)}")
             return
 
-        # 5) Handle database connection properly
+        # 5) Perform the DB insert within the context manager
         with get_connection() as conn:
-            # Get the actual connection object if it's wrapped in a context manager
-            if hasattr(conn, '__enter__'):
-                conn = conn.__enter__()
-            
-            try:
-                # a) Verify table exists
-                table_exists = conn.execute(
-                    "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
-                ).fetchone()
-                
-                if not table_exists:
-                    st.error("Database error: water_tests table doesn't exist")
-                    return
+            # a) Verify table exists
+            if not conn.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name='water_tests';"
+            ).fetchone():
+                st.error("Database error: water_tests table doesn't exist")
+                return
 
-                # b) Build and execute INSERT for the 11 user fields
-                cols = ", ".join(required)
-                placeholders = ", ".join("?" for _ in required)
-                sql = f"INSERT INTO water_tests ({cols}) VALUES ({placeholders})"
+            # b) Build and execute INSERT for the 11 user fields
+            cols = ", ".join(required)
+            placeholders = ", ".join("?" for _ in required)
+            sql = f"INSERT INTO water_tests ({cols}) VALUES ({placeholders})"
 
-                records = [tuple(row[c] for c in required) for _, row in df.iterrows()]
-                conn.executemany(sql, records)
-                conn.commit()
-                
-                st.success(f"Imported {len(df)} records into '{tank_map[tid]['name']}'")
-                request_rerun()
-            except Exception as e:
-                conn.rollback()
-                raise e
+            records = [tuple(row[c] for c in required) for _, row in df.iterrows()]
+            conn.executemany(sql, records)
+            conn.commit()
+
+        st.success(f"Imported {len(df)} records into '{tank_map[tid]['name']}'")
+        request_rerun()
 
     except Exception as e:
-        st.error(f"Import failed: {str(e)}")
+        st.error(f"Import failed: {e}")
+
 
 
 # ════════════════════════════════════════════════════════════════════════════
