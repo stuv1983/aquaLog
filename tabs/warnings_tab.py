@@ -13,12 +13,18 @@ import streamlit as st
 # Modern DB imports
 from aqualog_db.connection import get_connection
 
-from config import SAFE_RANGES, ACTION_PLANS
+# FIX: Import LOW_ACTION_PLANS in addition to the others
+from config import SAFE_RANGES, ACTION_PLANS, LOW_ACTION_PLANS
 
 VALID_PARAMETERS = ["ammonia", "gh", "kh", "nitrate", "nitrite", "ph", "temperature"]
 
 
-def warnings_tab() -> None:
+def warnings_tab(key_prefix=""):
+    """
+    Renders the warnings tab.
+    Args:
+        key_prefix (str): A string to prefix all widget keys to ensure uniqueness.
+    """
     st.header("⚠️ Last 10 Test Warnings")
 
     # Use context manager to get a valid DB connection
@@ -48,27 +54,47 @@ def warnings_tab() -> None:
     # Build warnings list
     warnings: List[Dict[str, Any]] = []
     for _, row in tests_df.iterrows():
-        test_warnings: List[str] = []
+        # FIX: Differentiate between low and high warnings
+        low_warnings: List[str] = []
+        high_warnings: List[str] = []
+
         for param in VALID_PARAMETERS:
             value = row.get(param)
             if value is None or pd.isna(value):  # Skip missing
                 continue
+            
             low, high = SAFE_RANGES.get(param, (None, None))
+            
             if low is not None and value < low:
-                test_warnings.append(param)
-            elif high is not None and value > high:
-                test_warnings.append(param)
-        if test_warnings:
+                low_warnings.append(param)
+            
+            if high is not None and value > high:
+                high_warnings.append(param)
+
+        if low_warnings or high_warnings:
             warnings.append({
                 "date": row["date"],
                 "tank": row.get("tank_name", "Unknown"),
-                "warnings": test_warnings,
+                "low_warnings": low_warnings,
+                "high_warnings": high_warnings,
             })
 
     # Display collapsible warnings
-    for w in warnings:
-        with st.expander(f"Test from {w['date']} – {w['tank']} ({', '.join(w['warnings'])})"):
-            for param in w['warnings']:
-                plan = ACTION_PLANS.get(param)
-                if plan:
-                    st.markdown(f"- **{param.title()}**: {plan}")
+    for idx, w in enumerate(warnings):
+        all_warnings = w['low_warnings'] + w['high_warnings']
+        expander_title = f"Test from {w['date']} – {w['tank']} ({', '.join(all_warnings)})"
+        
+        with st.expander(expander_title):
+            # FIX: Iterate through low warnings and get plans from LOW_ACTION_PLANS
+            for param in w['low_warnings']:
+                plan_list = LOW_ACTION_PLANS.get(param)
+                if plan_list:
+                    for item in plan_list:
+                        st.markdown(f"- {item}")
+            
+            # FIX: Iterate through high warnings and get plans from ACTION_PLANS (for high values)
+            for param in w['high_warnings']:
+                plan_list = ACTION_PLANS.get(param)
+                if plan_list:
+                    for item in plan_list:
+                        st.markdown(f"- {item}")
