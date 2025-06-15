@@ -205,44 +205,33 @@ def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) ->
 # ════════════════════════════════════════════════════════════════════════════
 # 5) CSV IMPORT
 # ════════════════════════════════════════════════════════════════════════════
+import pandas as pd
+import sqlite3
+
 def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """⬇️ Import CSV data into the current tank."""
     st.subheader("⬇️ Import from CSV")
     tid = st.session_state.get("tank_id", 0)
-
     uploaded = st.file_uploader("Choose CSV", type="csv", key="csv_uploader")
-    if uploaded is None:
+    if not uploaded:
         return
-
     if not st.button("Import CSV", key="import_csv_btn"):
         return
 
     try:
+        # 1) Read the CSV
         df = pd.read_csv(uploaded)
-
-        # Robust date parsing
+        # 2) Normalize the date column
         if "date" in df.columns:
             df["date"] = pd.to_datetime(df["date"], errors="coerce")
             df["date"] = df["date"].dt.strftime("%Y-%m-%dT%H:%M:%S").fillna("")
-
-        # Required CSV columns
-        required = [
-            "date", "ph", "ammonia", "nitrite", "nitrate",
-            "kh", "gh", "co2_indicator", "temperature", "notes",
-        ]
-        missing = [c for c in required if c not in df.columns]
-        if missing:
-            st.error(f"Missing required columns: {', '.join(missing)}")
-            return
-
-        # Tag tank
+        # 3) Add tank_id
         df["tank_id"] = tid
-        records = df.to_dict("records")
 
-        # Use get_connection() as a context manager to get the real Connection
         with get_connection() as conn:
-            # Ensure table exists
             cur = conn.cursor()
+
+            # a) Verify the table exists
             cur.execute(
                 "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
             )
@@ -250,28 +239,37 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                 st.error("Database error: water_tests table doesn't exist")
                 return
 
-            # Insert exactly the 11 CSV fields; id and timestamps default
-            cur.executemany(
-                """
-                INSERT INTO water_tests (
-                    date, ph, ammonia, nitrite, nitrate,
-                    temperature, kh, co2_indicator, gh,
-                    tank_id, notes
-                ) VALUES (
-                    :date, :ph, :ammonia, :nitrite, :nitrate,
-                    :temperature, :kh, :co2_indicator, :gh,
-                    :tank_id, :notes
-                )
-                """,
-                records
-            )
+            # b) Introspect table schema to pick only the INSERT-able columns
+            cur.execute("PRAGMA table_info(water_tests)")
+            # PRAGMA returns: cid, name, type, notnull, dflt_value, pk
+            cols = [row["name"] for row in map(dict, cur.fetchall())
+                    # exclude the PK and any auto-timestamp defaults
+                    if row["name"] not in ("id", "updated_at")]
+            # Now 'cols' might be:
+            # ['date','ph','ammonia',…,'tank_id','notes','created_at']
+
+            # c) Make sure CSV provides everything except the auto ones
+            missing = [c for c in cols if c not in df.columns]
+            if missing:
+                st.error(f"Missing required columns: {', '.join(missing)}")
+                return
+
+            # d) Build a param-style INSERT
+            col_list = ", ".join(cols)
+            placeholder = ", ".join(":" + c for c in cols)
+            sql = f"INSERT INTO water_tests ({col_list}) VALUES ({placeholder})"
+
+            # e) Execute
+            records = df.to_dict("records")
+            cur.executemany(sql, records)
             conn.commit()
 
-        st.success(f"Successfully imported {len(records)} records into “{tank_map[tid]['name']}”")
+        st.success(f"Imported {len(records)} records into “{tank_map[tid]['name']}.”")
         request_rerun()
 
     except Exception as e:
         st.error(f"Import failed: {e}")
+
 
 # ════════════════════════════════════════════════════════════════════════════
 # 6) LOCALISATION & UNITS
