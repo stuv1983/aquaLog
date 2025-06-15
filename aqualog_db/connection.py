@@ -1,18 +1,27 @@
-# aqualog_db/connection.py
-"""
-Helper module for acquiring database connections using BaseRepository
-"""
-from .base import BaseRepository
+import os
+import sqlite3
+from contextlib import contextmanager
 
-
+@contextmanager
 def get_connection():
     """
-    Returns a context manager yielding a sqlite3.Connection with PRAGMAs applied.
-
-    Usage:
-        from aqualog_db.connection import get_connection
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            # ... execute queries, commit as needed
+    Provides a context-managed sqlite3 Connection to the project's aqualog.db file,
+    ensuring the correct database path regardless of the current working directory.
     """
-    return BaseRepository()._connection()
+    # Determine project root (parent of this module's directory)
+    project_root = os.path.dirname(os.path.dirname(__file__)) #
+    db_path = os.path.join(project_root, "aqualog.db") #
+
+    # ADD THIS LINE TO REVEAL THE PATH
+    print(f"--- !!! APPLICATION IS USING DATABASE AT: {db_path} !!! ---")
+
+    # Connect with type parsing and row factory for dict-like access
+    conn = sqlite3.connect(
+        db_path,
+        detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+    )
+    conn.row_factory = sqlite3.Row
+    try:
+        yield conn
+    finally:
+        conn.close()
