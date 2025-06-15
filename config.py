@@ -56,57 +56,58 @@ TOO_HIGH_THRESHOLDS: dict[str, float] = {
 # ──────────────────────────────────────────────────────────────
 LOW_ACTION_PLANS: dict[str, list[str]] = {
     "nitrate": [
-        "⚠️ Nitrate is low (below 20 ppm).",
-        "Dose a nitrate fertiliser until you reach 20–40 ppm.",
-        "Consider heavier feeding or more livestock only if plants still starve.",
+        "Nitrate is low (<20 ppm). Dose a nitrate fertilizer to reach the 20-40 ppm target range.",
+        "If plants show deficiencies despite dosing, consider minor changes to feeding or livestock.",
     ],
     "co2_indicator": [
-        "CO₂ is low – raise injection rate and improve mixing.",
+        "CO₂ is low. Gradually increase the injection rate and ensure good circulation to improve mixing.",
     ],
     "kh": [
-        "KH is low (<4 dKH). Dose an alkaline buffer to bring KH to 6 dKH.",
-        "Re-test KH daily until stable.",
+        "KH is critically low (<4 dKH), which can lead to unstable pH. Dose an alkaline buffer to raise KH towards the 4-6 dKH range.",
+        "Test KH daily after adjustments until it remains stable.",
     ],
     "ph": [
-        "pH is low (<6.0). Dose Neutral Regulator gradually; avoid sudden shifts.",
+        "pH is very low (<6.0). Use a neutral regulator or other buffer to gradually raise the pH, avoiding sudden changes that can shock livestock.",
     ],
     "gh": [
-        "GH is low (<6.0 dGH). Add remineralizer (e.g. Seachem Equilibrium).",
-        "Target GH of 6–8 dGH; re-test weekly.",
+        "GH is low (<6 dGH). Add a remineralizer (e.g., Seachem Equilibrium) to reach the 6-8 dGH target range.",
+        "Test GH weekly after adjustments until stable.",
     ],
 }
 
+
 ACTION_PLANS: dict[str, list[str]] = {
     "temperature": [
-        "Temperature high (>28 °C): turn off heater and increase surface agitation.",
-        "Use a fan or floating ice bottles if ambient temps stay high.",
+        "Temperature is high (>28°C). Turn off the aquarium heater and increase surface agitation for better oxygen exchange.",
+        "If ambient room temperature is high, use a cooling fan or float sealed bottles of ice to gently lower the temperature.",
     ],
     "ammonia": [
-        "Ammonia detected – perform a 50% water change immediately.",
-        "Seed with nitrifying culture (e.g. FritzZyme TurboStart, Tetra SafeStart+).",
-        "Stop feeding and maximise aeration.",
+        "Ammonia is present. Perform an immediate 50% water change to reduce toxicity.",
+        "Add a detoxifier (e.g., Seachem Prime) and a bacterial starter (e.g., FritzZyme).",
+        "Stop feeding for 24-48 hours and maximize aeration.",
     ],
     "nitrite": [
-        "Nitrite detected (>0.0 ppm) – perform a 30–50% water change.",
-        "Seed with nitrifying bacteria and run air stones 24/7.",
+        "Nitrite is present (>0 ppm), which is toxic to fish. Perform a 30-50% water change.",
+        "Add a bacterial starter and ensure high aeration to help process the nitrite.",
     ],
     "nitrate": [
-        "⚠️ Nitrate is high (>50 ppm). Perform a 30–50% water change.",
-        "Reduce feeding and add fast-growing plants.",
-        "Audit fertiliser routine and vacuum substrate.",
+        "Nitrate is high (>50 ppm). Perform a 30-50% water change to lower levels.",
+        "To manage nitrates long-term, reduce feeding, add fast-growing plants, and ensure regular substrate cleaning.",
     ],
     "ph": [
-        "pH is high (>8.0): perform partial water change with neutral water.",
-        "Adjust buffering until pH remains within 6.5–8.0.",
+        "pH is high (>8.0). Perform partial water changes using softer water (like RO or rainwater) to lower it.",
+        "Investigate and remove any alkaline-leaching decor, such as certain rocks or substrate.",
     ],
     "kh": [
-        "KH is high (>8 dKH): pause buffering additives and top-off with softer water.",
+        "KH is high (>8 dKH), which can make pH difficult to lower. Pause the use of all buffering additives.",
+        "Use reverse osmosis (RO) or rainwater for top-offs and water changes to gradually reduce KH.",
     ],
     "gh": [
-        "GH is high (>10 dGH): partial change with RO/soft water; pause GH salts.",
+        "GH is high (>10 dGH). Stop dosing any remineralizing additives.",
+        "Perform partial water changes with reverse osmosis (RO) or other soft water to dilute the mineral content.",
     ],
     "co2_indicator": [
-        "CO₂ too high – reduce injection and increase aeration.",
+        "CO₂ is too high. Reduce the CO₂ injection rate and, if necessary, increase surface agitation to off-gas excess CO₂.",
     ],
 }
 
