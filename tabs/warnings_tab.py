@@ -1,8 +1,7 @@
 """
 tabs/warnings_tab.py – collapsible, structured warnings with dosing guidance
 
-Displays structured warnings for the last 10 tests, including Seachem dosing
-advice for low KH and GH based on tank volume.
+Displays structured warnings for the last 10 tests for the currently selected tank.
 """
 from __future__ import annotations
 from typing import Any, List, Dict
@@ -12,8 +11,6 @@ import streamlit as st
 
 # Modern DB imports
 from aqualog_db.connection import get_connection
-
-# FIX: Import LOW_ACTION_PLANS in addition to the others
 from config import SAFE_RANGES, ACTION_PLANS, LOW_ACTION_PLANS
 
 VALID_PARAMETERS = ["ammonia", "gh", "kh", "nitrate", "nitrite", "ph", "temperature"]
@@ -21,40 +18,43 @@ VALID_PARAMETERS = ["ammonia", "gh", "kh", "nitrate", "nitrite", "ph", "temperat
 
 def warnings_tab(key_prefix=""):
     """
-    Renders the warnings tab.
+    Renders the warnings tab for the currently selected tank.
     Args:
         key_prefix (str): A string to prefix all widget keys to ensure uniqueness.
     """
-    st.header("⚠️ Last 10 Test Warnings")
+    st.header("⚠️ Test Warnings for Current Tank")
+
+    # FIX: Get the current tank_id from the session state
+    tank_id = st.session_state.get("tank_id")
+
+    # FIX: Handle the case where no tank is selected
+    if not tank_id:
+        st.warning("Please select a tank to view its warnings.")
+        return
 
     # Use context manager to get a valid DB connection
     with get_connection() as conn:
-        tanks_df = pd.read_sql("SELECT id, name FROM tanks", conn)
-        # Query last 10 tests with tank names
+        # FIX: Modify the query to filter by the selected tank_id and get the last 10 tests for that tank
         query = (
             "SELECT wt.date, t.name AS tank_name, wt.ammonia, wt.nitrate, wt.nitrite, "
             "wt.ph, wt.temperature, wt.kh, wt.gh "
             "FROM water_tests wt "
             "JOIN tanks t ON wt.tank_id = t.id "
+            "WHERE wt.tank_id = ? "
             "ORDER BY datetime(wt.date) DESC "
             "LIMIT 10"
         )
-        tests_df = pd.read_sql(query, conn)
+        # FIX: Pass the tank_id as a parameter to the query to prevent SQL injection
+        tests_df = pd.read_sql(query, conn, params=(tank_id,))
 
-    # Ensure tanks exist
-    if tanks_df.empty:
-        st.warning("No tanks found. Add a tank in Settings first.")
-        return
-
-    # Ensure tests exist
+    # Ensure tests exist for the selected tank
     if tests_df.empty:
-        st.info("No test data available.")
+        st.info("No test data available for the selected tank.")
         return
 
     # Build warnings list
     warnings: List[Dict[str, Any]] = []
     for _, row in tests_df.iterrows():
-        # FIX: Differentiate between low and high warnings
         low_warnings: List[str] = []
         high_warnings: List[str] = []
 
@@ -80,19 +80,21 @@ def warnings_tab(key_prefix=""):
             })
 
     # Display collapsible warnings
+    if not warnings:
+        st.success("No warnings found in the last 10 tests for this tank.")
+        return
+
     for idx, w in enumerate(warnings):
         all_warnings = w['low_warnings'] + w['high_warnings']
         expander_title = f"Test from {w['date']} – {w['tank']} ({', '.join(all_warnings)})"
         
         with st.expander(expander_title):
-            # FIX: Iterate through low warnings and get plans from LOW_ACTION_PLANS
             for param in w['low_warnings']:
                 plan_list = LOW_ACTION_PLANS.get(param)
                 if plan_list:
                     for item in plan_list:
                         st.markdown(f"- {item}")
             
-            # FIX: Iterate through high warnings and get plans from ACTION_PLANS (for high values)
             for param in w['high_warnings']:
                 plan_list = ACTION_PLANS.get(param)
                 if plan_list:
