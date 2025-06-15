@@ -221,17 +221,19 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     try:
         # 1) Read the CSV
         df = pd.read_csv(uploaded)
+
         # 2) Normalize the date column
         if "date" in df.columns:
             df["date"] = pd.to_datetime(df["date"], errors="coerce")
             df["date"] = df["date"].dt.strftime("%Y-%m-%dT%H:%M:%S").fillna("")
-        # 3) Add tank_id
+
+        # 3) Add tank_id column
         df["tank_id"] = tid
 
         with get_connection() as conn:
             cur = conn.cursor()
 
-            # a) Verify the table exists
+            # a) Verify table exists
             cur.execute(
                 "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
             )
@@ -239,27 +241,30 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                 st.error("Database error: water_tests table doesn't exist")
                 return
 
-            # b) Introspect table schema to pick only the INSERT-able columns
+            # b) Introspect schema and pick only CSV-applicable columns
             cur.execute("PRAGMA table_info(water_tests)")
-            # PRAGMA returns: cid, name, type, notnull, dflt_value, pk
-            cols = [row["name"] for row in map(dict, cur.fetchall())
-                    # exclude the PK and any auto-timestamp defaults
-                    if row["name"] not in ("id", "updated_at")]
-            # Now 'cols' might be:
-            # ['date','ph','ammonia',…,'tank_id','notes','created_at']
+            # PRAGMA returns rows with keys: cid, name, type, notnull, dflt_value, pk
+            cols = [
+                row["name"]
+                for row in map(dict, cur.fetchall())
+                if row["name"] not in ("id", "created_at", "updated_at")
+            ]
+            # Now cols == ['date','ph','ammonia','nitrite','nitrate',
+            #              'temperature','kh','co2_indicator','gh',
+            #              'tank_id','notes']
 
-            # c) Make sure CSV provides everything except the auto ones
+            # c) Ensure CSV has all required columns
             missing = [c for c in cols if c not in df.columns]
             if missing:
                 st.error(f"Missing required columns: {', '.join(missing)}")
                 return
 
-            # d) Build a param-style INSERT
+            # d) Build INSERT statement dynamically
             col_list = ", ".join(cols)
             placeholder = ", ".join(":" + c for c in cols)
             sql = f"INSERT INTO water_tests ({col_list}) VALUES ({placeholder})"
 
-            # e) Execute
+            # e) Execute insertion
             records = df.to_dict("records")
             cur.executemany(sql, records)
             conn.commit()
@@ -269,7 +274,6 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
 
     except Exception as e:
         st.error(f"Import failed: {e}")
-
 
 # ════════════════════════════════════════════════════════════════════════════
 # 6) LOCALISATION & UNITS
