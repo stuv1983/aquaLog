@@ -37,7 +37,6 @@ class SchemaManager(BaseRepository):
                 gh            REAL    DEFAULT 0 CHECK(gh >= 0 AND gh <= 30),
                 tank_id       INTEGER NOT NULL,
                 notes         TEXT,
-                created_at    TEXT DEFAULT (datetime('now')),
                 FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
             );
         """,
@@ -199,14 +198,7 @@ class SchemaManager(BaseRepository):
             UPDATE tanks SET updated_at = datetime('now') WHERE id = OLD.id;
         END;
         """,
-        """
-        CREATE TRIGGER IF NOT EXISTS update_water_test_timestamp
-        AFTER UPDATE ON water_tests
-        FOR EACH ROW
-        BEGIN
-            UPDATE water_tests SET created_at = datetime('now') WHERE id = OLD.id;
-        END;
-        """,
+        
         """
         CREATE TRIGGER IF NOT EXISTS update_plants_timestamp
         AFTER UPDATE ON plants
