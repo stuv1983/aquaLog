@@ -84,10 +84,16 @@ def fetch_maintenance_cycles(tank_id: int) -> list[dict]:
         conn.row_factory = sqlite3.Row
         rows = conn.execute(
             """
-            SELECT * 
+            SELECT 
+                id,
+                maintenance_type as type,
+                created_at as date,
+                notes,
+                frequency_days,
+                is_active
             FROM maintenance_cycles
             WHERE tank_id = ?
-            ORDER BY is_active DESC, created_at DESC;
+            ORDER BY datetime(created_at) DESC;
             """,
             (tank_id,),
         ).fetchall()
@@ -195,15 +201,15 @@ def maintenance_tab() -> None:
         cycles = fetch_maintenance_cycles(tank_id)
         if cycles:
             for cycle in cycles:
-                with st.expander(f"{cycle['maintenance_type']} (every {cycle['frequency_days']} days)"):
+                with st.expander(f"{cycle['type']} (every {cycle['frequency_days']} days)"):
                     col1, col2 = st.columns([3,1])
                     with col1:
                         st.markdown(f"**Status:** {'🟢 Active' if cycle['is_active'] else '⚪ Inactive'}")
                         if cycle.get('description'):
                             st.markdown(f"**Description:** {cycle['description']}")
+                        st.markdown(f"**Created:** {cycle['date'][:10]}")
                         if cycle.get('notes'):
                             st.markdown(f"**Notes:** {cycle['notes']}")
-                        st.markdown(f"*Created: {cycle['created_at'][:10]}*")
                     with col2:
                         if st.button(
                             "🗑️ Delete",
@@ -234,14 +240,14 @@ def maintenance_tab() -> None:
         with col2:
             if active_cycles:
                 cycle_options = [{"label": "-- Custom Entry --", "value": None}] + \
-                              [{"label": c['maintenance_type'], "value": c['id']} for c in active_cycles]
+                              [{"label": c['type'], "value": c['id']} for c in active_cycles]
                 selected_cycle = st.selectbox(
                     "Select from cycles (optional)",
                     options=cycle_options,
                     format_func=lambda x: x["label"]
                 )
                 if selected_cycle and selected_cycle["value"]:
-                    m_type = next(c['maintenance_type'] for c in active_cycles 
+                    m_type = next(c['type'] for c in active_cycles 
                               if c['id'] == selected_cycle["value"])
                     st.text_input("Type*", value=m_type, disabled=True)
                 else:
