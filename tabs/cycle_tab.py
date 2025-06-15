@@ -27,8 +27,8 @@ def cycle_tab() -> None:
         cycles_df = pd.read_sql(
             """
             SELECT
-                created_at       AS date,      -- show friendly column
-                maintenance_type AS type,      -- e.g. 'Water change'
+                created_at       AS date,      -- alias real timestamp
+                maintenance_type AS type,      -- alias real type
                 notes
             FROM   maintenance_cycles
             ORDER  BY datetime(created_at) DESC
@@ -48,9 +48,7 @@ def cycle_tab() -> None:
         cycles_df,
         hide_index=True,
         column_config={
-            "date": st.column_config.DateColumn(
-                format="YYYY-MM-DD HH:mm"
-            ),
+            "date": st.column_config.DateColumn(format="YYYY-MM-DD HH:mm"),
             "type": st.column_config.TextColumn("Maintenance type"),
             "notes": st.column_config.TextColumn("Notes"),
         },
