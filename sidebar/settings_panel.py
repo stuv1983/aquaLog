@@ -205,6 +205,7 @@ def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) ->
 # ════════════════════════════════════════════════════════════════════════════
 # 5) CSV IMPORT
 # ════════════════════════════════════════════════════════════════════════════
+import os
 import pandas as pd
 import sqlite3
 
@@ -230,7 +231,21 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
         # 3) Add tank_id column
         df["tank_id"] = tid
 
-        with get_connection() as conn:
+        # 4) Check required CSV columns
+        required = [
+            "date", "ph", "ammonia", "nitrite", "nitrate",
+            "temperature", "kh", "co2_indicator", "gh",
+            "tank_id", "notes"
+        ]
+        missing = [c for c in required if c not in df.columns]
+        if missing:
+            st.error(f"Missing required columns: {', '.join(missing)}")
+            return
+
+        # 5) Open a real sqlite3.Connection
+        db_path = os.path.join(os.getcwd(), "aqualog.db")
+        conn = sqlite3.connect(db_path)
+        try:
             cur = conn.cursor()
 
             # a) Verify table exists
@@ -241,39 +256,23 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                 st.error("Database error: water_tests table doesn't exist")
                 return
 
-            # b) Introspect schema and pick only CSV-applicable columns
-            cur.execute("PRAGMA table_info(water_tests)")
-            # PRAGMA returns rows with keys: cid, name, type, notnull, dflt_value, pk
-            cols = [
-                row["name"]
-                for row in map(dict, cur.fetchall())
-                if row["name"] not in ("id", "created_at", "updated_at")
-            ]
-            # Now cols == ['date','ph','ammonia','nitrite','nitrate',
-            #              'temperature','kh','co2_indicator','gh',
-            #              'tank_id','notes']
+            # b) Build and execute INSERT for the 11 user fields
+            cols = ", ".join(required)
+            placeholders = ", ".join("?" for _ in required)
+            sql = f"INSERT INTO water_tests ({cols}) VALUES ({placeholders})"
 
-            # c) Ensure CSV has all required columns
-            missing = [c for c in cols if c not in df.columns]
-            if missing:
-                st.error(f"Missing required columns: {', '.join(missing)}")
-                return
-
-            # d) Build INSERT statement dynamically
-            col_list = ", ".join(cols)
-            placeholder = ", ".join(":" + c for c in cols)
-            sql = f"INSERT INTO water_tests ({col_list}) VALUES ({placeholder})"
-
-            # e) Execute insertion
-            records = df.to_dict("records")
+            records = [tuple(row[c] for c in required) for _, row in df.iterrows()]
             cur.executemany(sql, records)
             conn.commit()
+        finally:
+            conn.close()
 
-        st.success(f"Imported {len(records)} records into “{tank_map[tid]['name']}.”")
+        st.success(f"Imported {len(df)} records into “{tank_map[tid]['name']}.”")
         request_rerun()
 
     except Exception as e:
         st.error(f"Import failed: {e}")
+
 
 # ════════════════════════════════════════════════════════════════════════════
 # 6) LOCALISATION & UNITS
