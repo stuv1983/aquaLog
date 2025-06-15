@@ -135,7 +135,6 @@ def data_analytics_tab() -> None:
                 conn_full,
                 params=(tank_id,)
             )
-        conn_full.close()
         full_clean = full_raw.copy()
         full_clean["date"] = pd.to_datetime(full_clean["date"], errors="coerce")
         numeric_cols = ["ph", "ammonia", "nitrite", "nitrate", "kh", "gh", "temperature"]
@@ -166,7 +165,7 @@ def data_analytics_tab() -> None:
             'temperature': 'Temperature (°C)',
             'notes': 'Notes'
         }
-        table_df.rename(columns={k: v for k, v in renames.items() if k in table_df.columns}, inplace=True)
+        table_df.rename(columns={k: v for k, v in renames.items()}, inplace=True)
         st.dataframe(table_df, use_container_width=True)
 
     # -- Rolling Averages
