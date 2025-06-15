@@ -242,17 +242,15 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
             st.error(f"Missing required columns: {', '.join(missing)}")
             return
 
-        # 5) Open a real sqlite3.Connection
-        db_path = os.path.join(os.getcwd(), "aqualog.db")
-        conn = sqlite3.connect(db_path)
+        # 5) Get a database connection
+        conn = get_connection()
         try:
-            cur = conn.cursor()
-
             # a) Verify table exists
-            cur.execute(
+            table_exists = conn.execute(
                 "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
-            )
-            if not cur.fetchone():
+            ).fetchone()
+            
+            if not table_exists:
                 st.error("Database error: water_tests table doesn't exist")
                 return
 
@@ -262,13 +260,13 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
             sql = f"INSERT INTO water_tests ({cols}) VALUES ({placeholders})"
 
             records = [tuple(row[c] for c in required) for _, row in df.iterrows()]
-            cur.executemany(sql, records)
+            conn.executemany(sql, records)
             conn.commit()
+            
+            st.success(f"Imported {len(df)} records into “{tank_map[tid]['name']}.”")
+            request_rerun()
         finally:
             conn.close()
-
-        st.success(f"Imported {len(df)} records into “{tank_map[tid]['name']}.”")
-        request_rerun()
 
     except Exception as e:
         st.error(f"Import failed: {e}")
