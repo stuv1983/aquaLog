@@ -214,62 +214,74 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     if uploaded is None:
         return
 
-    if st.button("Import CSV", key="import_csv_btn"):
-        try:
-            df = pd.read_csv(uploaded)
+    if not st.button("Import CSV", key="import_csv_btn"):
+        return
 
-            # Robust date handling
-            if "date" in df.columns:
-                try:
-                    df["date"] = pd.to_datetime(df["date"], errors="coerce")
-                    df["date"] = df["date"].dt.strftime("%Y-%m-%dT%H:%M:%S").fillna("")
-                except Exception as e:
-                    st.error(f"Date parsing error: {e}")
-                    return
+    try:
+        df = pd.read_csv(uploaded)
 
-            # Required CSV columns (11 total)
-            required = [
-                "date", "ph", "ammonia", "nitrite", "nitrate",
-                "kh", "gh", "co2_indicator", "temperature", "notes",
-            ]
-            missing = [c for c in required if c not in df.columns]
-            if missing:
-                st.error(f"Missing required columns: {', '.join(missing)}")
+        # Robust date handling
+        if "date" in df.columns:
+            try:
+                df["date"] = pd.to_datetime(df["date"], errors="coerce")
+                df["date"] = df["date"].dt.strftime("%Y-%m-%dT%H:%M:%S").fillna("")
+            except Exception as e:
+                st.error(f"Date parsing error: {e}")
                 return
 
-            # Add tank_id column
-            df["tank_id"] = tid
+        # Required CSV columns (11 total)
+        required = [
+            "date", "ph", "ammonia", "nitrite", "nitrate",
+            "kh", "gh", "co2_indicator", "temperature", "notes",
+        ]
+        missing = [c for c in required if c not in df.columns]
+        if missing:
+            st.error(f"Missing required columns: {', '.join(missing)}")
+            return
 
-            with get_connection() as conn:
-                # Ensure table exists
-                if not conn.execute(
-                    "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
-                ).fetchone():
-                    st.error("Database error: water_tests table doesn't exist")
-                    return
+        # Tag each row with the current tank_id
+        df["tank_id"] = tid
 
-                # Insert only the 11 CSV fields
-                records = df.to_dict("records")
-                conn.executemany(
-                    """
-                    INSERT INTO water_tests (
-                        date, ph, ammonia, nitrite, nitrate,
-                        temperature, kh, co2_indicator, gh,
-                        tank_id, notes
-                    ) VALUES (
-                        :date, :ph, :ammonia, :nitrite, :nitrate,
-                        :temperature, :kh, :co2_indicator, :gh,
-                        :tank_id, :notes
-                    )
-                    """,
-                    records
+        # Convert to list of dicts for insertion
+        records = df.to_dict("records")
+
+        # Open a real sqlite3.Connection
+        conn = get_connection()  # returns sqlite3.Connection
+        try:
+            # Check table exists
+            cur = conn.cursor()
+            cur.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
+            )
+            if not cur.fetchone():
+                st.error("Database error: water_tests table doesn't exist")
+                return
+
+            # Insert only the 11 CSV-provided columns
+            cur.executemany(
+                """
+                INSERT INTO water_tests (
+                    date, ph, ammonia, nitrite, nitrate,
+                    temperature, kh, co2_indicator, gh,
+                    tank_id, notes
+                ) VALUES (
+                    :date, :ph, :ammonia, :nitrite, :nitrate,
+                    :temperature, :kh, :co2_indicator, :gh,
+                    :tank_id, :notes
                 )
+                """,
+                records
+            )
+            conn.commit()
+        finally:
+            conn.close()
 
-            st.success(f"Successfully imported {len(df)} records to {tank_map[tid]['name']}")
-            request_rerun()
+        st.success(f"Successfully imported {len(records)} records into “{tank_map[tid]['name']}”")
+        request_rerun()
 
-        except Exception as e:
-            st.error(f"Import failed: {e}")
+    except Exception as e:
+        st.error(f"Import failed: {e}")
+
 
 
 # ════════════════════════════════════════════════════════════════════════════
