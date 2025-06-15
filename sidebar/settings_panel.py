@@ -259,8 +259,15 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                 # Convert to list of dicts for safer insertion
                 records = df.to_dict('records')
                 conn.executemany(
-                    "INSERT INTO water_tests VALUES (:date, :ph, :ammonia, :nitrite, "
-                    ":nitrate, :kh, :gh, :co2_indicator, :temperature, :notes, :tank_id)",
+                    """INSERT INTO water_tests (
+                        date, ph, ammonia, nitrite, nitrate, 
+                        temperature, kh, co2_indicator, gh, 
+                        tank_id, notes, created_at
+                    ) VALUES (
+                        :date, :ph, :ammonia, :nitrite, :nitrate,
+                        :temperature, :kh, :co2_indicator, :gh,
+                        :tank_id, :notes, datetime('now')
+                    )""",
                     records
                 )
                 
