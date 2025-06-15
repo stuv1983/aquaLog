@@ -25,7 +25,7 @@ from .validation import (        # ← arrow_safe is part of validation.py
     is_too_low,
     is_too_high,
     is_out_of_range,
-    arrow_safe,                  # 🔸 Arrow-compatibility helper
+    arrow_safe,                    # 🔸 Arrow-compatibility helper
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -35,6 +35,7 @@ from .chemistry import (
     nh3_fraction,
     calculate_alkaline_buffer_dose,
     calculate_equilibrium_dose,
+    calculate_fritzzyme7_dose, # FIX: Added the new dosing function
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -77,11 +78,12 @@ __all__ = [
     "is_too_low",
     "is_too_high",
     "is_out_of_range",
-    "arrow_safe",                      # ← now publicly exposed
+    "arrow_safe",                        # ← now publicly exposed
     # chemistry
     "nh3_fraction",
     "calculate_alkaline_buffer_dose",
     "calculate_equilibrium_dose",
+    "calculate_fritzzyme7_dose", # FIX: Added the new dosing function
     # database
     "BaseRepository",
     # UI utilities

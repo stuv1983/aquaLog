@@ -12,7 +12,8 @@ import streamlit as st
 
 from aqualog_db.connection import get_connection
 from config import SAFE_RANGES, ACTION_PLANS, LOW_ACTION_PLANS
-from utils.chemistry import calculate_alkaline_buffer_dose, calculate_equilibrium_dose, calculate_fritzzyme7_dose
+# FIX: Import directly from the 'utils' package
+from utils import calculate_alkaline_buffer_dose, calculate_equilibrium_dose, calculate_fritzzyme7_dose
 
 VALID_PARAMETERS = ["ammonia", "gh", "kh", "nitrate", "nitrite", "ph", "temperature"]
 
@@ -77,7 +78,7 @@ def warnings_tab(key_prefix=""):
         st.success("No out-of-range parameters found in the last 10 tests for this tank.")
         return
 
-    # --- NEW, CLEANER DISPLAY LOGIC ---
+    # --- Display Logic ---
     for warning in warnings:
         with st.container(border=True):
             col1, col2 = st.columns(2)
@@ -90,8 +91,7 @@ def warnings_tab(key_prefix=""):
 
                 all_warnings = warning['low_warnings'] + warning['high_warnings']
                 for item in all_warnings:
-                    param = item['param']
-                    value = item['value']
+                    param, value = item['param'], item['value']
                     safe_low, safe_high = SAFE_RANGES.get(param, (0, 0))
                     
                     st.metric(
@@ -107,7 +107,7 @@ def warnings_tab(key_prefix=""):
                 
                 volume_l = warning.get("volume_l")
                 
-                # Process low warnings
+                # Low Parameter Warnings
                 for low_item in warning['low_warnings']:
                     param, value = low_item['param'], low_item['value']
                     plan_list = LOW_ACTION_PLANS.get(param, []).copy()
@@ -123,7 +123,7 @@ def warnings_tab(key_prefix=""):
                     for step in plan_list:
                         st.markdown(f" • {step}")
 
-                # Process high warnings
+                # High Parameter Warnings
                 for high_item in warning['high_warnings']:
                     param, value = high_item['param'], high_item['value']
                     plan_list = ACTION_PLANS.get(param, []).copy()
@@ -136,4 +136,4 @@ def warnings_tab(key_prefix=""):
                     for step in plan_list:
                         st.markdown(f" • {step}")
         
-        st.markdown("<br>", unsafe_allow_html=True) # Add vertical space between cards
+        st.markdown("<br>", unsafe_allow_html=True)
