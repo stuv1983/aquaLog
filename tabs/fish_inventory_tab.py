@@ -23,14 +23,15 @@ def fish_inventory_tab(key_prefix=""):
 
         # 1. Load master fish list from database
         with get_connection() as conn:
+            # FIX: Changed `scientific_name` to `species_name` to match the current DB schema.
             master_fish = pd.read_sql_query("""
                 SELECT 
                     rowid AS fish_id,
-                    COALESCE(scientific_name, '') AS species_name,
+                    COALESCE(species_name, '') AS species_name,
                     COALESCE(common_name, '') AS common_name,
                     COALESCE(image_url, '') AS thumbnail_url
                 FROM fish
-                ORDER BY scientific_name COLLATE NOCASE
+                ORDER BY species_name COLLATE NOCASE
             """, conn)
 
         # 2. Search master fish list
@@ -39,6 +40,7 @@ def fish_inventory_tab(key_prefix=""):
         query = st.text_input('Search fish...', key=f'{key_prefix}fish_search', label_visibility="collapsed").strip().lower()
 
         if query:
+            # The search logic correctly uses `species_name` which is now aligned with the query.
             search_cols = ['species_name', 'common_name']
             mask = master_fish[search_cols].apply(
                 lambda row: ' '.join(row.values.astype(str)).lower().find(query) != -1, 
@@ -77,13 +79,14 @@ def fish_inventory_tab(key_prefix=""):
         # 4. List owned fish in the current tank
         st.subheader(f'🐟 Fish in {tank_name}')
         with get_connection() as conn:
+            # FIX: Changed `p.scientific_name` to `p.species_name`
             owned = pd.read_sql_query("""
                 SELECT
                     o.rowid as owned_fish_id, o.quantity, p.*
                 FROM owned_fish o
                 JOIN fish p ON o.fish_id = p.rowid
                 WHERE o.tank_id = ?
-                ORDER BY p.scientific_name COLLATE NOCASE
+                ORDER BY p.species_name COLLATE NOCASE
             """, conn, params=(tid,))
         
         if owned.empty:
@@ -94,7 +97,8 @@ def fish_inventory_tab(key_prefix=""):
             owned_to_display = owned
 
             if search_term_owned:
-                search_cols_owned = ['scientific_name', 'common_name']
+                # FIX: Changed `scientific_name` to `species_name`
+                search_cols_owned = ['species_name', 'common_name']
                 mask = owned[search_cols_owned].apply(
                     lambda row: ' '.join(row.values.astype(str)).lower().find(search_term_owned) != -1, 
                     axis=1
@@ -107,7 +111,8 @@ def fish_inventory_tab(key_prefix=""):
                 for _, row in owned_to_display.iterrows():
                     with st.container():
                         cols = st.columns([1, 4, 1])
-                        name = row['scientific_name']
+                        # FIX: Changed `scientific_name` to `species_name`
+                        name = row['species_name']
                         
                         if row['image_url'] and str(row['image_url']).startswith('http'):
                             cols[0].image(row['image_url'], width=80)
