@@ -7,7 +7,7 @@ for the selected tank via a dropdown. Now includes maintenance cycle management.
 import sqlite3
 import streamlit as st
 import pandas as pd
-from datetime import date
+from datetime import date, timedelta
 
 # ——— Refactored DB imports ———
 from aqualog_db.legacy import fetch_all_tanks
