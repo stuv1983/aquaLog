@@ -5,6 +5,7 @@ from datetime import datetime
 import pandas as pd
 from typing import Dict, Optional, List, Any, Tuple
 import sqlite3
+from aqualog_db.connection import get_connection  # import the contextmanager
 from ..base import BaseRepository
 
 class WaterTestRepository(BaseRepository):
@@ -26,7 +27,8 @@ class WaterTestRepository(BaseRepository):
         self._validate_input(data, tank_id)
         payload = self._prepare_payload(data, tank_id)
         
-        with self._connection() as conn:
+        # Use get_connection directly to avoid GeneratorContextManager misusage
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("PRAGMA table_info(water_tests);")
             valid_columns = {row['name'] for row in cursor.fetchall()}
@@ -41,12 +43,7 @@ class WaterTestRepository(BaseRepository):
                     tuple(filtered_payload.values())
                 )
                 inserted_id = cursor.lastrowid
-                saved_record = self.fetch_one(
-                    "SELECT * FROM water_tests WHERE id = ?;",
-                    (inserted_id,)
-                )
                 conn.commit()
-                return saved_record
             except sqlite3.IntegrityError as e:
                 conn.rollback()
                 if "CHECK" in str(e):
@@ -57,6 +54,13 @@ class WaterTestRepository(BaseRepository):
             except sqlite3.Error as e:
                 conn.rollback()
                 raise RuntimeError(f"Database error: {e}")
+
+        # Fetch inserted record
+        with get_connection() as conn:
+            return self.fetch_one(
+                "SELECT * FROM water_tests WHERE id = ?;",
+                (inserted_id,)
+            )
 
     def _validate_input(self, data: dict, tank_id: int):
         """Validate all input parameters."""
@@ -109,26 +113,21 @@ class WaterTestRepository(BaseRepository):
             params.append(tank_id)
         query += " ORDER BY date ASC"
         try:
-            with self._connection() as conn:
+            with get_connection() as conn:
                 return pd.read_sql_query(
                     query, conn, params=params, parse_dates=['date']
                 )
         except sqlite3.Error as e:
-            raise RuntimeError(f"Database error: {e}")
+            raise RuntimeError(f"Database error: {e}") from e
         except Exception as e:
-            raise RuntimeError(f"Failed to fetch data: {e}")
+            raise RuntimeError(f"Failed to fetch data: {e}") from e
 
     def get_latest_for_tank(self, tank_id: int) -> Optional[Dict[str, Any]]:
         """Get the most recent water test for a specific tank."""
         if not isinstance(tank_id, int) or tank_id < 1:
             raise ValueError("Invalid tank ID")
         return self.fetch_one(
-            """
-            SELECT * FROM water_tests
-            WHERE tank_id = ?
-            ORDER BY date DESC
-            LIMIT 1;
-            """,
+            "SELECT * FROM water_tests WHERE tank_id = ? ORDER BY date DESC LIMIT 1;",
             (tank_id,)
         )
 
