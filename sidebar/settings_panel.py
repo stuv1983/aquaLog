@@ -220,16 +220,12 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     try:
         df = pd.read_csv(uploaded)
 
-        # Robust date handling
+        # Robust date parsing
         if "date" in df.columns:
-            try:
-                df["date"] = pd.to_datetime(df["date"], errors="coerce")
-                df["date"] = df["date"].dt.strftime("%Y-%m-%dT%H:%M:%S").fillna("")
-            except Exception as e:
-                st.error(f"Date parsing error: {e}")
-                return
+            df["date"] = pd.to_datetime(df["date"], errors="coerce")
+            df["date"] = df["date"].dt.strftime("%Y-%m-%dT%H:%M:%S").fillna("")
 
-        # Required CSV columns (11 total)
+        # Required CSV columns
         required = [
             "date", "ph", "ammonia", "nitrite", "nitrate",
             "kh", "gh", "co2_indicator", "temperature", "notes",
@@ -239,16 +235,13 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
             st.error(f"Missing required columns: {', '.join(missing)}")
             return
 
-        # Tag each row with the current tank_id
+        # Tag tank
         df["tank_id"] = tid
-
-        # Convert to list of dicts for insertion
         records = df.to_dict("records")
 
-        # Open a real sqlite3.Connection
-        conn = get_connection()  # returns sqlite3.Connection
-        try:
-            # Check table exists
+        # Use get_connection() as a context manager to get the real Connection
+        with get_connection() as conn:
+            # Ensure table exists
             cur = conn.cursor()
             cur.execute(
                 "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
@@ -257,7 +250,7 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                 st.error("Database error: water_tests table doesn't exist")
                 return
 
-            # Insert only the 11 CSV-provided columns
+            # Insert exactly the 11 CSV fields; id and timestamps default
             cur.executemany(
                 """
                 INSERT INTO water_tests (
@@ -273,16 +266,12 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                 records
             )
             conn.commit()
-        finally:
-            conn.close()
 
         st.success(f"Successfully imported {len(records)} records into “{tank_map[tid]['name']}”")
         request_rerun()
 
     except Exception as e:
         st.error(f"Import failed: {e}")
-
-
 
 # ════════════════════════════════════════════════════════════════════════════
 # 6) LOCALISATION & UNITS
