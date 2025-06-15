@@ -211,7 +211,6 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     tid = st.session_state.get("tank_id", 0)
 
     uploaded = st.file_uploader("Choose CSV", type="csv", key="csv_uploader")
-
     if uploaded is None:
         return
 
@@ -219,7 +218,7 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
         try:
             df = pd.read_csv(uploaded)
 
-            # More robust date handling
+            # Robust date handling
             if "date" in df.columns:
                 try:
                     df["date"] = pd.to_datetime(df["date"], errors="coerce")
@@ -228,54 +227,50 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                     st.error(f"Date parsing error: {e}")
                     return
 
+            # Required CSV columns (11 total)
             required = [
                 "date", "ph", "ammonia", "nitrite", "nitrate",
                 "kh", "gh", "co2_indicator", "temperature", "notes",
             ]
-            
-            # Explicit column check
-            missing = []
-            for col in required:
-                if col not in df.columns:
-                    missing.append(col)
-            
-            if len(missing) > 0:
+            missing = [c for c in required if c not in df.columns]
+            if missing:
                 st.error(f"Missing required columns: {', '.join(missing)}")
                 return
 
-            # Ensure all required columns exist before proceeding
+            # Add tank_id column
             df["tank_id"] = tid
-            
+
             with get_connection() as conn:
-                # Verify table exists first
-                table_exists = conn.execute(
+                # Ensure table exists
+                if not conn.execute(
                     "SELECT name FROM sqlite_master WHERE type='table' AND name='water_tests';"
-                ).fetchone()
-                
-                if not table_exists:
+                ).fetchone():
                     st.error("Database error: water_tests table doesn't exist")
                     return
-                
-                # Convert to list of dicts for safer insertion
-                records = df.to_dict('records')
+
+                # Insert only the 11 CSV fields
+                records = df.to_dict("records")
                 conn.executemany(
-                    """INSERT INTO water_tests (
-                        date, ph, ammonia, nitrite, nitrate, 
-                        temperature, kh, co2_indicator, gh, 
-                        tank_id, notes, created_at
+                    """
+                    INSERT INTO water_tests (
+                        date, ph, ammonia, nitrite, nitrate,
+                        temperature, kh, co2_indicator, gh,
+                        tank_id, notes
                     ) VALUES (
                         :date, :ph, :ammonia, :nitrite, :nitrate,
                         :temperature, :kh, :co2_indicator, :gh,
-                        :tank_id, :notes, datetime('now')
-                    )""",
+                        :tank_id, :notes
+                    )
+                    """,
                     records
                 )
-                
+
             st.success(f"Successfully imported {len(df)} records to {tank_map[tid]['name']}")
             request_rerun()
 
         except Exception as e:
-            st.error(f"Import failed: {str(e)}")
+            st.error(f"Import failed: {e}")
+
 
 # ════════════════════════════════════════════════════════════════════════════
 # 6) LOCALISATION & UNITS
