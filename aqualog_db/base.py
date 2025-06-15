@@ -34,7 +34,7 @@ class BaseRepository:
             conn.row_factory = sqlite3.Row
             conn.execute("PRAGMA foreign_keys = ON;")
             
-            # FIX: Removed WAL pragma as it causes a disk I/O error in the deployment environment.
+            # FIX: This line causes a disk I/O error in the deployment environment and must be removed.
             # conn.execute("PRAGMA journal_mode = WAL;") 
             
             conn.execute("PRAGMA synchronous = NORMAL;")
@@ -43,7 +43,6 @@ class BaseRepository:
         try:
             yield self._local.conn
         except sqlite3.Error as e:
-            # rollback on any DB error
             self._local.conn.rollback()
             raise RuntimeError(f"Database error: {e}") from e
         except Exception as e:
