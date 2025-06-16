@@ -1,9 +1,5 @@
 """
 Sidebar - Water-test logging form (multi-tank aware)
-
-• Saves the test to the selected tank
-• Shows a toast + out-of-range banner after saving
-• Preview table is wrapped with utils.arrow_safe so Arrow never crashes
 """
 
 from __future__ import annotations
@@ -18,10 +14,9 @@ from aqualog_db.legacy import save_water_test
 from utils import (
     show_toast,
     show_out_of_range_banner,
-    arrow_safe,            # 🔸 new helper: normalises the date column
+    arrow_safe,
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
 def render_water_test_form(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """Render the water-test logging form in the sidebar."""
     st.sidebar.header("🔬 Log Water Test")
@@ -102,11 +97,12 @@ def render_water_test_form(tank_map: Dict[int, Dict[str, Any]]) -> None:
             save_water_test(data, tank_id)
             st.sidebar.success("Water test saved!")
 
-            # Preview table (Arrow-safe)
             preview_df = pd.DataFrame([data])
             st.sidebar.dataframe(arrow_safe(preview_df), use_container_width=True)
 
-            show_toast()
-            show_out_of_range_banner()      # banner looks at session_state
+            # FIX: Added the required 'title' and 'message' arguments.
+            show_toast("Test Saved", "Your readings were successfully recorded.")
+            
+            show_out_of_range_banner()
         except Exception as exc:
             st.sidebar.error(f"Failed to save test: {exc}")

@@ -2,9 +2,9 @@
 """
 Overview dashboard — multi-tank aware 🏠
 
-•   Latest-test preview is Arrow-safe
-•   Trend chart uses Arrow-safe dataframe
-•   Calls show_out_of_range_banner() with no args
+- Displays data for the tank selected in the sidebar.
+- Latest-test preview is Arrow-safe
+- Trend chart uses Arrow-safe dataframe
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ from aqualog_db.base   import BaseRepository
 from aqualog_db.legacy import fetch_all_tanks
 
 from utils import (
-    arrow_safe,                       # 🔸 Arrow compatibility helper
+    arrow_safe,
     is_mobile,
     show_out_of_range_banner,
     translate,
@@ -28,24 +28,32 @@ print(">>> LOADING", __file__)
 
 # ─────────────────────────────────────────────────────────────────────────────
 def render_overview_tab() -> None:
-    """Render the Overview dashboard."""
-    st.header("🏠 Overview")
+    """Render the Overview dashboard for the currently selected tank."""
+    
+    # Get the currently selected tank ID from the session state (set by the sidebar)
+    selected_tank_id = st.session_state.get("tank_id", 0)
 
-    # ── Tank selector ───────────────────────────────────────────────────────
+    # Get the name of the selected tank for the header
     tanks = fetch_all_tanks()
-    tank_options = {t["id"]: t["name"] for t in tanks}
-    selected_tank = st.selectbox(
-        "Select tank",
-        options=list(tank_options.keys()),
-        format_func=lambda tid: tank_options[tid],
-    )
+    tank_name = "Overview"
+    if tanks and selected_tank_id:
+        # Create a mapping from ID to name
+        tank_names = {t["id"]: t["name"] for t in tanks}
+        tank_name = tank_names.get(selected_tank_id, "Overview")
+
+    st.header(f"🏠 Overview for: {tank_name}")
+
+    # Handle case where no tank is selected or exists
+    if not selected_tank_id:
+        st.info("Please add and/or select a tank from the sidebar to see an overview.")
+        return
 
     # ── Latest test (single row) ────────────────────────────────────────────
     with BaseRepository()._connection() as conn:
         df_latest = pd.read_sql_query(
             "SELECT * FROM water_tests WHERE tank_id = ? ORDER BY date DESC LIMIT 1;",
             conn,
-            params=(selected_tank,),
+            params=(selected_tank_id,),
         )
 
     if df_latest.empty:
@@ -53,7 +61,7 @@ def render_overview_tab() -> None:
         return
 
     st.subheader("Latest Water Test")
-    st.dataframe(arrow_safe(df_latest), use_container_width=True)  # ✔ Arrow-safe
+    st.dataframe(arrow_safe(df_latest), use_container_width=True)
 
     # Out-of-range banner (banner itself figures out breaches)
     show_out_of_range_banner()
@@ -68,11 +76,11 @@ def render_overview_tab() -> None:
             ORDER BY date;
             """,
             conn,
-            params=(selected_tank,),
-            parse_dates=["date"],          # already datetime64[ns]
+            params=(selected_tank_id,),
+            parse_dates=["date"],
         )
 
-    df_all = arrow_safe(df_all)            # safety no-op here, but consistent
+    df_all = arrow_safe(df_all)
 
     chart = (
         alt.Chart(df_all)
