@@ -2,8 +2,7 @@
 tabs/warnings_tab.py – collapsible, structured warnings with dosing guidance
 
 Displays structured warnings for the currently selected tank, now with
-filtering by date range and specific parameters. Defaults to showing the
-last 10 warnings if no filters are applied.
+filtering by date range and specific parameters, including an "All" option.
 """
 from __future__ import annotations
 from typing import Any, List, Dict
@@ -42,9 +41,12 @@ def warnings_tab(key_prefix=""):
                 key=f"{key_prefix}warnings_date_range"
             )
         with col2:
+            # Add "All" to the list of options
+            filter_options = ["All"] + VALID_PARAMETERS
             params_to_filter = st.multiselect(
                 "Filter by parameter",
-                options=VALID_PARAMETERS,
+                options=filter_options,
+                default=["All"],  # Default to "All"
                 key=f"{key_prefix}warnings_param_filter"
             )
 
@@ -66,8 +68,9 @@ def warnings_tab(key_prefix=""):
 
         query += " ORDER BY datetime(wt.date) DESC"
 
-        # If no filters are active, limit to the last 10 tests to keep the original behavior.
-        if not date_range and not params_to_filter:
+        # Determine if filters are active to decide whether to limit the query
+        filters_active = bool(date_range) or (bool(params_to_filter) and "All" not in params_to_filter)
+        if not filters_active:
             query += " LIMIT 10"
 
         tests_df = pd.read_sql(query, conn, params=tuple(query_params))
@@ -78,7 +81,12 @@ def warnings_tab(key_prefix=""):
 
     # --- Warning Generation ---
     warnings: List[Dict[str, Any]] = []
-    params_to_check = params_to_filter if params_to_filter else VALID_PARAMETERS
+    # If "All" is selected or the filter is empty, check all valid parameters
+    if not params_to_filter or "All" in params_to_filter:
+        params_to_check = VALID_PARAMETERS
+    else:
+        params_to_check = [p for p in params_to_filter if p in VALID_PARAMETERS]
+
 
     for _, row in tests_df.iterrows():
         low_warnings: List[Dict[str, Any]] = []
@@ -107,7 +115,7 @@ def warnings_tab(key_prefix=""):
             })
 
     if not warnings:
-        st.success("No out-of-range parameters found in the last 10 tests for this tank.")
+        st.success("No out-of-range parameters found for the selected criteria.")
         return
 
     # --- Display Logic (No changes needed below this line) ---
