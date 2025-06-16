@@ -1,90 +1,81 @@
-
 """
-injectFish.py – refreshed loader (adds scientific_name column)
-───────────────────────────────────────────────────────────────
-• Backs up `aqualog.db`
-• Drops and recreates `fish` table with **scientific_name** plus legacy columns
-• Populates scientific_name from CSV's name_latin, and copies it back into
-  name_latin too, so both columns stay in sync.
-
-Updated: 2025‑06‑15 (v1.1)
+injectFish.py – Create/refresh the master fish catalogue with the correct schema.
 """
-
-from __future__ import annotations
-
 import csv
 import sqlite3
-import shutil
 from pathlib import Path
-from datetime import datetime
 
+# --- Configuration ---
 PROJECT_ROOT = Path(__file__).resolve().parent
-DB_PATH      = PROJECT_ROOT / "aqualog.db"
-CSV_PATH     = PROJECT_ROOT / "fish.csv"
+DB_PATH = PROJECT_ROOT / "aqualog.db"
+CSV_PATH = PROJECT_ROOT / "fish.csv"
 
-
-def backup_db() -> None:
-    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    shutil.copy2(DB_PATH, DB_PATH.with_name(f"aqualog_backup_{stamp}.db"))
-    print("💾  Backup created.")
-
-
-def reload_fish() -> None:
+def create_and_inject_data():
+    """
+    Ensures the `fish` table exists with all columns and reloads its
+    contents from fish.csv, mapping the columns correctly.
+    """
     if not CSV_PATH.exists():
-        raise FileNotFoundError(f"fish.csv not found at {CSV_PATH}")
+        print(f"❌ Could not find fish.csv at {CSV_PATH}")
+        return
 
-    columns_csv = [
-        "name_english", "name_latin", "origin", "phmin", "phmax",
-        "temperature_min", "temperature_max", "cm_max",
-        "tank_size_liter", "image_url", "swim"
-    ]
-
+    print(f"🗄️ Connecting to database: {DB_PATH}")
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
-        print("🔄  Rebuilding fish table …")
+
+        print("- Dropping old fish table (if it exists)...")
         cur.execute("DROP TABLE IF EXISTS fish;")
+
+        print("- Creating new 'fish' table with complete schema...")
         cur.execute("""
             CREATE TABLE fish (
-                rowid INTEGER PRIMARY KEY AUTOINCREMENT,
-                name_english       TEXT,
-                name_latin         TEXT,
-                scientific_name    TEXT,
-                origin             TEXT,
-                phmin              REAL,
-                phmax              REAL,
-                temperature_min    REAL,
-                temperature_max    REAL,
-                cm_max             REAL,
-                tank_size_liter    REAL,
-                image_url          TEXT,
-                swim               INTEGER,
-                common_name        TEXT DEFAULT ''
+                fish_id         INTEGER PRIMARY KEY,
+                species_name    TEXT    NOT NULL,
+                common_name     TEXT,
+                origin          TEXT,
+                phmin           REAL,
+                phmax           REAL,
+                temperature_min REAL,
+                temperature_max REAL,
+                tank_size_liter REAL,
+                image_url       TEXT,
+                swim            INTEGER
             );
         """)
 
-        ins_cols = (", ".join(columns_csv))  # insert into legacy cols
-        placeholders = ", ".join(["?"] * len(columns_csv))
-        insert_sql = f"INSERT INTO fish ({ins_cols}) VALUES ({placeholders});"
-
-        rows = []
+        print(f"- Loading data from {CSV_PATH.name}...")
         with CSV_PATH.open(newline="", encoding="utf-8") as fh:
-            reader = csv.reader(fh)
-            header = next(reader)  # skip header
+            reader = csv.DictReader(fh)
+            to_insert = []
             for row in reader:
-                if not row:
-                    continue
-                rows.append(row[1:])  # drop fish_id
+                # Map CSV headers to DB columns
+                to_insert.append((
+                    row.get('fish_id'),
+                    row.get('name_latin'),      # Maps to species_name
+                    row.get('name_english'),    # Maps to common_name
+                    row.get('origin'),
+                    row.get('phmin'),
+                    row.get('phmax'),
+                    row.get('temperature_min'),
+                    row.get('temperature_max'),
+                    row.get('tank_size_liter'),
+                    row.get('image_url'),
+                    row.get('swim')
+                ))
 
-        cur.executemany(insert_sql, rows)
+        cur.executemany(
+            """
+            INSERT INTO fish (
+                fish_id, species_name, common_name, origin, phmin, phmax,
+                temperature_min, temperature_max, tank_size_liter, image_url, swim
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            """,
+            to_insert
+        )
+        print(f"✅ Inserted {len(to_insert)} fish records.")
 
-        # Copy name_latin into scientific_name
-        cur.execute("UPDATE fish SET scientific_name = name_latin WHERE scientific_name IS NULL OR scientific_name = '';")
         conn.commit()
-        print(f"✅  Inserted {len(rows)} fish and added scientific_name column.")
-
+        print("🎉 Data injection complete.")
 
 if __name__ == "__main__":
-    if DB_PATH.exists():
-        backup_db()
-    reload_fish()
-    print("🎉  Fish catalogue loaded with scientific names.")
+    create_and_inject_data()

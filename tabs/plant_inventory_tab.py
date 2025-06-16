@@ -154,7 +154,7 @@ def plant_inventory_tab(key_prefix=""):
         if owned.empty:
             st.info(f"No plants in {tank_name}. Search above to add some.")
         else:
-            search_term_owned = st.text_input('🔍 Filter your plants', key=f'{key_prefix}filter_owned').strip().lower()
+            search_term_owned = st.text_input('🔍 Filter your plants', key=f'{key_prefix}plant_filter_owned').strip().lower()
             if search_term_owned:
                 search_cols_owned = ["display_name", "origin", "growth_rate"]
                 search_series_owned = owned[search_cols_owned].astype(str).agg(' '.join, axis=1).str.lower()

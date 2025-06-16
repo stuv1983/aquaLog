@@ -23,7 +23,6 @@ def fish_inventory_tab(key_prefix=""):
 
         # 1. Load master fish list from database
         with get_connection() as conn:
-            # FIX: Changed `scientific_name` to `species_name` to match the current DB schema.
             master_fish = pd.read_sql_query("""
                 SELECT 
                     rowid AS fish_id,
@@ -40,7 +39,6 @@ def fish_inventory_tab(key_prefix=""):
         query = st.text_input('Search fish...', key=f'{key_prefix}fish_search', label_visibility="collapsed").strip().lower()
 
         if query:
-            # The search logic correctly uses `species_name` which is now aligned with the query.
             search_cols = ['species_name', 'common_name']
             mask = master_fish[search_cols].apply(
                 lambda row: ' '.join(row.values.astype(str)).lower().find(query) != -1, 
@@ -79,7 +77,6 @@ def fish_inventory_tab(key_prefix=""):
         # 4. List owned fish in the current tank
         st.subheader(f'🐟 Fish in {tank_name}')
         with get_connection() as conn:
-            # FIX: Changed `p.scientific_name` to `p.species_name`
             owned = pd.read_sql_query("""
                 SELECT
                     o.rowid as owned_fish_id, o.quantity, p.*
@@ -92,12 +89,11 @@ def fish_inventory_tab(key_prefix=""):
         if owned.empty:
             st.info(f"No fish recorded in {tank_name}.")
         else:
-            search_term_owned = st.text_input('🔍 Filter your owned fish...', key=f'{key_prefix}filter_owned').strip().lower()
+            search_term_owned = st.text_input('🔍 Filter your owned fish...', key=f'{key_prefix}fish_filter_owned').strip().lower()
             
             owned_to_display = owned
 
             if search_term_owned:
-                # FIX: Changed `scientific_name` to `species_name`
                 search_cols_owned = ['species_name', 'common_name']
                 mask = owned[search_cols_owned].apply(
                     lambda row: ' '.join(row.values.astype(str)).lower().find(search_term_owned) != -1, 
@@ -111,7 +107,6 @@ def fish_inventory_tab(key_prefix=""):
                 for _, row in owned_to_display.iterrows():
                     with st.container():
                         cols = st.columns([1, 4, 1])
-                        # FIX: Changed `scientific_name` to `species_name`
                         name = row['species_name']
                         
                         if row['image_url'] and str(row['image_url']).startswith('http'):
