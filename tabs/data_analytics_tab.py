@@ -1,3 +1,5 @@
+# tabs/data_analytics_tab.py (Updated)
+
 """
 tabs/data_analytics_tab.py – multi-tank aware 🎛️
 
@@ -13,8 +15,8 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 
-from aqualog_db.legacy import fetch_data, fetch_all_tanks
-from aqualog_db.base import BaseRepository
+# 1. Import repositories instead of legacy functions
+from aqualog_db.repositories import TankRepository, WaterTestRepository
 from aqualog_db.connection import get_connection
 
 from utils import (
@@ -48,7 +50,10 @@ def _get_min_max_dates(cur, tank_id: int) -> tuple[Optional[datetime.date], Opti
 def data_analytics_tab() -> None:
     """Render the Data & Analytics tab scoped to the active tank."""
     tank_id: int = st.session_state.get("tank_id", 1)
-    tanks = fetch_all_tanks()
+    
+    # 2. Instantiate the repository and call its method
+    tank_repo = TankRepository()
+    tanks = tank_repo.fetch_all()
     tank_name = next((t["name"] for t in tanks if t["id"] == tank_id), f"Tank #{tank_id}")
 
     st.header(f"📊 {translate('Data & Analytics')} — {tank_name}")
@@ -64,7 +69,11 @@ def data_analytics_tab() -> None:
     # Construct start and end strings that include the full day to ensure all data is fetched
     start_str = datetime.datetime.combine(min_date, datetime.time.min).isoformat()
     end_str = datetime.datetime.combine(max_date, datetime.time.max).isoformat()
-    df = fetch_data(start_str, end_str, tank_id)
+
+    # 3. Instantiate the repository and call its method
+    water_test_repo = WaterTestRepository()
+    df = water_test_repo.fetch_by_date_range(start_str, end_str, tank_id)
+
 
     if df.empty:
         st.info(translate("No data to display for") + f" {tank_name}.")

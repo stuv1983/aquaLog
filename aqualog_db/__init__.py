@@ -1,11 +1,12 @@
-# aqualog_db/__init__.py
+# aqualog_db/__init__.py (Updated)
 
 """
 aqualog_db — Top-level API for AquaLog’s database layer.
-Exposes legacy functions (e.g. init_tables) and repository classes.
+Exposes repository classes for all data operations.
 """
 
-from .legacy import init_tables
+# 1. Import SchemaManager instead of legacy functions
+from .schema import SchemaManager
 from .repositories import (
     TankRepository,
     WaterTestRepository,
@@ -13,6 +14,12 @@ from .repositories import (
     EmailSettingsRepository,
 )
 
+# 2. Define a clean init_tables function using the modern pattern
+def init_tables():
+    """Initializes all database tables, indexes, and triggers."""
+    SchemaManager().init_tables()
+
+# 3. Update __all__ to export only the modern components
 __all__ = [
     "init_tables",
     "TankRepository",

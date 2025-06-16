@@ -1,3 +1,5 @@
+# tabs/full_data_tab.py (Updated)
+
 """
 tabs/full_data_tab.py – multi-tank aware 🗂️
 “Full Water Test Data” – lets the user pick a date range, chart parameters,
@@ -15,9 +17,9 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 
-# ─── DB helpers ──────────────────────────────────────────────────────────────
-from aqualog_db.connection import get_connection           # context-manager
-from aqualog_db.legacy     import fetch_data               # high-level query
+# 1. Import repositories instead of legacy functions
+from aqualog_db.connection import get_connection
+from aqualog_db.repositories import WaterTestRepository
 
 # ─── Local utilities ─────────────────────────────────────────────────────────
 from utils import (
@@ -90,7 +92,10 @@ def full_data_tab() -> None:
         return
 
     # 3️⃣  Fetch data for this tank
-    df = fetch_data(start_date.isoformat(), end_date.isoformat(), tank_id)
+    # 2. Instantiate the repository and call its method
+    water_test_repo = WaterTestRepository()
+    df = water_test_repo.fetch_by_date_range(start_date.isoformat(), end_date.isoformat(), tank_id)
+
     if df.empty:
         st.info("No data in the selected range.")
         return

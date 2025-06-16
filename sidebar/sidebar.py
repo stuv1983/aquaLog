@@ -1,10 +1,10 @@
-"""
-sidebar.py – Assembles and renders the complete sidebar UI.
-"""
+# sidebar/sidebar.py (Updated)
+
 import streamlit as st
 from typing import Dict, Any
 
-from aqualog_db.legacy import fetch_all_tanks
+# 1. Import the repository instead of the legacy function
+from aqualog_db.repositories import TankRepository
 from .tank_selector import render_tank_selector
 from .water_test_form import render_water_test_form
 from .settings_panel import render_settings_panel
@@ -15,7 +15,10 @@ def sidebar_entry() -> None:
     This is the main entry point function for the sidebar.
     It organizes all sidebar components.
     """
-    tanks = fetch_all_tanks()
+    # 2. Instantiate the repository and call its method
+    tank_repo = TankRepository()
+    tanks = tank_repo.fetch_all()
+    
     tank_map: Dict[int, Dict[str, Any]] = {
         t["id"]: {"name": t["name"], "volume": t.get("volume_l", 0.0)}
         for t in tanks
@@ -24,7 +27,6 @@ def sidebar_entry() -> None:
     render_tank_selector(tank_map)
     render_water_test_form(tank_map)
     
-    # The settings panel is now rendered within an expander from this main function
     with st.sidebar.expander("⚙️ Settings", expanded=False, icon="💧"):
         render_settings_panel(tank_map)
         

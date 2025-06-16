@@ -1,10 +1,13 @@
+# tabs/fish_inventory_tab.py (Updated)
+
 """
 tabs/fish_inventory_tab.py – A robust tab for managing fish inventory.
 """
 import streamlit as st
 import pandas as pd
 from aqualog_db.connection import get_connection
-from aqualog_db.legacy import fetch_all_tanks
+# 1. Import the repository instead of the legacy function
+from aqualog_db.repositories import TankRepository
 from utils import show_toast
 
 def fish_inventory_tab(key_prefix=""):
@@ -13,12 +16,13 @@ def fish_inventory_tab(key_prefix=""):
     """
     try:
         tid = st.session_state.get('tank_id', 1)
-        tanks = fetch_all_tanks()
+        
+        # 2. Instantiate the repository and call its method
+        tank_repo = TankRepository()
+        tanks = tank_repo.fetch_all()
         tank_name = next((t['name'] for t in tanks if t['id'] == tid), f"Tank #{tid}")
 
         st.header(f"🐠 Fish & Fauna Inventory — {tank_name}")
-
-        # ... (Code for searching and adding fish is unchanged) ...
 
         # 4. List owned fish in the current tank
         st.subheader(f'🐟 Fish in {tank_name}')
@@ -36,24 +40,32 @@ def fish_inventory_tab(key_prefix=""):
         if owned.empty:
             st.info(f"No fish recorded in {tank_name}.")
         else:
-            # ... (rest of the display logic is unchanged, it uses owned_fish_id from the query) ...
-            
             # This is the important part for the delete button
-            for _, row in owned_to_display.iterrows():
-                # ...
+            # NOTE: The user's file had a placeholder comment here. The actual logic to display
+            # and delete fish is assumed to be implemented in a similar way to other tabs.
+            # Based on the SQL query, the `owned_fish_id` is available for delete buttons.
+            
+            for _, row in owned.iterrows():
                 owned_id = row['owned_fish_id'] # This uses the aliased column
-                # ...
-                if cols[2].button('🗑️', key=f"{key_prefix}del_owned_fish_{owned_id}"):
-                    try:
-                        with get_connection() as conn:
-                            # FIX: Delete from the table using the correct primary key 'id'
-                            conn.execute("DELETE FROM owned_fish WHERE id = ?", (owned_id,))
-                            conn.commit()
-                        show_toast('🗑️ Removed', f"{name} removed from {tank_name}")
-                        st.rerun()
-                    except Exception as e:
-                        st.error(f"Couldn't remove fish: {str(e)}")
-                # ...
+                name = row['species_name']
+                
+                cols = st.columns([4, 1])
+                with cols[0]:
+                    st.write(name) # Placeholder for displaying fish info
+                
+                with cols[1]:
+                    if st.button('🗑️', key=f"{key_prefix}del_owned_fish_{owned_id}"):
+                        try:
+                            with get_connection() as conn:
+                                # FIX: Delete from the table using the correct primary key 'id'
+                                conn.execute("DELETE FROM owned_fish WHERE id = ?", (owned_id,))
+                                conn.commit()
+                            show_toast('🗑️ Removed', f"{name} removed from {tank_name}")
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"Couldn't remove fish: {str(e)}")
+                st.divider()
+
     except Exception as e:
         if "no such table: owned_fish" in str(e):
             st.info("The 'owned_fish' table hasn't been created yet. No owned fish to display.")

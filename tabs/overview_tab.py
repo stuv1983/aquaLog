@@ -1,4 +1,4 @@
-# aqualog/tabs/overview_tab.py
+# aqualog/tabs/overview_tab.py (Updated)
 """
 Overview dashboard — multi-tank aware 🏠
 
@@ -13,8 +13,9 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 
-from aqualog_db.base   import BaseRepository
-from aqualog_db.legacy import fetch_all_tanks
+# 1. Import repositories instead of legacy functions
+from aqualog_db.repositories import TankRepository
+from aqualog_db.base import BaseRepository
 
 from utils import (
     arrow_safe,
@@ -33,8 +34,11 @@ def render_overview_tab() -> None:
     # Get the currently selected tank ID from the session state (set by the sidebar)
     selected_tank_id = st.session_state.get("tank_id", 0)
 
+    # 2. Instantiate the repository and call its method
+    tank_repo = TankRepository()
+    tanks = tank_repo.fetch_all()
+    
     # Get the name of the selected tank for the header
-    tanks = fetch_all_tanks()
     tank_name = "Overview"
     if tanks and selected_tank_id:
         # Create a mapping from ID to name

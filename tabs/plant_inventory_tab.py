@@ -1,3 +1,5 @@
+# tabs/plant_inventory_tab.py (Updated)
+
 """
 tabs/plant_inventory_tab.py – fully multi‑tank aware 🌿
 
@@ -8,7 +10,8 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 
-from aqualog_db.legacy import fetch_all_tanks
+# 1. Import the repository instead of the legacy function
+from aqualog_db.repositories import TankRepository
 from aqualog_db.connection import get_connection
 from utils import show_toast
 
@@ -32,7 +35,9 @@ def plant_inventory_tab(key_prefix=""):
         tid = st.session_state.get('tank_id', 1)
         _ensure_owned_plants_schema()
 
-        tanks = fetch_all_tanks()
+        # 2. Instantiate the repository and call its method
+        tank_repo = TankRepository()
+        tanks = tank_repo.fetch_all()
         tank_name = next((t['name'] for t in tanks if t['id'] == tid), f"Tank #{tid}")
 
         st.header(f"🌿 Aquarium Plant Inventory — {tank_name}")

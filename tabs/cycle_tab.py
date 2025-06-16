@@ -1,3 +1,5 @@
+# tabs/cycle_tab.py (Updated)
+
 """
 tabs/cycle_tab.py – Nitrogen Cycle Tracker 📈
 
@@ -12,7 +14,8 @@ import streamlit as st
 import altair as alt
 
 from aqualog_db.connection import get_connection
-from aqualog_db.legacy import fetch_all_tanks
+# 1. Import the repository instead of the legacy function
+from aqualog_db.repositories import TankRepository
 from config import SAFE_RANGES
 
 def _is_tank_cycled(df: pd.DataFrame) -> bool:
@@ -56,7 +59,9 @@ def cycle_tab(key_prefix=""):
         st.warning("Please select a tank to view its cycle progress.")
         return
         
-    tanks = fetch_all_tanks()
+    # 2. Instantiate the repository and call its method
+    tank_repo = TankRepository()
+    tanks = tank_repo.fetch_all()
     tank_name = next((t["name"] for t in tanks if t["id"] == tank_id), f"Tank #{tank_id}")
     st.info(f"Showing cycle progress for: **{tank_name}**")
 

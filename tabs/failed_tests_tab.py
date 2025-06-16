@@ -1,3 +1,5 @@
+# tabs/failed_tests_tab.py (Updated)
+
 """
 tabs/failed_tests_tab.py – multi‑tank aware ⚠️
 This tab lists EVERY historical test where at least one parameter is outside
@@ -11,12 +13,8 @@ import datetime as _dt
 import pandas as _pd
 import streamlit as st
 
-
-
-# ——— Refactored DB imports ———
-from aqualog_db.legacy import fetch_data, fetch_all_tanks
-
-from aqualog_db.connection import get_connection
+# 1. Import repositories instead of legacy functions
+from aqualog_db.repositories import TankRepository, WaterTestRepository
 
 from utils import clean_numeric_df, is_mobile, translate, format_with_units
 from config import SAFE_RANGES
@@ -30,7 +28,11 @@ print(">>> LOADING", __file__)
 def _load_failed_tests(tank_id: int | None) -> _pd.DataFrame:
     """Return a DataFrame of rows where any value is outside SAFE_RANGES."""
     end_iso = _dt.date.today().isoformat() + "T23:59:59"
-    df = fetch_data("1970-01-01T00:00:00", end_iso, tank_id)
+    
+    # 2. Instantiate the repository and call its method
+    water_test_repo = WaterTestRepository()
+    df = water_test_repo.fetch_by_date_range("1970-01-01T00:00:00", end_iso, tank_id)
+
     if df.empty:
         return df
 
@@ -49,7 +51,10 @@ def failed_tests_tab() -> None:
     """Render the **Failed Tests** tab for the selected tank."""
     # Determine active tank and friendly name
     tank_id = st.session_state.get("tank_id", 1)
-    tanks = fetch_all_tanks()
+    
+    # 3. Instantiate the repository and call its method
+    tank_repo = TankRepository()
+    tanks = tank_repo.fetch_all()
     tank_name = next((t['name'] for t in tanks if t['id'] == tank_id), f"Tank #{tank_id}")
 
     # Header

@@ -1,20 +1,20 @@
-# aquaLog/sidebar/settings_panel.py
+# aquaLog/sidebar/settings_panel.py (Updated)
 """
 Settings panel (refactored, feature-complete).
 """
 
 from __future__ import annotations
 import sqlite3
-from datetime import datetime
-from typing import Dict, Any, Tuple, List
+from typing import Dict, Any, Tuple
 import pandas as pd
 import streamlit as st
 
 from aqualog_db.connection import get_connection
-from aqualog_db.legacy import (
-    add_tank, rename_tank, remove_tank, update_tank_volume,
-    set_custom_range, get_custom_range, get_user_email_settings,
-    save_user_email_settings, fetch_all_tanks
+# UPDATED: Import Repositories instead of legacy functions
+from aqualog_db.repositories import (
+    TankRepository,
+    CustomRangeRepository,
+    EmailSettingsRepository,
 )
 from config import LOCALIZATIONS, UNIT_SYSTEMS, SAFE_RANGES
 from utils import request_rerun
@@ -22,11 +22,16 @@ from utils import request_rerun
 
 def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """Render the entire settings sidebar panel."""
-    render_add_tank_section()
+    # UPDATED: Instantiate repositories at the top for reuse
+    tank_repo = TankRepository()
+    custom_range_repo = CustomRangeRepository()
+    email_repo = EmailSettingsRepository()
+
+    render_add_tank_section(tank_repo, custom_range_repo)
 
     st.subheader("🔧 Edit Tank Settings")
-    render_edit_tank_section(tank_map)
-    render_custom_ranges_section(tank_map)
+    render_edit_tank_section(tank_map, tank_repo)
+    render_custom_ranges_section(tank_map, custom_range_repo)
 
     tid = st.session_state.get("tank_id", 0)
     if tid:
@@ -34,10 +39,10 @@ def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
 
     render_csv_import_section(tank_map)
     render_localization_section()
-    render_weekly_email_section(tank_map)
+    render_weekly_email_section(tank_map, email_repo)
 
 
-def render_add_tank_section() -> None:
+def render_add_tank_section(tank_repo: TankRepository, custom_range_repo: CustomRangeRepository) -> None:
     """➕ Add tank (with optional initial parameter ranges)."""
     st.subheader("➕ Add New Tank")
 
@@ -65,14 +70,16 @@ def render_add_tank_section() -> None:
         if not name.strip():
             st.error("Tank name cannot be empty.")
         else:
-            new_id = add_tank(name.strip(), volume or None)
+            # UPDATED: Use repository methods
+            new_tank = tank_repo.add(name.strip(), volume or None)
+            new_id = new_tank['id']
             for param, (low, high) in new_ranges.items():
-                set_custom_range(new_id, param, low, high)
+                custom_range_repo.set(new_id, param, low, high)
             st.success(f"Added tank '{name.strip()}' ({volume} L)")
             request_rerun()
 
 
-def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
+def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]], tank_repo: TankRepository) -> None:
     """✏️ Rename / Delete tank & edit volume for current tank."""
     st.subheader("✏️ Rename/Delete & Edit Volume")
 
@@ -86,22 +93,24 @@ def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Save Changes", key="save_tank_changes_btn"):
+                # UPDATED: Use repository methods
                 if new_name.strip() != current["name"]:
-                    rename_tank(tid, new_name.strip())
+                    tank_repo.rename(tid, new_name.strip())
                 if (current.get("volume") or 0) != new_vol:
-                    update_tank_volume(tid, new_vol)
+                    tank_repo.update_volume(tid, new_vol)
                 st.success(f"Updated tank to '{new_name.strip()}' ({new_vol} L)")
                 request_rerun()
         with col2:
             if st.button("Delete This Tank", key="delete_tank_btn"):
-                remove_tank(tid)
+                # UPDATED: Use repository method
+                tank_repo.remove(tid)
                 st.success(f"Deleted tank '{current['name']}'")
                 request_rerun()
     else:
         st.info("Select a tank to edit.")
 
 
-def render_custom_ranges_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
+def render_custom_ranges_section(tank_map: Dict[int, Dict[str, Any]], custom_range_repo: CustomRangeRepository) -> None:
     """📊 Custom safe ranges for the current tank."""
     st.subheader("📊 Customize Parameter Ranges")
 
@@ -114,13 +123,15 @@ def render_custom_ranges_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     sel_param = st.selectbox("Parameter", options=params, key="param_select")
 
     if sel_param:
-        low_cur, high_cur = get_custom_range(tid, sel_param) or SAFE_RANGES[sel_param]
+        # UPDATED: Use repository method to get current range
+        low_cur, high_cur = custom_range_repo.get(tid, sel_param) or SAFE_RANGES[sel_param]
         c1, c2 = st.columns(2)
         low_new  = c1.number_input("Safe Low",  value=low_cur,  step=0.1, key=f"low_{sel_param}")
         high_new = c2.number_input("Safe High", value=high_cur, step=0.1, key=f"high_{sel_param}")
 
         if st.button("Save Custom Range", key="save_custom_range_btn"):
-            set_custom_range(tid, sel_param, low_new, high_new)
+            # UPDATED: Use repository method to set new range
+            custom_range_repo.set(tid, sel_param, low_new, high_new)
             st.success(f"Custom range for {sel_param} saved")
             request_rerun()
 
@@ -147,6 +158,8 @@ def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) ->
         col_yes, col_cancel = st.columns(2)
         with col_yes:
             if confirm and st.button("Yes, delete all", key=yes_key):
+                # NOTE: This direct call is okay, but could be moved to a repository method
+                # for full consistency, e.g., `water_test_repo.delete_all_for_tank(tid)`
                 with get_connection() as conn:
                     conn.execute("DELETE FROM water_tests WHERE tank_id = ?;", (tid,))
                     conn.commit()
@@ -176,30 +189,24 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
         try:
             df = pd.read_csv(uploaded)
 
-            # Drop the 'id' column if it exists to let the DB generate it
             if 'id' in df.columns:
                 df = df.drop(columns=['id'])
 
-            # Ensure date column is properly formatted
             if "date" not in df.columns:
                 st.error("CSV must contain a 'date' column.")
                 return
             df["date"] = pd.to_datetime(df["date"], errors="coerce").dt.strftime("%Y-%m-%dT%H:%M:%S")
             df.dropna(subset=['date'], inplace=True)
 
-            # Assign the current tank ID to every row
             df["tank_id"] = tid
 
-            # Get the list of actual columns in the database table
             with get_connection() as conn:
                 cursor = conn.cursor()
                 cursor.execute("PRAGMA table_info(water_tests);")
-                db_columns = {row['name'] for row in cursor.fetchall()}
+                db_columns = {row[1] for row in cursor.fetchall()}
 
-            # Filter the dataframe to only include columns that exist in the database
             df_to_insert = df[[col for col in df.columns if col in db_columns]]
 
-            # Use pandas.to_sql for safe and easy insertion
             with get_connection() as conn:
                 df_to_insert.to_sql("water_tests", conn, if_exists="append", index=False)
 
@@ -217,18 +224,19 @@ def render_localization_section() -> None:
     st.selectbox("Units", list(UNIT_SYSTEMS.keys()), key="units")
 
 
-def render_weekly_email_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
+def render_weekly_email_section(tank_map: Dict[int, Dict[str, Any]], email_repo: EmailSettingsRepository) -> None:
     """📧 Weekly summary email settings."""
     st.subheader("📧 Weekly Summary Email")
 
-    settings = get_user_email_settings() or {}
+    # UPDATED: Use repository method
+    settings = email_repo.get() or {}
     email = st.text_input("Email", value=settings.get("email", ""), key="email_addr")
 
     options  = list(tank_map.keys())
     
     try:
-        default_tanks_str = settings.get("tanks", "[]")
-        default_tanks = eval(default_tanks_str) if isinstance(default_tanks_str, str) else []
+        # UPDATED: The repo now handles JSON decoding, so this is simpler
+        default_tanks = settings.get("tanks", [])
     except:
         default_tanks = []
 
@@ -246,9 +254,10 @@ def render_weekly_email_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
         st.checkbox(label, value=settings.get(key, False), key=key)
 
     if st.button("Save Email Settings", key="save_email_btn"):
-        save_user_email_settings(
+        # UPDATED: Use repository method
+        email_repo.save(
             email=email,
-            tanks=str(selected), # Save as string representation of a list
+            tanks=selected, # Pass the list directly
             include_type=st.session_state["include_type"],
             include_date=st.session_state["include_date"],
             include_notes=st.session_state["include_notes"],

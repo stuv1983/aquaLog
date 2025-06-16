@@ -1,3 +1,5 @@
+# tabs/maintenance_tab.py (Updated)
+
 """
 tabs/maintenance_tab.py – multi-tank aware 🛠️
 
@@ -9,9 +11,8 @@ import streamlit as st
 import pandas as pd
 from datetime import date, timedelta
 
-# ——— Refactored DB imports ———
-from aqualog_db.legacy import fetch_all_tanks
-from aqualog_db.base   import BaseRepository
+# 1. Import repositories instead of legacy functions
+from aqualog_db.repositories import TankRepository
 from aqualog_db.connection import get_connection
 
 from utils import show_toast
@@ -139,7 +140,11 @@ def maintenance_tab() -> None:
     # ──────────────────────────────────────────────
     # Tank selector
     # ──────────────────────────────────────────────
-    tanks = fetch_all_tanks()
+    
+    # 2. Instantiate the repository and call its method
+    tank_repo = TankRepository()
+    tanks = tank_repo.fetch_all()
+
     if not tanks:
         st.warning("No tanks found. Please add a tank first.")
         return

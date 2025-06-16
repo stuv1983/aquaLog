@@ -1,3 +1,5 @@
+# sidebar/water_test_form.py (Correct and Complete)
+
 """
 Sidebar - Water-test logging form (multi-tank aware)
 """
@@ -10,7 +12,8 @@ from typing import Dict, Any
 import pandas as pd
 import streamlit as st
 
-from aqualog_db.legacy import save_water_test
+# 1. Import the repository instead of the legacy function
+from aqualog_db.repositories import WaterTestRepository
 from utils import (
     show_toast,
     show_out_of_range_banner,
@@ -94,13 +97,15 @@ def render_water_test_form(tank_map: Dict[int, Dict[str, Any]]) -> None:
         }
 
         try:
-            save_water_test(data, tank_id)
+            # 2. Instantiate the repository and call its 'save' method
+            repo = WaterTestRepository()
+            repo.save(data, tank_id)
+
             st.sidebar.success("Water test saved!")
 
             preview_df = pd.DataFrame([data])
             st.sidebar.dataframe(arrow_safe(preview_df), use_container_width=True)
 
-            # FIX: Added the required 'title' and 'message' arguments.
             show_toast("Test Saved", "Your readings were successfully recorded.")
             
             show_out_of_range_banner()
