@@ -90,6 +90,7 @@ class SchemaManager(BaseRepository):
                 fish_id      INTEGER NOT NULL,
                 common_name  TEXT,
                 tank_id      INTEGER NOT NULL,
+                quantity     INTEGER DEFAULT 1,
                 created_at   TEXT    DEFAULT (datetime('now')),
                 FOREIGN KEY (fish_id) REFERENCES fish(fish_id) ON DELETE CASCADE,
                 FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
@@ -253,6 +254,10 @@ class SchemaManager(BaseRepository):
 
             for tbl in ('maintenance_log', 'custom_ranges', 'owned_plants', 'owned_fish'):
                 self._ensure_column(cursor, tbl, 'tank_id', "INTEGER NOT NULL DEFAULT 1")
+            
+            # Ensure owned_fish has quantity column for older databases
+            self._ensure_column(cursor, 'owned_fish', 'quantity', 'INTEGER DEFAULT 1')
+
 
             # 3) Create indexes
             for idx_sql in self.INDEXES:
