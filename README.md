@@ -198,6 +198,7 @@ Use the main tabs to explore Overview metrics, detailed analytics, inventory, an
 
 ## 🧮 Calculation Details
 
+
 ### Ammonia Toxicity (unionised NH₃)
 
 Total ammonia (NH₃ + NH₄⁺) alone is misleading. AquaLog converts it to the toxic unionised NH₃ fraction using pH & temperature:
@@ -208,6 +209,40 @@ Total ammonia (NH₃ + NH₄⁺) alone is misleading. AquaLog converts it to the
 pKa = 0.09018 + 2729.92 / (273.15 + temperature °C)
 NH₃  = total_ammonia / (1 + 10 ** (pKa − pH))
 ```
+
+---
+
+#### How it works
+
+1. **Calculate pKa**  
+   The pKa is the acid dissociation constant for the equilibrium  
+   NH₄⁺ ⇌ NH₃ + H⁺.  
+   It shifts with temperature so that at higher temperatures more ammonia exists as NH₃.
+
+2. **Apply Henderson–Hasselbalch**  
+   The ratio  
+   ```
+   [NH₄⁺] / [NH₃] = 10^(pKa - pH)
+   ```  
+   is rearranged to isolate the unionised fraction:
+   ```
+   [NH₃] = total_ammonia / (1 + 10^(pKa - pH))
+   ```
+
+---
+
+#### Why this matters
+
+- **pH dependence**  
+  - When **pH < pKa**, most ammonia is in the **NH₄⁺** (ionised) form—much less toxic.  
+  - When **pH > pKa**, the fraction of **NH₃** (unionised) increases dramatically.
+
+- **Temperature dependence**  
+  - **Warmer water** lowers pKa (denominator shrinks), shifting more total ammonia into the NH₃ form.  
+  - **Colder water** raises pKa, keeping more ammonia as the safer NH₄⁺ form.
+
+By reporting the actual NH₃ concentration rather than raw total ammonia, AquaLog lets you accurately assess toxicity risk and take timely corrective action (e.g., water changes, pH buffering, biofilter optimization).
+
 
 ### KH & GH from Drop Counts
 
