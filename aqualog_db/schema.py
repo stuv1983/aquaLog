@@ -1,5 +1,6 @@
 """
-schema.py – Full database schema with all tables, indexes, triggers, and in-place migrations
+schema.py – Full database schema with all tables, indexes, and triggers.
+This version is simplified for robust cloud deployment.
 """
 import sqlite3
 from .base import BaseRepository
@@ -8,7 +9,7 @@ class SchemaManager(BaseRepository):
     """Handles database schema creation, in-place migrations, and triggers."""
 
     # ───────────────────────────────────────────────────────────────────────────
-    # Table Definitions
+    # Table Definitions (Authoritative Schema)
     # ───────────────────────────────────────────────────────────────────────────
     TABLE_SCHEMAS = {
         "tanks": """
@@ -22,7 +23,6 @@ class SchemaManager(BaseRepository):
                 updated_at  TEXT DEFAULT (datetime('now'))
             );
         """,
-
         "water_tests": """
             CREATE TABLE IF NOT EXISTS water_tests (
                 id            INTEGER PRIMARY KEY,
@@ -40,7 +40,6 @@ class SchemaManager(BaseRepository):
                 FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
             );
         """,
-
         "plants": """
             CREATE TABLE IF NOT EXISTS plants (
                 plant_id      INTEGER PRIMARY KEY,
@@ -60,7 +59,6 @@ class SchemaManager(BaseRepository):
                 updated_at    TEXT    DEFAULT (datetime('now'))
             );
         """,
-
         "owned_plants": """
             CREATE TABLE IF NOT EXISTS owned_plants (
                 plant_id     INTEGER NOT NULL,
@@ -72,7 +70,6 @@ class SchemaManager(BaseRepository):
                 FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
             );
         """,
-
         "fish": """
             CREATE TABLE IF NOT EXISTS fish (
                 fish_id         INTEGER PRIMARY KEY,
@@ -88,7 +85,6 @@ class SchemaManager(BaseRepository):
                 swim            INTEGER
             );
         """,
-
         "owned_fish": """
             CREATE TABLE IF NOT EXISTS owned_fish (
                 id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -101,7 +97,6 @@ class SchemaManager(BaseRepository):
                 FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
             );
         """,
-
         "cycles": """
             CREATE TABLE IF NOT EXISTS cycles (
                 id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -112,7 +107,6 @@ class SchemaManager(BaseRepository):
                 updated_at      TEXT    DEFAULT (datetime('now'))
             );
         """,
-
         "maintenance_cycles": """
             CREATE TABLE IF NOT EXISTS maintenance_cycles (
                 id               INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -127,7 +121,6 @@ class SchemaManager(BaseRepository):
                 FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
             );
         """,
-
         "maintenance_log": """
             CREATE TABLE IF NOT EXISTS maintenance_log (
                 id               INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -146,7 +139,6 @@ class SchemaManager(BaseRepository):
                 FOREIGN KEY (cycle_id) REFERENCES maintenance_cycles(id) ON DELETE SET NULL
             );
         """,
-
         "email_settings": """
             CREATE TABLE IF NOT EXISTS email_settings (
                 user_id        INTEGER PRIMARY KEY DEFAULT 1,
@@ -162,7 +154,6 @@ class SchemaManager(BaseRepository):
                 updated_at     TEXT    DEFAULT (datetime('now'))
             );
         """,
-
         "custom_ranges": """
             CREATE TABLE IF NOT EXISTS custom_ranges (
                 id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -241,48 +232,26 @@ class SchemaManager(BaseRepository):
     # ───────────────────────────────────────────────────────────────────────────
     def init_tables(self) -> None:
         """
-        Initialize all tables, perform in-place migrations, create indexes and triggers.
+        Initialize all tables, create indexes and triggers from the defined schema.
+        This version is simplified for robust deployment.
         """
         with self._connection() as conn:
             cursor = conn.cursor()
 
-            # 1) Create or update all tables
+            # 1) Create all tables from the authoritative schema
             for schema_sql in self.TABLE_SCHEMAS.values():
                 cursor.execute(schema_sql)
 
-            # 2) In-place migrations: add missing columns
-            self._ensure_column(cursor, 'water_tests', 'gh',      "REAL DEFAULT 0 CHECK(gh >= 0 AND gh <= 30)")
-            self._ensure_column(cursor, 'water_tests', 'tank_id', "INTEGER NOT NULL DEFAULT 1")
-            self._ensure_column(cursor, 'water_tests', 'notes',   "TEXT")
-            self._ensure_column(cursor, 'maintenance_log', 'cycle_id', "INTEGER")
-            self._ensure_column(cursor, 'maintenance_log', 'is_completed', "BOOLEAN DEFAULT 1")
-
-            for tbl in ('maintenance_log', 'custom_ranges', 'owned_plants', 'owned_fish'):
-                self._ensure_column(cursor, tbl, 'tank_id', "INTEGER NOT NULL DEFAULT 1")
-            
-            # Ensure owned_fish has quantity column for older databases
-            self._ensure_column(cursor, 'owned_fish', 'quantity', 'INTEGER DEFAULT 1')
-
-
-            # 3) Create indexes
+            # 2) Create all indexes
             for idx_sql in self.INDEXES:
                 cursor.execute(idx_sql)
 
-            # 4) Create triggers
+            # 3) Create all triggers
             for trg_sql in self.TRIGGERS:
                 cursor.execute(trg_sql)
 
-            # 5) Seed default tank
+            # 4) Seed default tank
             cursor.execute(
                 "INSERT OR IGNORE INTO tanks (id, name) VALUES (1, 'Default Tank');"
             )
             conn.commit()
-
-    def _ensure_column(self, cursor: sqlite3.Cursor, table: str, column: str, ddl: str) -> None:
-        """
-        Add a column to an existing table if it does not already exist.
-        """
-        cursor.execute(f"PRAGMA table_info({table});")
-        existing = {row[1] for row in cursor.fetchall()}
-        if column not in existing:
-            cursor.execute(f"ALTER TABLE {table} ADD COLUMN {column} {ddl};")
