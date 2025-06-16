@@ -10,9 +10,6 @@ from utils import show_toast
 def fish_inventory_tab(key_prefix=""):
     """
     Manage per-tank fish inventory.
-    
-    Args:
-        key_prefix (str): A string to prefix all widget keys to ensure uniqueness.
     """
     try:
         tid = st.session_state.get('tank_id', 1)
@@ -24,13 +21,7 @@ def fish_inventory_tab(key_prefix=""):
         # 1. Load master fish list from database
         with get_connection() as conn:
             master_fish = pd.read_sql_query("""
-                SELECT 
-                    rowid AS fish_id,
-                    COALESCE(species_name, '') AS species_name,
-                    COALESCE(common_name, '') AS common_name,
-                    COALESCE(image_url, '') AS thumbnail_url
-                FROM fish
-                ORDER BY species_name COLLATE NOCASE
+                SELECT * FROM fish ORDER BY species_name COLLATE NOCASE
             """, conn)
 
         # 2. Search master fish list
@@ -54,15 +45,21 @@ def fish_inventory_tab(key_prefix=""):
                     with st.container():
                         fid = row['fish_id']
                         name = row['species_name']
-                        common_name = row['common_name']
                         cols = st.columns([1, 4, 1])
 
-                        if row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
-                            cols[0].image(row['thumbnail_url'], width=80)
+                        if 'image_url' in row and row['image_url'] and str(row['image_url']).startswith('http'):
+                            cols[0].image(row['image_url'], width=80)
                         
                         with cols[1]:
                             st.subheader(name)
-                            if common_name: st.write(f"({common_name})")
+                            if 'common_name' in row and row['common_name']:
+                                st.write(f"({row['common_name']})")
+                            
+                            exclude_cols = ['fish_id', 'species_name', 'common_name', 'image_url']
+                            for col_name in row.index:
+                                if col_name not in exclude_cols and pd.notna(row[col_name]) and str(row[col_name]).strip():
+                                    display_label = col_name.replace('_', ' ').title()
+                                    st.write(f"**{display_label}:** {row[col_name]}")
 
                         if cols[2].button('➕ Add', key=f"{key_prefix}add_fish_{fid}"):
                             st.success(f"Added {name} to {tank_name}!")
@@ -109,13 +106,21 @@ def fish_inventory_tab(key_prefix=""):
                         cols = st.columns([1, 4, 1])
                         name = row['species_name']
                         
-                        if row['image_url'] and str(row['image_url']).startswith('http'):
+                        if 'image_url' in row and row['image_url'] and str(row['image_url']).startswith('http'):
                             cols[0].image(row['image_url'], width=80)
 
+                        # --- MODIFICATION START ---
+                        # Dynamically display all details for owned fish
                         with cols[1]:
                             st.subheader(name)
-                            if row['common_name']: st.write(f"({row['common_name']})")
-                            if 'quantity' in row and row['quantity']: st.write(f"**Quantity:** {row['quantity']}")
+                            if 'common_name' in row and row['common_name']: st.write(f"({row['common_name']})")
+                            
+                            exclude_cols = ['fish_id', 'species_name', 'common_name', 'image_url', 'owned_fish_id']
+                            for col_name in row.index:
+                                if col_name not in exclude_cols and pd.notna(row[col_name]) and str(row[col_name]).strip():
+                                    display_label = col_name.replace('_', ' ').title()
+                                    st.write(f"**{display_label}:** {row[col_name]}")
+                        # --- MODIFICATION END ---
                         
                         if cols[2].button('🗑️', key=f"{key_prefix}del_owned_fish_{row['owned_fish_id']}"):
                             st.rerun()

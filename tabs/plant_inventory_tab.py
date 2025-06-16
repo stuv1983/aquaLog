@@ -1,10 +1,7 @@
 """
 tabs/plant_inventory_tab.py – fully multi‑tank aware 🌿
 
-Manage your aquarium plant inventory per tank:
- 1. Search the Tropica master list and add plants to the selected tank
- 2. Manual "Add New Plant" expander to insert into master list
- 3. View, search, and remove owned plants scoped by tank
+Manage your aquarium plant inventory per tank.
 """
 
 import pandas as pd
@@ -40,33 +37,18 @@ def plant_inventory_tab(key_prefix=""):
 
         st.header(f"🌿 Aquarium Plant Inventory — {tank_name}")
 
-        # 1️⃣ Load master plants from database
+        # Load master plants from database
         with get_connection() as conn:
             master = pd.read_sql_query("""
-                SELECT
-                    plant_id,
-                    COALESCE(plant_name, '') AS plant_name,
-                    COALESCE(origin, '') AS origin,
-                    COALESCE(origin_info, '') AS origin_info,
-                    COALESCE(growth_rate, '') AS growth_rate,
-                    COALESCE(growth_info, '') AS growth_info,
-                    COALESCE(height_cm, '') AS height_cm,
-                    COALESCE(height_info, '') AS height_info,
-                    COALESCE(light_demand, '') AS light_demand,
-                    COALESCE(light_info, '') AS light_info,
-                    COALESCE(co2_demand, '') AS co2_demand,
-                    COALESCE(co2_info, '') AS co2_info,
-                    COALESCE(thumbnail_url, '') AS thumbnail_url
-                FROM plants
-                ORDER BY plant_name COLLATE NOCASE
+                SELECT * FROM plants ORDER BY plant_name COLLATE NOCASE
             """, conn)
 
-        # 2️⃣ Search master plant list
+        # Search master plant list
         st.subheader('🔍 Search Plant Database')
         query = st.text_input('Search plants...', key=f'{key_prefix}plant_search').strip().lower()
 
         if query:
-            search_cols = ["plant_name", "origin", "growth_rate", "height_cm", "light_demand", "co2_demand"]
+            search_cols = [col for col in master.columns if master[col].dtype == 'object']
             search_series = master[search_cols].astype(str).agg(' '.join, axis=1).str.lower()
             filtered = master[search_series.str.contains(query, na=False)]
             
@@ -79,23 +61,16 @@ def plant_inventory_tab(key_prefix=""):
                         name = row['plant_name'] or 'Unnamed plant'
                         cols = st.columns([1, 4, 1])
                         
-                        if row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
+                        if 'thumbnail_url' in row and row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
                             cols[0].image(row['thumbnail_url'], width=80)
                         
                         with cols[1]:
                             st.subheader(name)
-                            info_pairs = [
-                                ('Origin', 'origin', 'origin_info'),
-                                ('Growth Rate', 'growth_rate', 'growth_info'),
-                                ('Height', 'height_cm', 'height_info'),
-                                ('Light', 'light_demand', 'light_info'),
-                                ('CO₂', 'co2_demand', 'co2_info'),
-                            ]
-                            for label, val, desc in info_pairs:
-                                if row[val]:
-                                    st.write(f"**{label}:** {row[val]}")
-                                if row[desc]:
-                                    st.text(row[desc])
+                            exclude_cols = ['plant_id', 'plant_name', 'thumbnail_url']
+                            for col_name in row.index:
+                                if col_name not in exclude_cols and pd.notna(row[col_name]) and str(row[col_name]).strip():
+                                    display_label = col_name.replace('_', ' ').title()
+                                    st.write(f"**{display_label}:** {row[col_name]}")
                         
                         if cols[2].button('➕ Add', key=f'{key_prefix}add_{pid}'):
                             try:
@@ -110,8 +85,9 @@ def plant_inventory_tab(key_prefix=""):
                             except Exception as e:
                                 st.error(f"Couldn't add plant: {str(e)}")
 
-        # 3️⃣ Manually add a new plant
+        # Manually add a new plant
         with st.expander('➕ Add New Plant to Database'):
+            # ... (form logic is unchanged)
             new_plant_values = {
                 'plant_name': st.text_input('Scientific Name*', key=f'{key_prefix}new_name'),
                 'origin': st.text_input('Origin', key=f'{key_prefix}new_origin'),
@@ -137,7 +113,8 @@ def plant_inventory_tab(key_prefix=""):
                     except Exception as e:
                         st.error(f"Couldn't save plant: {str(e)}")
 
-        # 4️⃣ List owned plants in the current tank
+
+        # List owned plants in the current tank
         st.subheader(f'🌱 Plants in {tank_name}')
         with get_connection() as conn:
             owned = pd.read_sql_query("""
@@ -169,15 +146,19 @@ def plant_inventory_tab(key_prefix=""):
                     pid = row['plant_id']
                     name = row['display_name']
                     
-                    if row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
+                    if 'thumbnail_url' in row and row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
                         cols[0].image(row['thumbnail_url'], width=80)
                     
+                    # --- MODIFICATION START ---
+                    # Dynamically display all details for owned plants
                     with cols[1]:
                         st.subheader(name)
-                        if row['origin']:
-                            st.write(f"**Origin:** {row['origin']}")
-                        if row['growth_rate']:
-                            st.write(f"**Growth:** {row['growth_rate']}")
+                        exclude_cols = ['plant_id', 'plant_name', 'display_name', 'thumbnail_url']
+                        for col_name in row.index:
+                            if col_name not in exclude_cols and pd.notna(row[col_name]) and str(row[col_name]).strip():
+                                display_label = col_name.replace('_', ' ').title()
+                                st.write(f"**{display_label}:** {row[col_name]}")
+                    # --- MODIFICATION END ---
                     
                     if cols[2].button('🗑️', key=f'{key_prefix}del_{pid}'):
                         try:
