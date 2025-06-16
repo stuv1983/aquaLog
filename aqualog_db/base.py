@@ -37,7 +37,9 @@ class BaseRepository:
             # FIX: This line causes a disk I/O error in the deployment environment and must be removed.
             # conn.execute("PRAGMA journal_mode = WAL;") 
             
-            conn.execute("PRAGMA synchronous = NORMAL;")
+            # FIX: This line causes an OperationalError in some cloud environments.
+            # conn.execute("PRAGMA synchronous = NORMAL;")
+            
             self._local.conn = conn
 
         try:
@@ -70,7 +72,7 @@ class BaseRepository:
                 conn.commit()
             except sqlite3.IntegrityError as e:
                 raise ValueError(f"Constraint error: {e}") from e
-            except sqlite3.Error as e:
+            except sqlite.Error as e:
                 raise RuntimeError(f"Database error: {e}") from e
 
     def fetch_one(self, sql: str, params: Iterable[Any] = ()) -> Optional[Dict[str, Any]]:
