@@ -63,11 +63,11 @@ class SchemaManager(BaseRepository):
 
         "owned_plants": """
             CREATE TABLE IF NOT EXISTS owned_plants (
-                id           INTEGER PRIMARY KEY AUTOINCREMENT,
                 plant_id     INTEGER NOT NULL,
-                common_name  TEXT,
                 tank_id      INTEGER NOT NULL,
+                common_name  TEXT,
                 created_at   TEXT    DEFAULT (datetime('now')),
+                PRIMARY KEY (plant_id, tank_id),
                 FOREIGN KEY (plant_id) REFERENCES plants(plant_id) ON DELETE CASCADE,
                 FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
             );
