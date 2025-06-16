@@ -76,7 +76,7 @@ class SchemaManager(BaseRepository):
         "fish": """
             CREATE TABLE IF NOT EXISTS fish (
                 fish_id         INTEGER PRIMARY KEY,
-                scientific_name TEXT    NOT NULL CHECK(length(trim(scientific_name)) > 0),
+                species_name    TEXT    NOT NULL CHECK(length(trim(species_name)) > 0),
                 common_name     TEXT,
                 image_url       TEXT,
                 created_at      TEXT    DEFAULT (datetime('now')),
