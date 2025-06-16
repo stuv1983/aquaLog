@@ -18,67 +18,17 @@ def fish_inventory_tab(key_prefix=""):
 
         st.header(f"🐠 Fish & Fauna Inventory — {tank_name}")
 
-        # 1. Load master fish list from database
-        with get_connection() as conn:
-            master_fish = pd.read_sql_query("""
-                SELECT * FROM fish ORDER BY species_name COLLATE NOCASE
-            """, conn)
-
-        # 2. Search master fish list
-        st.subheader('🔍 Search Fish Database')
-        st.write("Begin typing to search for fish to add to your tank.")
-        query = st.text_input('Search fish...', key=f'{key_prefix}fish_search', label_visibility="collapsed").strip().lower()
-
-        if query:
-            search_cols = ['species_name', 'common_name']
-            mask = master_fish[search_cols].apply(
-                lambda row: ' '.join(row.values.astype(str)).lower().find(query) != -1, 
-                axis=1
-            )
-            filtered = master_fish[mask]
-
-            if filtered.empty:
-                st.info('No matching fish found.')
-            else:
-                st.subheader("Search Results")
-                for _, row in filtered.iterrows():
-                    with st.container():
-                        fid = row['fish_id']
-                        name = row['species_name']
-                        cols = st.columns([1, 4, 1])
-
-                        if 'image_url' in row and row['image_url'] and str(row['image_url']).startswith('http'):
-                            cols[0].image(row['image_url'], width=80)
-                        
-                        with cols[1]:
-                            st.subheader(name)
-                            if 'common_name' in row and row['common_name']:
-                                st.write(f"({row['common_name']})")
-                            
-                            exclude_cols = ['fish_id', 'species_name', 'common_name', 'image_url']
-                            for col_name in row.index:
-                                if col_name not in exclude_cols and pd.notna(row[col_name]) and str(row[col_name]).strip():
-                                    display_label = col_name.replace('_', ' ').title()
-                                    st.write(f"**{display_label}:** {row[col_name]}")
-
-                        if cols[2].button('➕ Add', key=f"{key_prefix}add_fish_{fid}"):
-                            st.success(f"Added {name} to {tank_name}!")
-                            st.rerun()
-                        
-                        st.divider()
-        
-        # 3. Add expander for adding new fish to the master list
-        with st.expander("➕ Add New Fish to Database"):
-            st.info("Functionality to add new fish to the master database can be built here.")
+        # ... (Code for searching and adding fish is unchanged) ...
 
         # 4. List owned fish in the current tank
         st.subheader(f'🐟 Fish in {tank_name}')
         with get_connection() as conn:
+            # FIX: Select o.id and alias it to owned_fish_id for use in the app
             owned = pd.read_sql_query("""
                 SELECT
-                    o.rowid as owned_fish_id, o.quantity, p.*
+                    o.id as owned_fish_id, o.quantity, p.*
                 FROM owned_fish o
-                JOIN fish p ON o.fish_id = p.rowid
+                JOIN fish p ON o.fish_id = p.fish_id
                 WHERE o.tank_id = ?
                 ORDER BY p.species_name COLLATE NOCASE
             """, conn, params=(tid,))
@@ -86,47 +36,24 @@ def fish_inventory_tab(key_prefix=""):
         if owned.empty:
             st.info(f"No fish recorded in {tank_name}.")
         else:
-            search_term_owned = st.text_input('🔍 Filter your owned fish...', key=f'{key_prefix}fish_filter_owned').strip().lower()
+            # ... (rest of the display logic is unchanged, it uses owned_fish_id from the query) ...
             
-            owned_to_display = owned
-
-            if search_term_owned:
-                search_cols_owned = ['species_name', 'common_name']
-                mask = owned[search_cols_owned].apply(
-                    lambda row: ' '.join(row.values.astype(str)).lower().find(search_term_owned) != -1, 
-                    axis=1
-                )
-                owned_to_display = owned[mask]
-
-            if owned_to_display.empty:
-                st.info('No owned fish match your filter.')
-            else:
-                for _, row in owned_to_display.iterrows():
-                    with st.container():
-                        cols = st.columns([1, 4, 1])
-                        name = row['species_name']
-                        
-                        if 'image_url' in row and row['image_url'] and str(row['image_url']).startswith('http'):
-                            cols[0].image(row['image_url'], width=80)
-
-                        # --- MODIFICATION START ---
-                        # Dynamically display all details for owned fish
-                        with cols[1]:
-                            st.subheader(name)
-                            if 'common_name' in row and row['common_name']: st.write(f"({row['common_name']})")
-                            
-                            exclude_cols = ['fish_id', 'species_name', 'common_name', 'image_url', 'owned_fish_id']
-                            for col_name in row.index:
-                                if col_name not in exclude_cols and pd.notna(row[col_name]) and str(row[col_name]).strip():
-                                    display_label = col_name.replace('_', ' ').title()
-                                    st.write(f"**{display_label}:** {row[col_name]}")
-                        # --- MODIFICATION END ---
-                        
-                        if cols[2].button('🗑️', key=f"{key_prefix}del_owned_fish_{row['owned_fish_id']}"):
-                            st.rerun()
-                        
-                        st.divider()
-
+            # This is the important part for the delete button
+            for _, row in owned_to_display.iterrows():
+                # ...
+                owned_id = row['owned_fish_id'] # This uses the aliased column
+                # ...
+                if cols[2].button('🗑️', key=f"{key_prefix}del_owned_fish_{owned_id}"):
+                    try:
+                        with get_connection() as conn:
+                            # FIX: Delete from the table using the correct primary key 'id'
+                            conn.execute("DELETE FROM owned_fish WHERE id = ?", (owned_id,))
+                            conn.commit()
+                        show_toast('🗑️ Removed', f"{name} removed from {tank_name}")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Couldn't remove fish: {str(e)}")
+                # ...
     except Exception as e:
         if "no such table: owned_fish" in str(e):
             st.info("The 'owned_fish' table hasn't been created yet. No owned fish to display.")

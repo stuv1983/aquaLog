@@ -4,7 +4,7 @@ from aqualog_db.connection import get_connection
 
 def rebuild_owned_fish_table():
     """
-    Rebuilds the owned_fish table to include the owned_fish_id PRIMARY KEY
+    Rebuilds the owned_fish table to include the 'id' PRIMARY KEY
     and a UNIQUE constraint, preserving all existing data.
     """
     print("Connecting to the database to fix the 'owned_fish' table schema...")
@@ -14,17 +14,18 @@ def rebuild_owned_fish_table():
             # Check if the fix has already been applied
             cur.execute("PRAGMA table_info(owned_fish);")
             current_columns = {row[1] for row in cur.fetchall()}
-            if 'owned_fish_id' in current_columns:
-                print("The 'owned_fish_id' column already exists. No changes needed.")
+            if 'id' in current_columns and 'quantity' in current_columns:
+                print("The 'owned_fish' table appears to be up to date. No changes needed.")
                 return
 
             print("Step 1: Renaming original 'owned_fish' table to 'owned_fish_old'...")
             cur.execute("ALTER TABLE owned_fish RENAME TO owned_fish_old;")
 
             print("Step 2: Creating new 'owned_fish' table with the correct schema...")
+            # FIX: Changed primary key column name to 'id' for consistency
             cur.execute("""
                 CREATE TABLE owned_fish (
-                    owned_fish_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     fish_id INTEGER NOT NULL,
                     tank_id INTEGER NOT NULL,
                     quantity INTEGER DEFAULT 1,
@@ -59,7 +60,16 @@ def rebuild_owned_fish_table():
         except sqlite3.OperationalError as e:
             if "no such table: owned_fish" in str(e):
                 print("The 'owned_fish' table did not exist. Creating it fresh.")
-                # If the original table doesn't exist, we just run the CREATE statement and commit.
+                # If the original table doesn't exist, we just run the CREATE statement from above and commit.
+                cur.execute("""
+                    CREATE TABLE IF NOT EXISTS owned_fish (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        fish_id INTEGER NOT NULL,
+                        tank_id INTEGER NOT NULL,
+                        quantity INTEGER DEFAULT 1,
+                        UNIQUE (fish_id, tank_id)
+                    );
+                """)
                 conn.commit()
             else:
                 print(f"An unexpected database error occurred: {e}")
