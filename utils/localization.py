@@ -3,13 +3,6 @@ import streamlit as st
 
 from config import LOCALIZATIONS, UNIT_SYSTEMS, CONVERSIONS
 
-def is_mobile() -> bool:
-    """
-    Approximates mobile device detection for responsive layouts.
-    Currently returns False as this is a placeholder implementation.
-    """
-    return False
-
 def translate(label: str) -> str:
     """
     Translates a label to the current locale's language.

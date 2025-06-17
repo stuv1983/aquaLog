@@ -1,4 +1,4 @@
-# sidebar/settings_panel.py (Fully Updated)
+# sidebar/settings_panel.py (Reverted)
 
 from __future__ import annotations
 import sqlite3
@@ -15,27 +15,17 @@ from aqualog_db.repositories import (
 from config import LOCALIZATIONS, UNIT_SYSTEMS, SAFE_RANGES
 from utils import request_rerun
 
-# --- NEW FUNCTION TO RENDER ANALYTICS-SPECIFIC SETTINGS ---
 def render_analytics_settings():
-    """Renders customization widgets for the Data & Analytics tab."""
     st.subheader("📊 Data & Analytics Tab")
-    
-    # Define the available panels and their display names
     analytics_panels = {
-        "raw_data": "🗂️ Raw Data Table",
-        "rolling_avg": "🔄 30-Day Rolling Averages",
-        "correlation": "🔗 Correlation Matrix",
-        "scatter": "🔍 Scatter & Regression",
+        "raw_data": "🗂️ Raw Data Table", "rolling_avg": "🔄 30-Day Rolling Averages",
+        "correlation": "🔗 Correlation Matrix", "scatter": "🔍 Scatter & Regression",
         "forecast": "📈 7-Day Forecast",
     }
-    
-    # Add the multiselect widget here
     st.multiselect(
         "Select and reorder panels to display on the analytics tab",
-        options=list(analytics_panels.keys()),
-        format_func=lambda key: analytics_panels[key],
-        default=list(analytics_panels.keys()),
-        key="dashboard_panels"
+        options=list(analytics_panels.keys()), format_func=lambda key: analytics_panels[key],
+        default=list(analytics_panels.keys()), key="dashboard_panels"
     )
 
 def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
@@ -45,14 +35,11 @@ def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
     email_repo = EmailSettingsRepository()
 
     render_add_tank_section(tank_repo, custom_range_repo)
-
     st.subheader("🔧 Edit Tank Settings")
     render_edit_tank_section(tank_map, tank_repo)
     render_custom_ranges_section(tank_map, custom_range_repo)
-
-    # --- ADDED THE NEW SETTINGS SECTION HERE ---
     render_analytics_settings()
-
+    
     tid = st.session_state.get("tank_id", 0)
     if tid:
         render_clear_tests_section(tid, tank_map)
@@ -62,8 +49,8 @@ def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
     render_weekly_email_section(tank_map, email_repo)
 
 
+# ... (The rest of the functions in this file are unchanged)
 def render_add_tank_section(tank_repo: TankRepository, custom_range_repo: CustomRangeRepository) -> None:
-    """➕ Add tank (with optional initial parameter ranges)."""
     st.subheader("➕ Add New Tank")
     name   = st.text_input("Name", key="new_tank_name")
     volume = st.number_input("Tank Volume (L)", min_value=0.0, step=0.1,
@@ -95,7 +82,6 @@ def render_add_tank_section(tank_repo: TankRepository, custom_range_repo: Custom
             request_rerun()
 
 def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]], tank_repo: TankRepository) -> None:
-    """✏️ Rename / Delete tank & edit volume for current tank."""
     st.subheader("✏️ Rename/Delete & Edit Volume")
     tid = st.session_state.get("tank_id", 0)
     if tid and tid in tank_map:
@@ -122,7 +108,6 @@ def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]], tank_repo: Tan
         st.info("Select a tank to edit.")
 
 def render_custom_ranges_section(tank_map: Dict[int, Dict[str, Any]], custom_range_repo: CustomRangeRepository) -> None:
-    """📊 Custom safe ranges for the current tank."""
     st.subheader("📊 Customize Parameter Ranges")
     tid = st.session_state.get("tank_id", 0)
     if not tid:
@@ -141,7 +126,6 @@ def render_custom_ranges_section(tank_map: Dict[int, Dict[str, Any]], custom_ran
             request_rerun()
 
 def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) -> None:
-    """🗑️ Delete every water-test row for the current tank (with confirmation)."""
     st.subheader("⚠️ Clear Current Tank's Water Tests")
     prep_key = f"prepare_clear_tests_{tid}"
     confirm_ck = f"clear_confirm_checkbox_{tid}"
@@ -172,7 +156,6 @@ def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) ->
                 request_rerun()
 
 def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
-    """⬇️ Import CSV data into the current tank."""
     st.subheader("⬇️ Import from CSV")
     tid = st.session_state.get("tank_id", 0)
     if not tid:
@@ -184,7 +167,6 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     if st.button("Import CSV", key="import_csv_btn"):
         try:
             df = pd.read_csv(uploaded)
-            # This line cleans the CSV headers to prevent import errors
             df.columns = df.columns.str.strip().str.lower()
             if 'id' in df.columns:
                 df = df.drop(columns=['id'])
@@ -207,13 +189,11 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
             st.error(f"Import failed: {e}")
 
 def render_localization_section() -> None:
-    """🌐 Choose language & unit system (stored in session)."""
     st.subheader("🌐 Localization & Units")
     st.selectbox("Language", list(LOCALIZATIONS.keys()), key="locale")
     st.selectbox("Units", list(UNIT_SYSTEMS.keys()), key="units")
 
 def render_weekly_email_section(tank_map: Dict[int, Dict[str, Any]], email_repo: EmailSettingsRepository) -> None:
-    """📧 Weekly summary email settings."""
     st.subheader("📧 Weekly Summary Email")
     settings = email_repo.get() or {}
     email = st.text_input("Email", value=settings.get("email", ""), key="email_addr")

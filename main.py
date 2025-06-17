@@ -1,6 +1,7 @@
-# main.py – AquaLog Dashboard Launcher (v3.7.1)
+# main.py (Reverted)
+
 """
-main.py – AquaLog Dashboard Launcher (v3.7.1)
+main.py – AquaLog Dashboard Launcher
 
 Entry point for the Streamlit app:
 - Sets up page config and favicons
@@ -65,34 +66,27 @@ RELEASE_NOTES = """
 """
 
 def main() -> None:
-    # ─────────────────────────────────────────────────────────
-    # Initialize/migrate DB (persistent file)
-    # ─────────────────────────────────────────────────────────
+    # Initialize DB
     init_tables()
 
-    # ─────────────────────────────────────────────────────────
-    # Page config + favicon
-    # ─────────────────────────────────────────────────────────
+    # Page config
     st.set_page_config(
         page_title="AquaLog Dashboard",
-        page_icon="static/favicon.ico",      # ← now pointing to your static folder
+        page_icon="favicon-32x32.png",
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    # Optional legacy HTML links for broad compatibility
     st.write(
         """
         <link rel="manifest" href="site.webmanifest">
-        <link rel="apple-touch-icon" sizes="180x180" href="static/apple-touch-icon.png">
-        <link rel="icon" href="static/favicon-32x32.png" sizes="32x32" type="image/png">
-        <link rel="icon" href="static/favicon-16x16.png" sizes="16x16" type="image/png">
+        <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
         """,
         unsafe_allow_html=True,
     )
 
-    # ─────────────────────────────────────────────────────────
-    # Custom CSS for toast notifications
-    # ─────────────────────────────────────────────────────────
+    # Custom CSS
     st.markdown(
         """
         <style>
@@ -108,28 +102,7 @@ def main() -> None:
         unsafe_allow_html=True,
     )
 
-    # ─────────────────────────────────────────────────────────
-    # Apply mobile CSS tweaks
-    # ─────────────────────────────────────────────────────────
-    if is_mobile():
-        st.markdown(
-            """
-            <style>
-              .css-1d391kg{padding:1.5rem!important;}
-              .css-1lcbmhc{width:100%!important;}
-              .stNumberInput,.stTextInput,.stSelectbox,.stDateInput{
-                  font-size:1.1rem!important;}
-              button,.stButton>button{padding:0.8rem 1.2rem!important;
-                  font-size:1.05rem!important;}
-              .stDataFrame table{min-width:100%!important;}
-            </style>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    # ─────────────────────────────────────────────────────────
     # Sidebar + Main Tabs
-    # ─────────────────────────────────────────────────────────
     sidebar_entry()
 
     try:
