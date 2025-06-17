@@ -1,5 +1,4 @@
-# tabs/failed_tests_tab.py (Updated)
-
+# tabs/failed_tests_tab.py (Patched for string-vs-float fix)
 """
 tabs/failed_tests_tab.py – multi‑tank aware ⚠️
 This tab lists EVERY historical test where at least one parameter is outside
@@ -20,7 +19,10 @@ from utils import clean_numeric_df, is_mobile, translate, format_with_units
 from config import SAFE_RANGES
 from components import highlight_out_of_range
 
-print(">>> LOADING", __file__)
+print(
+    ">>> LOADING", __file__,
+)
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Helper – get tank‑scoped dataframe of *failed* tests only
 # ─────────────────────────────────────────────────────────────────────────────
@@ -28,7 +30,7 @@ print(">>> LOADING", __file__)
 def _load_failed_tests(tank_id: int | None) -> _pd.DataFrame:
     """Return a DataFrame of rows where any value is outside SAFE_RANGES."""
     end_iso = _dt.date.today().isoformat() + "T23:59:59"
-    
+
     # 2. Instantiate the repository and call its method
     water_test_repo = WaterTestRepository()
     df = water_test_repo.fetch_by_date_range("1970-01-01T00:00:00", end_iso, tank_id)
@@ -36,10 +38,17 @@ def _load_failed_tests(tank_id: int | None) -> _pd.DataFrame:
     if df.empty:
         return df
 
+    # Ensure numeric conversion for all known measurement columns
     numeric_df = clean_numeric_df(df)
+    # Coerce all SAFE_RANGES columns to numeric to avoid str/float comparisons
+    for col in SAFE_RANGES:
+        if col in numeric_df.columns:
+            numeric_df[col] = _pd.to_numeric(numeric_df[col], errors='coerce')
+
     mask = _pd.Series(False, index=numeric_df.index)
     for col, (low, high) in SAFE_RANGES.items():
         if col in numeric_df.columns:
+            # low/high are numeric in config or will be cast
             mask |= (numeric_df[col] < low) | (numeric_df[col] > high)
     return numeric_df[mask]
 

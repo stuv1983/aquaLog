@@ -1,6 +1,4 @@
 # main.py – AquaLog Dashboard Launcher (v3.7.1)
-# (no changes required here)
-
 """
 main.py – AquaLog Dashboard Launcher (v3.7.1)
 
@@ -55,7 +53,7 @@ data_analytics_tab     = load_tab("data_analytics_tab",  "tabs/data_analytics_ta
 cycle_tab              = load_tab("cycle_tab",           "tabs/cycle_tab.py")
 failed_tests_tab       = load_tab("failed_tests_tab",    "tabs/failed_tests_tab.py")
 plant_inventory_tab    = load_tab("plant_inventory_tab", "tabs/plant_inventory_tab.py")
-fish_inventory_tab     = load_tab("fish_inventory_tab",  "tabs/fish_inventory_tab.py") # This ensures the correct function is loaded
+fish_inventory_tab     = load_tab("fish_inventory_tab",  "tabs/fish_inventory_tab.py")
 equipment_tab          = load_tab("equipment_tab",       "tabs/equipment_tab.py")
 maintenance_tab        = load_tab("maintenance_tab",     "tabs/maintenance_tab.py")
 
@@ -73,20 +71,21 @@ def main() -> None:
     init_tables()
 
     # ─────────────────────────────────────────────────────────
-    # Page config + favicons
+    # Page config + favicon
     # ─────────────────────────────────────────────────────────
     st.set_page_config(
         page_title="AquaLog Dashboard",
-        page_icon="favicon-32x32.png",
+        page_icon="static/favicon.ico",      # ← now pointing to your static folder
         layout="wide",
         initial_sidebar_state="expanded",
     )
+    # Optional legacy HTML links for broad compatibility
     st.write(
         """
         <link rel="manifest" href="site.webmanifest">
-        <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="static/apple-touch-icon.png">
+        <link rel="icon" href="static/favicon-32x32.png" sizes="32x32" type="image/png">
+        <link rel="icon" href="static/favicon-16x16.png" sizes="16x16" type="image/png">
         """,
         unsafe_allow_html=True,
     )
