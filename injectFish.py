@@ -1,5 +1,11 @@
+# injectFish.py (Updated)
+
 """
-injectFish.py – Create/refresh the master fish catalogue with the correct schema.
+injectFish.py – Creates or refreshes the master 'fish' catalogue.
+- Connects to the aqualog.db database.
+- Drops the existing 'fish' table to ensure a clean import.
+- Creates a new 'fish' table using the schema from the main application.
+- Reads records from fish.csv and inserts them into the new table.
 """
 import csv
 import sqlite3
@@ -10,23 +16,24 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 DB_PATH = PROJECT_ROOT / "aqualog.db"
 CSV_PATH = PROJECT_ROOT / "fish.csv"
 
-def create_and_inject_data():
+def inject_fish_data():
     """
-    Ensures the `fish` table exists with all columns and reloads its
-    contents from fish.csv, mapping the columns correctly.
+    Ensures the `fish` table exists with the correct schema and reloads its
+    contents from fish.csv.
     """
     if not CSV_PATH.exists():
-        print(f"❌ Could not find fish.csv at {CSV_PATH}")
+        print(f"❌ ERROR: Could not find fish.csv at {CSV_PATH}")
         return
 
-    print(f"🗄️ Connecting to database: {DB_PATH}")
+    print(f"🗄️  Connecting to database: {DB_PATH}")
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
 
-        print("- Dropping old fish table (if it exists)...")
+        print("-> Dropping old 'fish' table (if it exists) for a clean import...")
         cur.execute("DROP TABLE IF EXISTS fish;")
 
-        print("- Creating new 'fish' table with complete schema...")
+        print("-> Creating new 'fish' table with the application schema...")
+        # Schema uses 'species_name' and 'common_name'
         cur.execute("""
             CREATE TABLE fish (
                 fish_id         INTEGER PRIMARY KEY,
@@ -43,12 +50,12 @@ def create_and_inject_data():
             );
         """)
 
-        print(f"- Loading data from {CSV_PATH.name}...")
+        print(f"-> Loading data from {CSV_PATH.name}...")
         with CSV_PATH.open(newline="", encoding="utf-8") as fh:
             reader = csv.DictReader(fh)
             to_insert = []
             for row in reader:
-                # Map CSV headers to DB columns
+                # Map CSV headers (name_latin, name_english) to the database schema
                 to_insert.append((
                     row.get('fish_id'),
                     row.get('name_latin'),      # Maps to species_name
@@ -75,7 +82,7 @@ def create_and_inject_data():
         print(f"✅ Inserted {len(to_insert)} fish records.")
 
         conn.commit()
-        print("🎉 Data injection complete.")
+        print("🎉 Fish data injection complete.")
 
 if __name__ == "__main__":
-    create_and_inject_data()
+    inject_fish_data()

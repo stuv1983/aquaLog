@@ -1,4 +1,4 @@
-# aquaLog/sidebar/settings_panel.py (Updated)
+# aquaLog/sidebar/settings_panel.py (Corrected)
 """
 Settings panel (refactored, feature-complete).
 """
@@ -10,7 +10,6 @@ import pandas as pd
 import streamlit as st
 
 from aqualog_db.connection import get_connection
-# UPDATED: Import Repositories instead of legacy functions
 from aqualog_db.repositories import (
     TankRepository,
     CustomRangeRepository,
@@ -22,7 +21,6 @@ from utils import request_rerun
 
 def render_settings_panel(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """Render the entire settings sidebar panel."""
-    # UPDATED: Instantiate repositories at the top for reuse
     tank_repo = TankRepository()
     custom_range_repo = CustomRangeRepository()
     email_repo = EmailSettingsRepository()
@@ -70,7 +68,6 @@ def render_add_tank_section(tank_repo: TankRepository, custom_range_repo: Custom
         if not name.strip():
             st.error("Tank name cannot be empty.")
         else:
-            # UPDATED: Use repository methods
             new_tank = tank_repo.add(name.strip(), volume or None)
             new_id = new_tank['id']
             for param, (low, high) in new_ranges.items():
@@ -93,7 +90,6 @@ def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]], tank_repo: Tan
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Save Changes", key="save_tank_changes_btn"):
-                # UPDATED: Use repository methods
                 if new_name.strip() != current["name"]:
                     tank_repo.rename(tid, new_name.strip())
                 if (current.get("volume") or 0) != new_vol:
@@ -102,7 +98,6 @@ def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]], tank_repo: Tan
                 request_rerun()
         with col2:
             if st.button("Delete This Tank", key="delete_tank_btn"):
-                # UPDATED: Use repository method
                 tank_repo.remove(tid)
                 st.success(f"Deleted tank '{current['name']}'")
                 request_rerun()
@@ -123,14 +118,12 @@ def render_custom_ranges_section(tank_map: Dict[int, Dict[str, Any]], custom_ran
     sel_param = st.selectbox("Parameter", options=params, key="param_select")
 
     if sel_param:
-        # UPDATED: Use repository method to get current range
         low_cur, high_cur = custom_range_repo.get(tid, sel_param) or SAFE_RANGES[sel_param]
         c1, c2 = st.columns(2)
         low_new  = c1.number_input("Safe Low",  value=low_cur,  step=0.1, key=f"low_{sel_param}")
         high_new = c2.number_input("Safe High", value=high_cur, step=0.1, key=f"high_{sel_param}")
 
         if st.button("Save Custom Range", key="save_custom_range_btn"):
-            # UPDATED: Use repository method to set new range
             custom_range_repo.set(tid, sel_param, low_new, high_new)
             st.success(f"Custom range for {sel_param} saved")
             request_rerun()
@@ -158,8 +151,6 @@ def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) ->
         col_yes, col_cancel = st.columns(2)
         with col_yes:
             if confirm and st.button("Yes, delete all", key=yes_key):
-                # NOTE: This direct call is okay, but could be moved to a repository method
-                # for full consistency, e.g., `water_test_repo.delete_all_for_tank(tid)`
                 with get_connection() as conn:
                     conn.execute("DELETE FROM water_tests WHERE tank_id = ?;", (tid,))
                     conn.commit()
@@ -188,6 +179,9 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
     if st.button("Import CSV", key="import_csv_btn"):
         try:
             df = pd.read_csv(uploaded)
+
+            # FIXED: Added this line to clean/normalize the CSV column headers
+            df.columns = df.columns.str.strip().str.lower()
 
             if 'id' in df.columns:
                 df = df.drop(columns=['id'])
@@ -228,14 +222,12 @@ def render_weekly_email_section(tank_map: Dict[int, Dict[str, Any]], email_repo:
     """📧 Weekly summary email settings."""
     st.subheader("📧 Weekly Summary Email")
 
-    # UPDATED: Use repository method
     settings = email_repo.get() or {}
     email = st.text_input("Email", value=settings.get("email", ""), key="email_addr")
 
     options  = list(tank_map.keys())
     
     try:
-        # UPDATED: The repo now handles JSON decoding, so this is simpler
         default_tanks = settings.get("tanks", [])
     except:
         default_tanks = []
@@ -254,10 +246,9 @@ def render_weekly_email_section(tank_map: Dict[int, Dict[str, Any]], email_repo:
         st.checkbox(label, value=settings.get(key, False), key=key)
 
     if st.button("Save Email Settings", key="save_email_btn"):
-        # UPDATED: Use repository method
         email_repo.save(
             email=email,
-            tanks=selected, # Pass the list directly
+            tanks=selected,
             include_type=st.session_state["include_type"],
             include_date=st.session_state["include_date"],
             include_notes=st.session_state["include_notes"],

@@ -1,4 +1,4 @@
-# tabs/plant_inventory_tab.py (Updated)
+# tabs/plant_inventory_tab.py (Final Corrected Version)
 
 """
 tabs/plant_inventory_tab.py – fully multi‑tank aware 🌿
@@ -10,7 +10,6 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 
-# 1. Import the repository instead of the legacy function
 from aqualog_db.repositories import TankRepository
 from aqualog_db.connection import get_connection
 from utils import show_toast
@@ -35,7 +34,6 @@ def plant_inventory_tab(key_prefix=""):
         tid = st.session_state.get('tank_id', 1)
         _ensure_owned_plants_schema()
 
-        # 2. Instantiate the repository and call its method
         tank_repo = TankRepository()
         tanks = tank_repo.fetch_all()
         tank_name = next((t['name'] for t in tanks if t['id'] == tid), f"Tank #{tid}")
@@ -48,14 +46,26 @@ def plant_inventory_tab(key_prefix=""):
                 SELECT * FROM plants ORDER BY plant_name COLLATE NOCASE
             """, conn)
 
-        # --- RESTORED: Search master plant list ---
+        # --- Search master plant list ---
         st.subheader('🔍 Search Plant Database')
         query = st.text_input('Search all plants to add to your inventory...', key=f'{key_prefix}plant_search').strip().lower()
 
         if query:
+            # --- NEW, MORE ROBUST SEARCH LOGIC ---
+            # This new block replaces the previous one-liner to avoid the 'str' attribute error.
             search_cols = [col for col in master.columns if master[col].dtype == 'object']
-            search_series = master[search_cols].astype(str).agg(' '.join, axis=1).str.lower()
-            filtered = master[search_series.str.contains(query, na=False)]
+            
+            if search_cols:
+                # Manually concatenate text columns into a single pandas Series for searching
+                search_series = master[search_cols[0]].fillna('').astype(str)
+                for col in search_cols[1:]:
+                    search_series = search_series + ' ' + master[col].fillna('').astype(str)
+                
+                # Perform the search on the combined text series
+                filtered = master[search_series.str.lower().str.contains(query, na=False)]
+            else:
+                filtered = pd.DataFrame() # No text columns to search
+            # --- END OF NEW LOGIC ---
             
             if filtered.empty:
                 st.info('No matching plants found in the database.')
@@ -92,8 +102,7 @@ def plant_inventory_tab(key_prefix=""):
                             except Exception as e:
                                 st.error(f"Couldn't add plant: {str(e)}")
         st.write("---")
-        # --- END OF RESTORED SECTION ---
-
+        
         # 2. List owned plants in the current tank
         st.subheader(f'🌱 Plants in {tank_name}')
         with get_connection() as conn:
@@ -113,7 +122,7 @@ def plant_inventory_tab(key_prefix=""):
             search_term_owned = st.text_input('🔍 Filter your plants', key=f'{key_prefix}plant_filter_owned').strip().lower()
             if search_term_owned:
                 search_cols_owned = ["display_name", "origin", "growth_rate"]
-                search_series_owned = owned[search_cols_owned].astype(str).agg(' '.join, axis=1).str.lower()
+                search_series_owned = owned[search_cols_owned].fillna('').apply(' '.join, axis=1).str.lower()
                 owned = owned[search_series_owned.str.contains(search_term_owned, na=False)]
                 
                 if owned.empty:

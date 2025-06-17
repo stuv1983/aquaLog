@@ -1,104 +1,73 @@
-"""
-injectFish.py – create / refresh the master *fish* catalogue
-────────────────────────────────────────────────────────────
-• Creates the `fish` table (if missing) with a compatible schema
-• Wipes any existing rows and resets the AUTOINCREMENT counter
-• Loads records from fish.csv, skipping the CSV’s first `fish_id` column
-  so SQLite can manage its own ROWID / AUTOINCREMENT key
-Updated: 2025-06-15
-"""
-from __future__ import annotations
+# injectPlants.py (New and Corrected)
 
+"""
+injectPlants.py – Creates or refreshes the master 'plants' catalogue.
+- Connects to the aqualog.db database.
+- Drops the existing 'plants' table for a clean import.
+- Creates a new 'plants' table using the schema from the main application.
+- Reads records from plants.csv and inserts them into the new table.
+"""
 import csv
-import os
 import sqlite3
 from pathlib import Path
 
-# ───────────────────────────────────────────────────────────
-# Configuration
-# ───────────────────────────────────────────────────────────
+# --- Configuration ---
 PROJECT_ROOT = Path(__file__).resolve().parent
-DB_PATH   = PROJECT_ROOT / "aqualog.db"
-CSV_PATH  = PROJECT_ROOT / "fish.csv"          # <-- adjust if stored elsewhere
+DB_PATH = PROJECT_ROOT / "aqualog.db"
+CSV_PATH = PROJECT_ROOT / "plants.csv"
 
-# ───────────────────────────────────────────────────────────
-# Main routine
-# ───────────────────────────────────────────────────────────
-def create_and_inject_data() -> None:
+def inject_plant_data():
     """
-    Ensure the `fish` table exists with the expected columns,
-    then reload its contents from fish.csv.
+    Ensures the `plants` table exists with the correct schema and reloads its
+    contents from plants.csv.
     """
     if not CSV_PATH.exists():
-        print(f"❌  Could not find fish.csv at {CSV_PATH}")
+        print(f"❌ ERROR: Could not find plants.csv at {CSV_PATH}")
         return
 
     print(f"🗄️  Connecting to database: {DB_PATH}")
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
 
-        # 1️⃣  Create table (if missing) with a schema that matches the app
-        print("🔧  Ensuring `fish` table exists …")
-        cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS fish (
-                -- rowid (auto) will act as fish_id
-                name_english       TEXT,
-                name_latin         TEXT,
-                common_name        TEXT DEFAULT '',       -- added for app lookups
-                origin             TEXT,
-                phmin              REAL,
-                phmax              REAL,
-                temperature_min    REAL,
-                temperature_max    REAL,
-                cm_max             REAL,
-                tank_size_liter    REAL,
-                image_url          TEXT,
-                swim               INTEGER               -- 1 = bottom, 2 = mid, 3 = top
+        print("-> Dropping old 'plants' table (if it exists) for a clean import...")
+        cur.execute("DROP TABLE IF EXISTS plants;")
+
+        print("-> Creating new 'plants' table with the application schema...")
+        cur.execute("""
+            CREATE TABLE plants (
+                plant_id      INTEGER PRIMARY KEY,
+                plant_name    TEXT    NOT NULL CHECK(length(trim(plant_name)) > 0),
+                origin        TEXT,
+                origin_info   TEXT,
+                growth_rate   TEXT,
+                growth_info   TEXT,
+                height_cm     TEXT,
+                height_info   TEXT,
+                light_demand  TEXT,
+                light_info    TEXT,
+                co2_demand    TEXT,
+                co2_info      TEXT,
+                thumbnail_url TEXT
             );
-            """
+        """)
+
+        print(f"-> Loading data from {CSV_PATH.name}...")
+        with CSV_PATH.open(newline="", encoding="utf-8-sig") as fh: # Use utf-8-sig to handle potential BOM
+            reader = csv.DictReader(fh)
+            
+            # Prepare for insertion
+            columns = reader.fieldnames
+            placeholders = ", ".join("?" for _ in columns)
+            to_insert = [tuple(row[col] for col in columns) for row in reader]
+
+        cur.executemany(
+            f"INSERT INTO plants ({', '.join(columns)}) VALUES ({placeholders});",
+            to_insert
         )
-
-        # 2️⃣  Clear existing rows for a clean import
-        print("🧹  Clearing existing data …")
-        cur.execute("DELETE FROM fish;")
-        cur.execute("DELETE FROM sqlite_sequence WHERE name='fish';")
-
-        # 3️⃣  Read the CSV and insert
-        print(f"📑  Loading {CSV_PATH.name} …")
-        with CSV_PATH.open(newline="", encoding="utf-8") as fh:
-            reader = csv.reader(fh)
-            header = next(reader)  # skip header line
-
-            # Header sanity check (optional but nice)
-            expected = [
-                "fish_id", "name_english", "name_latin", "origin", "phmin",
-                "phmax", "temperature_min", "temperature_max", "cm_max",
-                "tank_size_liter", "image_url", "swim"
-            ]
-            if header != expected:
-                print(
-                    "⚠️  CSV header doesn’t match expected columns.\n"
-                    f"    Expected: {expected}\n"
-                    f"    Found   : {header}"
-                )
-
-            insert_sql = """
-                INSERT INTO fish (
-                    name_english, name_latin, origin,
-                    phmin, phmax, temperature_min, temperature_max,
-                    cm_max, tank_size_liter, image_url, swim
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-            """
-
-            rows = [row[1:] for row in reader if row]  # drop fish_id column
-            cur.executemany(insert_sql, rows)
-            print(f"✅  Inserted {len(rows)} fish.")
+        print(f"✅ Inserted {len(to_insert)} plant records.")
 
         conn.commit()
-        print("🎉  Data injection complete.")
+        print("🎉 Plant data injection complete.")
 
-# ───────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    create_and_inject_data()
+    inject_plant_data()
