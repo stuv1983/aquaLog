@@ -1,9 +1,12 @@
-# utils/validation.py
+# utils/validation.py (Corrected)
+
 import pandas as pd  
 from typing import Any, Optional
 from config import SAFE_RANGES, TOO_LOW_THRESHOLDS, TOO_HIGH_THRESHOLDS
-from aqualog_db.legacy import get_custom_range
 from .chemistry import nh3_fraction
+# FIXED: Import the repository instead of the legacy function
+from aqualog_db.repositories import CustomRangeRepository 
+
 # Hard physical limits for parameter sanity checks
 HARD_LIMITS: dict[str, tuple[float, float]] = {
     "temperature": (0.0, 40.0),
@@ -20,8 +23,7 @@ HARD_LIMITS: dict[str, tuple[float, float]] = {
 def arrow_safe(df: pd.DataFrame) -> pd.DataFrame:
     """
     Return a copy whose ‘date’ column is true datetime64[ns] so
-    Streamlit/Arrow can serialise it.  Call this once before st.dataframe()
-    or Altair charts when the DF was NOT read via read_sql_query(parse_dates).
+    Streamlit/Arrow can serialise it.
     """
     if "date" in df.columns and df["date"].dtype != "datetime64[ns]":
         df = df.copy()
@@ -52,7 +54,7 @@ def is_too_high(param: str, value: float) -> bool:
     Returns True if `value` > the configured TOO_HIGH_THRESHOLDS for `param`.
     """
     thresh = TOO_HIGH_THRESHOLDS.get(param)
-    return thresh is not None and value > thresh
+    return thresh is not None and value > hi
 
 def is_out_of_range(
     param: str,
@@ -63,35 +65,34 @@ def is_out_of_range(
     temp_c: Optional[float] = None,
 ) -> bool:
     """
-    Return True if *value* (scalar **or** Series / array) is outside the safe
-    range for *param*.  Always collapses to a single Python bool, so callers
-    can safely use `if is_out_of_range(...):`.
+    Return True if *value* is outside the safe range for *param*.
     """
 
-    # ── Special-case unionised ammonia ────────────────────────────────────
+    # Special-case unionised ammonia
     if param == "ammonia" and ph is not None and temp_c is not None:
-        # Accept both scalar and vector values
         try:
-            nh3 = nh3_fraction(value, ph, temp_c)         # may return Series
+            nh3 = nh3_fraction(value, ph, temp_c)
             if isinstance(nh3, pd.Series):
                 return nh3.gt(TOO_HIGH_THRESHOLDS.get("ammonia", 0.02)).any()
             return nh3 > TOO_HIGH_THRESHOLDS.get("ammonia", 0.02)
         except Exception:
             return False
 
-    # ── CO₂ indicator is categorical ──────────────────────────────────────
+    # CO₂ indicator is categorical
     if param == "co2_indicator":
         if isinstance(value, pd.Series):
             return (~value.eq("Green")).any()
         return isinstance(value, str) and value != "Green"
 
-    # ── Determine safe range (custom > global) ────────────────────────────
-    custom = get_custom_range(tank_id, param)
+    # FIXED: Use the repository to get custom ranges
+    custom_range_repo = CustomRangeRepository()
+    custom = custom_range_repo.get(tank_id, param)
+    
     lo, hi = custom if custom else SAFE_RANGES.get(param, (None, None))
     if lo is None or hi is None:
         return False
 
-    # ── Numeric checks – handle scalar & vector uniformly ─────────────────
+    # Numeric checks
     if isinstance(value, pd.Series):
         return (value.lt(lo) | value.gt(hi)).any()
 

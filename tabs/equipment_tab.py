@@ -1,3 +1,4 @@
+# tabs/equipment_tab.py (Corrected)
 """
 tabs/equipment_tab.py – multi‑tank aware ⚙️
 Equipment inventory tab.  Users can:
@@ -14,12 +15,10 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 from datetime import date
+import sqlite3  # <-- ADDED THIS MISSING IMPORT
 
-# ——— Refactored DB imports ———
 from aqualog_db.base import BaseRepository
-
 from aqualog_db.connection import get_connection
-
 from utils import show_toast
 
 # ---------------------------------------------------------------------------

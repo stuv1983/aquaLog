@@ -1,5 +1,3 @@
-# aqualog_db/schema.py (Corrected)
-
 """
 schema.py – Full database schema with all tables, indexes, and triggers.
 This version is simplified for robust cloud deployment.
@@ -172,7 +170,7 @@ class SchemaManager(BaseRepository):
         """
     }
 
-    # The rest of the file is unchanged
+    # ... (The rest of the file remains the same)
     INDEXES = [
         "CREATE INDEX IF NOT EXISTS idx_water_tests_date ON water_tests(date);",
         "CREATE INDEX IF NOT EXISTS idx_water_tests_tank_id ON water_tests(tank_id);",

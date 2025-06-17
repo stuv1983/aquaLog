@@ -1,5 +1,4 @@
-# tabs/maintenance_tab.py (Updated)
-
+# tabs/maintenance_tab.py (Corrected)
 """
 tabs/maintenance_tab.py – multi-tank aware 🛠️
 
@@ -11,10 +10,9 @@ import streamlit as st
 import pandas as pd
 from datetime import date, timedelta
 
-# 1. Import repositories instead of legacy functions
+# Use the modern repository to fetch tank info
 from aqualog_db.repositories import TankRepository
 from aqualog_db.connection import get_connection
-
 from utils import show_toast
 
 print(">>> LOADING", __file__)
@@ -44,15 +42,9 @@ def save_maintenance(
             ) VALUES (?,?,?,?,?,?,?,?,?);
             """,
             (
-                tank_id,
-                date,
-                m_type.strip(),
-                description.strip() if description else None,
-                volume_changed,
-                cost,
-                notes.strip() if notes else None,
-                next_due,
-                cycle_id
+                tank_id, date, m_type.strip(), description.strip() if description else None,
+                volume_changed, cost, notes.strip() if notes else None,
+                next_due, cycle_id
             ),
         )
         conn.commit()
@@ -85,13 +77,8 @@ def fetch_maintenance_cycles(tank_id: int) -> list[dict]:
         conn.row_factory = sqlite3.Row
         rows = conn.execute(
             """
-            SELECT 
-                id,
-                maintenance_type as type,
-                created_at as date,
-                notes,
-                frequency_days,
-                is_active
+            SELECT id, maintenance_type as type, created_at as date,
+                   notes, frequency_days, is_active
             FROM maintenance_cycles
             WHERE tank_id = ?
             ORDER BY datetime(created_at) DESC;
@@ -119,12 +106,9 @@ def save_maintenance_cycle(
             ) VALUES (?,?,?,?,?,?);
             """,
             (
-                tank_id,
-                maintenance_type.strip(),
-                frequency_days,
+                tank_id, maintenance_type.strip(), frequency_days,
                 description.strip() if description else None,
-                notes.strip() if notes else None,
-                is_active
+                notes.strip() if notes else None, is_active
             ),
         )
         conn.commit()
@@ -137,42 +121,29 @@ def delete_maintenance_cycle(cycle_id: int) -> None:
 
 def maintenance_tab() -> None:
     """Maintenance Log tab with cycle management and log history."""
-    # ──────────────────────────────────────────────
-    # Tank selector
-    # ──────────────────────────────────────────────
     
-    # 2. Instantiate the repository and call its method
-    tank_repo = TankRepository()
-    tanks = tank_repo.fetch_all()
-
-    if not tanks:
-        st.warning("No tanks found. Please add a tank first.")
+    # --- FIXED: REMOVED the redundant tank selector ---
+    # The tab now uses the tank_id from the main sidebar selector.
+    tank_id = st.session_state.get("tank_id")
+    if not tank_id:
+        st.warning("Please select a tank from the sidebar to manage maintenance.")
         return
 
-    tank_ids = [t["id"] for t in tanks]
+    # Fetch tank details to get the name for the header
+    tank_repo = TankRepository()
+    tanks = tank_repo.fetch_all()
+    if not tanks:
+        st.warning("No tanks found. Please add a tank in Settings first.")
+        return
+        
     tank_names = {t["id"]: t["name"] for t in tanks}
-    if "tank_id" not in st.session_state:
-        st.session_state["tank_id"] = tank_ids[0]
-
-    selected = st.selectbox(
-        "Select Tank to Manage Maintenance",
-        options=tank_ids,
-        format_func=lambda tid: tank_names.get(tid, f"Tank #{tid}"),
-        index=tank_ids.index(st.session_state["tank_id"]),
-        key="tank_selector",
-    )
-    if selected != st.session_state["tank_id"]:
-        st.session_state["tank_id"] = selected
-
-    tank_id = st.session_state["tank_id"]
     tank_name = tank_names.get(tank_id, f"Tank #{tank_id}")
 
-    # ──────────────────────────────────────────────
-    # Maintenance Cycles Management
-    # ──────────────────────────────────────────────
     st.header(f"🛠️ Maintenance — {tank_name}")
     
+    # ... (The rest of the file remains the same) ...
     with st.expander("🔄 Manage Maintenance Cycles", expanded=False):
+        # ... form for adding cycles ...
         st.subheader("Add New Maintenance Cycle")
         with st.form("add_cycle_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
@@ -191,17 +162,12 @@ def maintenance_tab() -> None:
                     show_toast("❌ Cycle type is required", icon="⚠️")
                 else:
                     save_maintenance_cycle(
-                        tank_id=tank_id,
-                        maintenance_type=cycle_type,
-                        frequency_days=frequency,
-                        description=cycle_desc or None,
-                        notes=cycle_notes or None,
-                        is_active=is_active
+                        tank_id=tank_id, maintenance_type=cycle_type, frequency_days=frequency,
+                        description=cycle_desc or None, notes=cycle_notes or None, is_active=is_active
                     )
                     show_toast("✅ Maintenance cycle added")
-                    st.experimental_rerun()
+                    st.rerun()
 
-        # Show existing cycles
         st.subheader("Existing Maintenance Cycles")
         cycles = fetch_maintenance_cycles(tank_id)
         if cycles:
@@ -216,28 +182,19 @@ def maintenance_tab() -> None:
                         if cycle.get('notes'):
                             st.markdown(f"**Notes:** {cycle['notes']}")
                     with col2:
-                        if st.button(
-                            "🗑️ Delete",
-                            key=f"del_cycle_{cycle['id']}",
-                            help="Delete this maintenance cycle"
-                        ):
+                        if st.button("🗑️ Delete", key=f"del_cycle_{cycle['id']}", help="Delete this maintenance cycle"):
                             delete_maintenance_cycle(cycle['id'])
                             show_toast("⚠️ Cycle deleted")
-                            st.experimental_rerun()
+                            st.rerun()
         else:
             st.info("No maintenance cycles defined for this tank.")
 
-    # ──────────────────────────────────────────────
-    # Add Maintenance Entry Form
-    # ──────────────────────────────────────────────
     st.subheader("➕ Add New Maintenance Entry")
     
-    # Get active cycles for suggestions
     active_cycles = [c for c in fetch_maintenance_cycles(tank_id) if c['is_active']]
     selected_cycle = None
     
     with st.form("add_maintenance_form", clear_on_submit=True):
-        # Date and Type selection
         col1, col2 = st.columns(2)
         with col1:
             date_in = st.date_input("Date*", value=date.today())
@@ -247,44 +204,27 @@ def maintenance_tab() -> None:
                 cycle_options = [{"label": "-- Custom Entry --", "value": None}] + \
                               [{"label": c['type'], "value": c['id']} for c in active_cycles]
                 selected_cycle = st.selectbox(
-                    "Select from cycles (optional)",
-                    options=cycle_options,
+                    "Select from cycles (optional)", options=cycle_options,
                     format_func=lambda x: x["label"]
                 )
                 if selected_cycle and selected_cycle["value"]:
-                    m_type = next(c['type'] for c in active_cycles 
-                              if c['id'] == selected_cycle["value"])
+                    m_type = next(c['type'] for c in active_cycles if c['id'] == selected_cycle["value"])
                     st.text_input("Type*", value=m_type, disabled=True)
                 else:
                     m_type = st.text_input("Type* (e.g. Water Change)")
             else:
                 m_type = st.text_input("Type* (e.g. Water Change)")
         
-        # Details
         description = st.text_area("Description (optional)")
         
         col1, col2 = st.columns(2)
         with col1:
-            volume = st.number_input(
-                "Volume Changed (%)", 
-                min_value=0.0, 
-                max_value=100.0,
-                step=1.0, 
-                format="%.1f",
-                value=0.0
-            )
+            volume = st.number_input("Volume Changed (%)", min_value=0.0, max_value=100.0, step=1.0, format="%.1f", value=0.0)
         with col2:
-            cost = st.number_input(
-                "Cost ($)", 
-                min_value=0.0, 
-                step=0.01, 
-                format="%.2f",
-                value=0.0
-            )
+            cost = st.number_input("Cost ($)", min_value=0.0, step=0.01, format="%.2f", value=0.0)
         
         notes = st.text_area("Notes (optional)")
         
-        # Auto-calculate next due if from cycle
         next_due = None
         if selected_cycle and selected_cycle["value"]:
             cycle = next(c for c in active_cycles if c['id'] == selected_cycle["value"])
@@ -299,24 +239,17 @@ def maintenance_tab() -> None:
             else:
                 cycle_id = selected_cycle["value"] if selected_cycle else None
                 save_maintenance(
-                    tank_id=tank_id,
-                    date=date_in.isoformat(),
-                    m_type=m_type,
-                    description=description or None,
-                    volume_changed=volume if volume > 0 else None,
-                    cost=cost if cost > 0 else None,
-                    notes=notes or None,
+                    tank_id=tank_id, date=date_in.isoformat(), m_type=m_type,
+                    description=description or None, volume_changed=volume if volume > 0 else None,
+                    cost=cost if cost > 0 else None, notes=notes or None,
                     next_due=next_due.isoformat() if next_due else None,
                     cycle_id=cycle_id
                 )
                 show_toast(f"✅ Entry added for {tank_name}")
-                st.experimental_rerun()
+                st.rerun()
 
     st.markdown("---")
 
-    # ──────────────────────────────────────────────
-    # Maintenance History
-    # ──────────────────────────────────────────────
     with st.expander("🕒 View Maintenance History", expanded=True):
         rows = get_maintenance(tank_id=tank_id) or []
         if not rows:
@@ -330,14 +263,10 @@ def maintenance_tab() -> None:
                         if row.get('cycle_name'):
                             st.caption(f"Part of cycle: {row['cycle_name']}")
                     with col2:
-                        if st.button(
-                            "🗑️",
-                            key=f"del_maint_{row['id']}",
-                            help="Delete this record"
-                        ):
+                        if st.button("🗑️", key=f"del_maint_{row['id']}", help="Delete this record"):
                             delete_maintenance(row['id'])
                             show_toast("⚠️ Record deleted")
-                            st.experimental_rerun()
+                            st.rerun()
                     
                     if row.get("description"):
                         st.write(f"📝 {row['description']}")
