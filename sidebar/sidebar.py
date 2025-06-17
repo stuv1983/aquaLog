@@ -1,4 +1,4 @@
-# sidebar/sidebar.py (Reverted)
+# sidebar/sidebar.py
 """
 sidebar.py – Assembles and renders the complete sidebar UI.
 """
@@ -25,7 +25,7 @@ def sidebar_entry() -> None:
     render_tank_selector(tank_map)
     render_water_test_form(tank_map)
     
-    with st.expander("⚙️ Settings", expanded=False):
+    with st.sidebar.expander("⚙️ Settings", expanded=False, icon="💧"):
         render_settings_panel(tank_map)
         
     render_release_notes()

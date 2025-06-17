@@ -1,4 +1,4 @@
-# aqualog/tabs/overview_tab.py (Updated)
+# tabs/overview_tab.py
 """
 Overview dashboard — multi-tank aware 🏠
 
@@ -8,12 +8,10 @@ Overview dashboard — multi-tank aware 🏠
 """
 
 from __future__ import annotations
-
 import pandas as pd
 import streamlit as st
 import altair as alt
 
-# 1. Import repositories instead of legacy functions
 from aqualog_db.repositories import TankRepository
 from aqualog_db.base import BaseRepository
 
@@ -31,23 +29,16 @@ print(">>> LOADING", __file__)
 def render_overview_tab() -> None:
     """Render the Overview dashboard for the currently selected tank."""
     
-    # Get the currently selected tank ID from the session state (set by the sidebar)
     selected_tank_id = st.session_state.get("tank_id", 0)
 
-    # 2. Instantiate the repository and call its method
-    tank_repo = TankRepository()
-    tanks = tank_repo.fetch_all()
-    
-    # Get the name of the selected tank for the header
+    tanks = TankRepository().fetch_all()
     tank_name = "Overview"
     if tanks and selected_tank_id:
-        # Create a mapping from ID to name
         tank_names = {t["id"]: t["name"] for t in tanks}
         tank_name = tank_names.get(selected_tank_id, "Overview")
 
     st.header(f"🏠 Overview for: {tank_name}")
 
-    # Handle case where no tank is selected or exists
     if not selected_tank_id:
         st.info("Please add and/or select a tank from the sidebar to see an overview.")
         return
@@ -67,7 +58,6 @@ def render_overview_tab() -> None:
     st.subheader("Latest Water Test")
     st.dataframe(arrow_safe(df_latest), use_container_width=True)
 
-    # Out-of-range banner (banner itself figures out breaches)
     show_out_of_range_banner()
 
     # ── Parameter trends ────────────────────────────────────────────────────
