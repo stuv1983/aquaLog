@@ -1,127 +1,146 @@
-# sidebar/water_test_form.py (Enhanced for backdating tests)
+# sidebar/water_test_form.py (Fully Updated)
 """
 Sidebar - Water-test logging form (multi-tank aware)
-
-Allows users to back-date tests by selecting date and time if they
-cannot import a CSV. All entries default to the current datetime.
+Renders a multi-step "wizard" form on mobile and a standard form on desktop.
 """
 
 from __future__ import annotations
-
-from datetime import datetime, date, time
+from datetime import datetime
 from typing import Dict, Any
 
 import pandas as pd
 import streamlit as st
 
 from aqualog_db.repositories import WaterTestRepository
-from utils import show_toast, show_out_of_range_banner, arrow_safe
-
+from utils import (
+    show_toast,
+    show_out_of_range_banner,
+    arrow_safe,
+    is_mobile,
+)
 
 def render_water_test_form(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """Render the water-test logging form in the sidebar."""
     st.sidebar.header("🔬 Log Water Test")
 
-    # ── Backdate controls ──────────────────────────────────────────────────
-    test_date = st.sidebar.date_input(
-        "Test Date",
-        value=st.session_state.get("test_date", date.today()),
-        help="Select today or any past date of the test",
-        key="test_date"
-    )
-    test_time = st.sidebar.time_input(
-        "Test Time",
-        value=st.session_state.get("test_time", datetime.now().time()),
-        help="Select the time of the test",
-        key="test_time"
-    )
+    # =====================================================================
+    #  MOBILE WIZARD (Multi-Step Form)
+    # =====================================================================
+    if is_mobile():
+        # Initialize session state for the form wizard
+        if 'form_step' not in st.session_state:
+            st.session_state.form_step = 1
 
-    # ── Main parameters ────────────────────────────────────────────────────
-    ph = st.sidebar.number_input(
-        "pH", min_value=0.0, max_value=14.0, step=0.1,
-        value=st.session_state.get("ph", 7.0), key="ph"
-    )
-    ammonia = st.sidebar.number_input(
-        "Ammonia (NH₃) (ppm)", min_value=0.0, step=0.01,
-        value=st.session_state.get("ammonia", 0.0), key="ammonia"
-    )
-    nitrite = st.sidebar.number_input(
-        "Nitrite (NO₂⁻) (ppm)", min_value=0.0, step=0.01,
-        value=st.session_state.get("nitrite", 0.0), key="nitrite"
-    )
-    nitrate = st.sidebar.number_input(
-        "Nitrate (NO₃⁻) (ppm)", min_value=0.0, step=0.1,
-        value=st.session_state.get("nitrate", 0.0), format="%.1f", key="nitrate"
-    )
+        # --- STEP 1: Main Parameters ---
+        if st.session_state.form_step == 1:
+            with st.sidebar.form("step1_form"):
+                st.caption("Step 1 of 3: Main Parameters")
+                ph = st.number_input("pH", min_value=0.0, step=0.1, value=st.session_state.get("ph_val", 7.6))
+                ammonia = st.number_input("Ammonia (ppm)", min_value=0.0, step=0.01, value=st.session_state.get("ammonia_val", 0.0))
+                nitrite = st.number_input("Nitrite (ppm)", min_value=0.0, step=0.01, value=st.session_state.get("nitrite_val", 0.0))
+                nitrate = st.number_input("Nitrate (ppm)", min_value=0.0, step=0.1, value=st.session_state.get("nitrate_val", 0.0), format="%.1f")
+                
+                if st.form_submit_button("Next →", use_container_width=True):
+                    st.session_state.ph_val = ph
+                    st.session_state.ammonia_val = ammonia
+                    st.session_state.nitrite_val = nitrite
+                    st.session_state.nitrate_val = nitrate
+                    st.session_state.form_step = 2
+                    st.rerun()
 
-    st.sidebar.markdown("---")
+        # --- STEP 2: Hardness & Temperature ---
+        elif st.session_state.form_step == 2:
+            with st.sidebar.form("step2_form"):
+                st.caption("Step 2 of 3: Hardness & Temp")
+                kh_drops = st.number_input("KH Test Drops", min_value=0, step=1, value=st.session_state.get("kh_drops_val", 4))
+                gh_drops = st.number_input("GH Test Drops", min_value=0, step=1, value=st.session_state.get("gh_drops_val", 8))
+                temperature = st.number_input("Temperature (°C)", min_value=0.0, step=0.5, value=st.session_state.get("temp_val", 26.0))
 
-    # ── KH / GH drops ──────────────────────────────────────────────────────
-    kh_drops = st.sidebar.number_input(
-        "KH Test Drops", min_value=0, step=1,
-        value=st.session_state.get("kh_drops", 4), key="kh_drops",
-        help="Liquid-kit drops (1 drop = 1 dKH)."
-    )
-    gh_drops = st.sidebar.number_input(
-        "GH Test Drops", min_value=0, step=1,
-        value=st.session_state.get("gh_drops", 8), key="gh_drops",
-        help="Liquid-kit drops (1 drop = 1 dGH)."
-    )
-    kh = float(kh_drops)
-    gh = float(gh_drops)
-    st.sidebar.markdown(f"**KH:** {kh * 17.86:.1f} ppm  |  **GH:** {gh * 17.86:.1f} ppm")
+                c1, c2 = st.columns(2)
+                if c1.form_submit_button("← Back", use_container_width=True):
+                    st.session_state.form_step = 1
+                    st.rerun()
+                if c2.form_submit_button("Next →", use_container_width=True):
+                    st.session_state.kh_drops_val = kh_drops
+                    st.session_state.gh_drops_val = gh_drops
+                    st.session_state.temp_val = temperature
+                    st.session_state.form_step = 3
+                    st.rerun()
 
-    st.sidebar.markdown("---")
+        # --- STEP 3: Final Details & Save ---
+        elif st.session_state.form_step == 3:
+            with st.sidebar.form("step3_form"):
+                st.caption("Step 3 of 3: Final Details")
+                co2_color = st.selectbox("CO₂ Indicator", ["Green", "Blue", "Yellow"], index=0)
+                notes = st.text_area("Notes (optional)", "")
 
-    # ── Other fields ───────────────────────────────────────────────────────
-    co2_color = st.sidebar.selectbox(
-        "CO₂ Indicator", ["Green", "Blue", "Yellow"],
-        index=["Green", "Blue", "Yellow"].index(
-            st.session_state.get("co2_color", "Green")
-        ), key="co2_color"
-    )
-    temperature = st.sidebar.number_input(
-        "Temperature (°C)", min_value=0.0, step=0.5,
-        value=st.session_state.get("temperature", 25.0), key="temperature"
-    )
-    notes = st.sidebar.text_area(
-        "Notes (optional)", value=st.session_state.get("notes", ""), key="notes"
-    )
+                c1, c2 = st.columns(2)
+                if c1.form_submit_button("← Back", use_container_width=True):
+                    st.session_state.form_step = 2
+                    st.rerun()
 
-    # ── Save button ────────────────────────────────────────────────────────
-    if st.sidebar.button("💾 Save Test"):
-        tank_id = st.session_state.get("tank_id", 0)
-        if tank_id == 0:
-            st.sidebar.error("Please add and select a tank before saving a test.")
-            return
-
-        # Combine selected date and time into ISO timestamp
-        dt = datetime.combine(test_date, test_time)
-        iso_ts = dt.isoformat(timespec="seconds")
-
-        data = {
-            "date": iso_ts,
-            "ph": ph,
-            "ammonia": ammonia,
-            "nitrite": nitrite,
-            "nitrate": nitrate,
-            "kh": kh,
-            "gh": gh,
-            "co2_indicator": co2_color,
-            "temperature": temperature,
-            "notes": notes,
-        }
-
-        try:
-            repo = WaterTestRepository()
-            repo.save(data, tank_id)
-
-            st.sidebar.success(f"Water test saved for {dt:%Y-%m-%d %H:%M}!")
-
-            preview_df = pd.DataFrame([data])
-            st.sidebar.dataframe(arrow_safe(preview_df), use_container_width=True)
-
-            show_toast("Test Saved", "Your readings were successfully recorded.")
-            show_out_of_range_banner()
-        except Exception as exc:
-            st.sidebar.error(f"Failed to save test: {exc}")
+                if c2.form_submit_button("💾 Save Test", type="primary", use_container_width=True):
+                    tank_id = st.session_state.get("tank_id", 0)
+                    if tank_id == 0:
+                        st.sidebar.error("Select a tank first.")
+                    else:
+                        data = {
+                            "date": datetime.now().isoformat(timespec="seconds"),
+                            "ph": st.session_state.ph_val,
+                            "ammonia": st.session_state.ammonia_val,
+                            "nitrite": st.session_state.nitrite_val,
+                            "nitrate": st.session_state.nitrate_val,
+                            "kh": float(st.session_state.kh_drops_val),
+                            "gh": float(st.session_state.gh_drops_val),
+                            "co2_indicator": co2_color,
+                            "temperature": st.session_state.temp_val,
+                            "notes": notes,
+                        }
+                        try:
+                            repo = WaterTestRepository()
+                            repo.save(data, tank_id)
+                            st.sidebar.success("Water test saved!")
+                            # Clean up session state
+                            for key in ['form_step', 'ph_val', 'ammonia_val', 'nitrite_val', 'nitrate_val', 'kh_drops_val', 'gh_drops_val', 'temp_val']:
+                                if key in st.session_state:
+                                    del st.session_state[key]
+                            st.rerun()
+                        except Exception as exc:
+                            st.sidebar.error(f"Failed to save test: {exc}")
+    
+    # =====================================================================
+    # DESKTOP VERSION (Original Single Form)
+    # =====================================================================
+    else:
+        with st.sidebar.form("desktop_form"):
+            ph = st.number_input("pH", min_value=0.0, step=0.1, value=7.6)
+            ammonia = st.number_input("Ammonia (ppm)", min_value=0.0, step=0.01, value=0.0)
+            nitrite = st.number_input("Nitrite (ppm)", min_value=0.0, step=0.01, value=0.0)
+            nitrate = st.number_input("Nitrate (ppm)", min_value=0.0, step=0.1, value=0.0, format="%.1f")
+            st.markdown("---")
+            kh_drops = st.number_input("KH Test Drops", min_value=0, step=1, value=4)
+            gh_drops = st.number_input("GH Test Drops", min_value=0, step=1, value=8)
+            st.markdown("---")
+            co2_color = st.selectbox("CO₂ Indicator", ["Green", "Blue", "Yellow"], index=0)
+            temperature = st.number_input("Temperature (°C)", min_value=0.0, step=0.5, value=26.0)
+            notes = st.text_area("Notes (optional)", "")
+            
+            if st.form_submit_button("💾 Save Test"):
+                tank_id = st.session_state.get("tank_id", 0)
+                if tank_id == 0:
+                    st.error("Please add and select a tank before saving a test.")
+                else:
+                    data = {
+                        "date": datetime.now().isoformat(timespec="seconds"),
+                        "ph": ph, "ammonia": ammonia, "nitrite": nitrite, "nitrate": nitrate,
+                        "kh": float(kh_drops), "gh": float(gh_drops), "co2_indicator": co2_color,
+                        "temperature": temperature, "notes": notes,
+                    }
+                    try:
+                        repo = WaterTestRepository()
+                        repo.save(data, tank_id)
+                        st.sidebar.success("Water test saved!")
+                        show_toast("Test Saved", "Your readings were successfully recorded.")
+                        # Do not rerun here to allow success message to be seen
+                    except Exception as exc:
+                        st.sidebar.error(f"Failed to save test: {exc}")
