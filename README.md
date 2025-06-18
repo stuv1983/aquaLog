@@ -1,10 +1,14 @@
 # AquaLog 🐠📊
 
+  
+
 A Python & Streamlit–powered local dashboard for tracking water quality, livestock, plants, equipment, dosing & maintenance across one or more aquariums.
 
   
 
 ## 📖 Table of Contents
+
+  
 
 - [✨ Features](#-features)
 
@@ -30,9 +34,11 @@ A Python & Streamlit–powered local dashboard for tracking water quality, lives
 
 ## ✨ Features
 
+  
+
 | Category | Highlights |
 
-| :-------------------- | :------------------------------------------------------------------------------------------ |
+| :------------------- | :----------------------------------------------------------------------------------------- |
 
 | Offline & Local | Runs entirely on your machine (Python + SQLite); no cloud or external server needed. |
 
@@ -50,7 +56,7 @@ A Python & Streamlit–powered local dashboard for tracking water quality, lives
 
 | Warnings | Real-time alerts & action plans for out-of-range parameters and fish compatibility. |
 
-| Data & Analytics | Interactive charts, raw data tables, rolling averages, correlation matrix, and forecasting. |
+| Data & Analytics | Interactive charts, raw data tables, rolling averages, correlation matrix, and forecasting.|
 
 | Cycle Tracker | Visualise nitrogen-cycle milestones & progress for new tanks. |
 
@@ -65,6 +71,8 @@ A Python & Streamlit–powered local dashboard for tracking water quality, lives
   
 
 ### Prerequisites
+
+  
 
 - Python 3.9+
 
@@ -124,15 +132,17 @@ streamlit  run  main.py
 
   
 
-Then open [http://localhost:8501](http://localhost:8501) in your browser.
+Then open `http://localhost:8501` in your browser.
 
   
 
 ## ⚙️ Configuration
 
+  
+
 | File / Directory | Purpose |
 
-| :-------------------------- | :----------------------------------------------------------------------- |
+| :------------------------------| :-----------------------------------------------------------------|
 
 | `.streamlit/config.toml` | Theme colours, fonts & other Streamlit settings. |
 
@@ -162,123 +172,123 @@ aqualog/
 
 ├── .devcontainer/
 
-│ └── devcontainer.json
+│ └── devcontainer.json # Configuration for VS Code Dev Containers
 
 ├── .streamlit/
 
-│ └── config.toml
+│ └── config.toml # Streamlit theme and configuration settings
 
-│
+├── main.py # Main application entry point for Streamlit
 
-├── main.py
+├── config.py # Global application settings, constants, and action plans
 
-├── config.py
+├── components.py # Reusable Streamlit UI components
 
-├── components.py
+├── requirements.txt # Python package dependencies for pip
 
-├── requirements.txt
+├── README.md # This file
 
-├── README.md
+├── run_streamlit.sh # A shell script to run the application (optional)
 
-├── run_streamlit.sh
+├── aqualog.db # The SQLite database file
 
-│
+├── fish.csv # Master data for fish species
 
-├── aqualog.db
+├── injectFish.py # Script to load fish.csv into the database
 
-├── fish.csv
+├── plants.csv # Master data for plant species
 
-├── injectFish.py
+├── injectPlants.py # Script to load plants.csv into the database
 
-├── plants.csv
+├── aqualog_db/ # Package for all database-related code
 
-├── injectPlants.py
+│ ├── __init__.py # Initializes the database package and exposes repositories
 
-│
+│ ├── schema.py # Defines the authoritative database schema and tables
 
-├── aqualog_db/
+│ ├── base.py # Base repository class for database connections
 
-│ ├── __init__.py
+│ ├── connection.py # Manages the connection to the SQLite database
 
-│ ├── schema.py
+│ └── repositories/ # Contains all repository classes for database table operations
 
-│ ├── base.py
+│ ├── __init__.py # Exposes all repository classes
 
-│ ├── connection.py
+│ ├── tank.py # Repository for the `tanks` table
 
-│ └── repositories/
+│ ├── water_test.py # Repository for the `water_tests` table
 
-│ ├── __init__.py
+│ ├── custom_range.py # Repository for the `custom_ranges` table
 
-│ ├── tank.py
+│ ├── email_settings.py # Repository for the `email_settings` table
 
-│ ├── water_test.py
+│ ├── maintenance.py # Repository for maintenance-related tables
 
-│ ├── custom_range.py
+│ ├── plant.py # Repository for the master `plants` table
 
-│ └── email_settings.py
+│ ├── owned_plant.py # Repository for the `owned_plants` table
 
-│
+│ ├── fish.py # Repository for the master `fish` table
 
-├── sidebar/
+│ ├── owned_fish.py # Repository for the `owned_fish` table
 
-│ ├── __init__.py
+│ └── equipment.py # Repository for the `equipment` table
 
-│ ├── sidebar.py
+├── sidebar/ # Package for all sidebar UI components
 
-│ ├── water_test_form.py
+│ ├── __init__.py # Initializes the sidebar package
 
-│ ├── tank_selector.py
+│ ├── sidebar.py # Main entry point for rendering the entire sidebar
 
-│ ├── settings_panel.py
+│ ├── water_test_form.py # Renders the water test logging form
 
-│ └── release_notes.py
+│ ├── tank_selector.py # Renders the tank selection dropdown
 
-│
+│ ├── settings_panel.py # Renders the settings panel
 
-├── tabs/
+│ └── release_notes.py # Renders the release notes section
 
-│ ├── __init__.py
+├── tabs/ # Package containing the code for each main UI tab
 
-│ ├── overview_tab.py
+│ ├── __init__.py # Initializes the tabs package
 
-│ ├── warnings_tab.py
+│ ├── overview_tab.py # Renders the main overview dashboard
 
-│ ├── data_analytics_tab.py
+│ ├── warnings_tab.py # Renders the warnings and alerts tab
 
-│ ├── cycle_tab.py
+│ ├── data_analytics_tab.py # Renders the data analytics tab
 
-│ ├── failed_tests_tab.py
+│ ├── cycle_tab.py # Renders the nitrogen cycle tracker
 
-│ ├── plant_inventory_tab.py
+│ ├── plant_inventory_tab.py # Renders the plant inventory tab
 
-│ ├── fish_inventory_tab.py
+│ ├── fish_inventory_tab.py # Renders the fish inventory tab
 
-│ ├── equipment_tab.py
+│ ├── equipment_tab.py # Renders the equipment inventory tab
 
-│ └── maintenance_tab.py
+│ ├── maintenance_tab.py # Renders the maintenance log tab
 
-│
+│ └── tools_tab.py # Renders the tools and calculators tab
 
-└── utils/
+└── utils/ # Package for shared utility functions
 
-├── __init__.py
+├── __init__.py # Exposes utility functions for easy import
 
-├── core.py
+├── core.py # Core utility functions (caching, mobile detection)
 
-├── chemistry.py
+├── chemistry.py # Aquarium chemistry calculation functions
 
-├── validation.py
+├── validation.py # Data validation and sanitization functions
 
-├── localization.py
+├── localization.py # Translation and unit conversion functions
 
-└── ui/
+└── ui/ # Sub-package for UI-specific helpers
 
-├── __init__.py
+├── __init__.py # Exposes UI helper functions
 
-├── alerts.py
+├── alerts.py # Functions for displaying alerts and toasts
 
-└── charts.py
+└── charts.py # Functions for creating standardized charts
 
 ```
 
@@ -292,11 +302,11 @@ aqualog/
 
 <summary><strong>Select & Manage Tanks</strong></summary>
 
-  
+<p>
 
 Use the "Settings" panel in the sidebar to add, rename, or delete tank profiles. You can also edit a tank’s volume here, which is used in dosing calculations.
 
-  
+</p>
 
 </details>
 
@@ -306,11 +316,11 @@ Use the "Settings" panel in the sidebar to add, rename, or delete tank profiles.
 
 <summary><strong>Log Water Tests</strong></summary>
 
-  
+<p>
 
 Use the "Log Water Test" form in the sidebar to enter your daily or weekly readings. Out-of-range values will trigger alerts on the "Warnings" tab.
 
-  
+</p>
 
 </details>
 
@@ -320,11 +330,11 @@ Use the "Log Water Test" form in the sidebar to enter your daily or weekly readi
 
 <summary><strong>Manage Inventory</strong></summary>
 
-  
+<p>
 
 Use the "Plants" and "Fish" tabs to search the master database and add items to your specific tank’s inventory.
 
-  
+</p>
 
 </details>
 
@@ -334,11 +344,11 @@ Use the "Plants" and "Fish" tabs to search the master database and add items to 
 
 <summary><strong>Analyze Data</strong></summary>
 
-  
+<p>
 
 The "Data & Analytics" tab provides powerful tools to visualize your tank’s history, including a raw data table, rolling averages, and a 7-day forecast.
 
-  
+</p>
 
 </details>
 
@@ -349,6 +359,8 @@ The "Data & Analytics" tab provides powerful tools to visualize your tank’s hi
   
 
 ### Ammonia Toxicity (unionised NH₃)
+
+  
 
 Total ammonia (NH₃ + NH₄⁺) alone is misleading. AquaLog converts it to the toxic unionised NH₃ fraction using pH & temperature:
 
@@ -365,6 +377,8 @@ NH₃ = total_ammonia / (1 + 10 ** (pKa − pH))
   
 
 ### KH & GH from Drop Counts
+
+  
 
 Each drop in common liquid test-kits equals 1 dKH or 1 dGH, which converts to ppm:
 
@@ -398,9 +412,13 @@ A high-level overview of the main database tables and their relationships:
 
 -  **owned_fish**: Links fish from the master list to a specific tank and stores the quantity.
 
--  **custom_ranges**: Stores user-defined safe parameter ranges on a per-tank basis.
+-  **equipment**: Stores information about the user's equipment for each tank.
+
+-  **maintenance_cycles**: Defines recurring maintenance tasks.
 
 -  **maintenance_log**: Records all completed maintenance tasks for each tank.
+
+-  **custom_ranges**: Stores user-defined safe parameter ranges on a per-tank basis.
 
   
 
@@ -412,7 +430,7 @@ To build and run AquaLog in a Docker container:
 
   
 
-```dockerfile
+```Dockerfile
 
 # Dockerfile
 
@@ -442,9 +460,11 @@ CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.
 
 Fork → create feature branch → code → open PR.
 
-Format with black and lint with flake8.
+  
 
-Add/update tests in `tests/`.
+- Format with `black` and lint with `flake8`.
+
+- Add/update tests in `tests/`.
 
   
 
