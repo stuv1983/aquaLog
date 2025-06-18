@@ -11,29 +11,19 @@ conversion factors, and localization strings.
 import os
 from typing import Callable, Any
 
-# ──────────────────────────────────────────────────────────────
-# Database path (persistent on-disk file)
-# ──────────────────────────────────────────────────────────────
-# This is the single source of truth for where the SQLite DB lives.
 DB_FILE: str = os.path.join(os.getcwd(), "aqualog.db")
 
-# ──────────────────────────────────────────────────────────────
-# Safe operating windows (inclusive)
-# ──────────────────────────────────────────────────────────────
 SAFE_RANGES: dict[str, tuple[float, float]] = {
-    "temperature":   (18.0, 28.0),   # °C
-    "ammonia":       (0.0, 0.0),     # total ammonia; unionised NH₃ toxicity separate
-    "nitrite":       (0.0, 0.0),     # ppm
-    "nitrate":       (20.0, 50.0),   # ppm
-    "ph":            (6.0, 8.0),     # pH units
-    "kh":            (4.0, 8.0),     # °dKH
-    "gh":            (6.0, 10.0),    # °dGH
-    "co2_indicator": (2.0, 2.0),     # Drop-checker colour (Green)
+    "temperature":   (18.0, 28.0),
+    "ammonia":       (0.0, 0.0),
+    "nitrite":       (0.0, 0.0),
+    "nitrate":       (20.0, 50.0),
+    "ph":            (6.0, 8.0),
+    "kh":            (4.0, 8.0),
+    "gh":            (6.0, 10.0),
+    "co2_indicator": (2.0, 2.0),
 }
 
-# ──────────────────────────────────────────────────────────────
-# One-sided danger thresholds
-# ──────────────────────────────────────────────────────────────
 TOO_LOW_THRESHOLDS: dict[str, float] = {
     "nitrate":       20.0,
     "kh":            4.0,
@@ -49,12 +39,9 @@ TOO_HIGH_THRESHOLDS: dict[str, float] = {
     "kh":            8.0,
     "gh":            10.0,
     "co2_indicator": 2.0,
-    "ammonia":       0.02,  # NH₃ toxicity threshold
+    "ammonia":       0.02,
 }
 
-# ──────────────────────────────────────────────────────────────
-# Action plans – guidance when parameters are outside safe windows
-# ──────────────────────────────────────────────────────────────
 LOW_ACTION_PLANS: dict[str, list[str]] = {
     "nitrate": [
         "Nitrate is low (<20 ppm). Dose a nitrate fertilizer to reach the 20-40 ppm target range.",
@@ -114,18 +101,12 @@ ACTION_PLANS: dict[str, list[str]] = {
     ],
 }
 
-# ──────────────────────────────────────────────────────────────
-# Drop-checker colour advice
-# ──────────────────────────────────────────────────────────────
 CO2_COLOR_ADVICE: dict[str, str] = {
     "Blue":   "CO₂ low – raise injection rate.",
     "Green":  "CO₂ ideal – no action.",
     "Yellow": "CO₂ high – reduce injection / add aeration.",
 }
 
-# ──────────────────────────────────────────────────────────────
-# Localization (US English)
-# ──────────────────────────────────────────────────────────────
 LOCALIZATIONS: dict[str, dict[str, str]] = {
     "en_US": {
         "Temperature":      "Temperature",
@@ -145,9 +126,6 @@ LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
 }
 
-# ──────────────────────────────────────────────────────────────
-# Unit systems
-# ──────────────────────────────────────────────────────────────
 UNIT_SYSTEMS: dict[str, dict[str, str]] = {
     "Metric": {
         "temperature":   "°C",
@@ -171,24 +149,17 @@ UNIT_SYSTEMS: dict[str, dict[str, str]] = {
     },
 }
 
-# ──────────────────────────────────────────────────────────────
-# Simple conversions
-# ──────────────────────────────────────────────────────────────
 CONVERSIONS: dict[tuple[str, str], Callable[[float], float]] = {
     ("°C", "°F"): lambda c: c * 9 / 5 + 32,
     ("°F", "°C"): lambda f: (f - 32) * 5 / 9,
 }
 
-# ──────────────────────────────────────────────────────────────
-# Legacy helper wrappers
-# ──────────────────────────────────────────────────────────────
 def is_too_low(param: str, value: float) -> bool:
     thresh = TOO_LOW_THRESHOLDS.get(param)
     return thresh is not None and value < thresh
 
 def is_too_high(param: str, value: float) -> bool:
     thresh = TOO_HIGH_THRESHOLDS.get(param)
-    # FIX: Corrected variable from 'hi' to 'thresh'
     return thresh is not None and value > thresh
 
 def get_low_action_plan(param: str) -> list[str]:
@@ -197,20 +168,11 @@ def get_low_action_plan(param: str) -> list[str]:
 def get_high_action_plan(param: str) -> list[str]:
     return list(ACTION_PLANS.get(param, []))
 
-
-# ──────────────────────────────────────────────────────────────
-# Weekly email schedule and SMTP settings
-# ──────────────────────────────────────────────────────────────
 WEEKLY_EMAIL_TIME: dict[str, Any] = {
-    # Scheduler: day_of_week can be 'mon', 'tue', ... or comma-separated
     'day_of_week': 'mon',
     'hour': 9,
     'minute': 0,
-
-    # Email envelope
     'from_address': 'your_email@example.com',
-
-    # SMTP server config
     'smtp': {
         'host': 'smtp.example.com',
         'port': 587,
@@ -220,9 +182,6 @@ WEEKLY_EMAIL_TIME: dict[str, Any] = {
     },
 }
 
-# ──────────────────────────────────────────────────────────────
-# App version & release notes
-# ──────────────────────────────────────────────────────────────
 VERSION = "v3.7.1"
 RELEASE_NOTES = """
 ### v3.7.1 (2025-06-12)

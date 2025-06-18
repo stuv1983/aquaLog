@@ -49,7 +49,6 @@ def display_parameter_warning(param: str, value: float, safe_range: tuple, is_lo
     
     action_plan = LOW_ACTION_PLANS.get(param) if is_low else ACTION_PLANS.get(param)
     if action_plan:
-        # ** ERROR FIX: Removed the inner expander **
         st.markdown("**Recommended Actions:**")
         for step in action_plan:
             st.write(f"- {step}")
