@@ -10,44 +10,27 @@ plant species to the master database.
 
 import pandas as pd
 import streamlit as st
-import numpy as np
 import sqlite3
 
-from aqualog_db.repositories import TankRepository
-from aqualog_db.connection import get_connection
+from aqualog_db.repositories import TankRepository, PlantRepository, OwnedPlantRepository
 from utils import show_toast
-
-def _ensure_owned_plants_schema():
-    """Ensure the owned_plants table has the required schema."""
-    with get_connection() as conn:
-        cur = conn.cursor()
-        cur.execute("PRAGMA table_info(owned_plants);")
-        cols = {row[1] for row in cur.fetchall()}
-        
-        if 'tank_id' not in cols:
-            cur.execute("ALTER TABLE owned_plants ADD COLUMN tank_id INTEGER NOT NULL DEFAULT 1")
-        
-        if 'common_name' not in cols:
-            cur.execute("ALTER TABLE owned_plants ADD COLUMN common_name TEXT DEFAULT ''")
-        conn.commit()
 
 def plant_inventory_tab(key_prefix=""):
     """Manage per-tank plant inventory."""
     try:
         tid = st.session_state.get('tank_id', 1)
-        _ensure_owned_plants_schema()
 
         tank_repo = TankRepository()
+        plant_repo = PlantRepository()
+        owned_plant_repo = OwnedPlantRepository()
+
         tanks = tank_repo.fetch_all()
         tank_name = next((t['name'] for t in tanks if t['id'] == tid), f"Tank #{tid}")
 
         st.header(f"🌿 Aquarium Plant Inventory — {tank_name}")
 
         # 1. Load master plants from database
-        with get_connection() as conn:
-            master = pd.read_sql_query("""
-                SELECT * FROM plants ORDER BY plant_name COLLATE NOCASE
-            """, conn)
+        master = plant_repo.fetch_all()
 
         # --- Search master plant list ---
         st.subheader('🔍 Search Plant Database')
@@ -89,12 +72,7 @@ def plant_inventory_tab(key_prefix=""):
                         
                         if cols[2].button('➕ Add to My Tank', key=f'{key_prefix}add_plant_to_owned_{pid}'):
                             try:
-                                with get_connection() as conn:
-                                    conn.execute("""
-                                        INSERT INTO owned_plants (plant_id, common_name, tank_id)
-                                        VALUES (?, ?, ?) ON CONFLICT(plant_id, tank_id) DO NOTHING
-                                    """, (pid, name, tid))
-                                    conn.commit()
+                                owned_plant_repo.add_to_tank(pid, tid, name)
                                 show_toast('✅ Added', f'{name} added to {tank_name}')
                                 st.rerun()
                             except Exception as e:
@@ -119,12 +97,16 @@ def plant_inventory_tab(key_prefix=""):
                         st.error("Plant Name is required.")
                     else:
                         try:
-                            with get_connection() as conn:
-                                conn.execute("""
-                                    INSERT INTO plants (plant_name, origin, growth_rate, height_cm, light_demand, co2_demand, thumbnail_url)
-                                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                                """, (plant_name, origin, growth_rate, height_cm, light_demand, co2_demand, thumbnail_url))
-                                conn.commit()
+                            plant_data = {
+                                "plant_name": plant_name,
+                                "origin": origin,
+                                "growth_rate": growth_rate,
+                                "height_cm": height_cm,
+                                "light_demand": light_demand,
+                                "co2_demand": co2_demand,
+                                "thumbnail_url": thumbnail_url
+                            }
+                            plant_repo.add_plant(plant_data)
                             show_toast("✅ Success", f"{plant_name} has been added to the master database.")
                             st.rerun()
                         except sqlite3.IntegrityError:
@@ -135,16 +117,7 @@ def plant_inventory_tab(key_prefix=""):
         
         # 2. List owned plants in the current tank
         st.subheader(f'🌱 Plants in {tank_name}')
-        with get_connection() as conn:
-            owned = pd.read_sql_query("""
-                SELECT 
-                    p.*,
-                    COALESCE(NULLIF(o.common_name, ''), p.plant_name) AS display_name
-                FROM owned_plants o
-                JOIN plants p ON o.plant_id = p.plant_id
-                WHERE o.tank_id = ?
-                ORDER BY display_name COLLATE NOCASE
-            """, conn, params=(tid,))
+        owned = owned_plant_repo.fetch_for_tank(tid)
 
         if owned.empty:
             st.info(f"No plants in {tank_name}. Use the search above to add some.")
@@ -177,9 +150,7 @@ def plant_inventory_tab(key_prefix=""):
                     
                     if cols[2].button('🗑️', key=f'{key_prefix}del_owned_plant_{pid}'):
                         try:
-                            with get_connection() as conn:
-                                conn.execute("DELETE FROM owned_plants WHERE plant_id = ? AND tank_id = ?", (pid, tid))
-                                conn.commit()
+                            owned_plant_repo.remove_from_tank(pid, tid)
                             show_toast('🗑️ Removed', f'{name} removed')
                             st.rerun()
                         except Exception as e:

@@ -13,10 +13,10 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 import altair as alt
+import datetime
 
-from aqualog_db.connection import get_connection
-# 1. Import the repository instead of the legacy function
-from aqualog_db.repositories import TankRepository
+# --- Import Repositories ---
+from aqualog_db.repositories import TankRepository, WaterTestRepository
 from config import SAFE_RANGES
 
 def _is_tank_cycled(df: pd.DataFrame) -> bool:
@@ -60,30 +60,32 @@ def cycle_tab(key_prefix=""):
         st.warning("Please select a tank to view its cycle progress.")
         return
         
-    # 2. Instantiate the repository and call its method
+    # --- Instantiate Repositories ---
     tank_repo = TankRepository()
+    water_test_repo = WaterTestRepository()
+
     tanks = tank_repo.fetch_all()
     tank_name = next((t["name"] for t in tanks if t["id"] == tank_id), f"Tank #{tank_id}")
     st.info(f"Showing cycle progress for: **{tank_name}**")
 
-    # 1. Fetch all relevant water tests for the selected tank
-    with get_connection() as conn:
-        df = pd.read_sql_query(
-            """
-            SELECT date, ammonia, nitrite, nitrate
-            FROM water_tests
-            WHERE tank_id = ?
-            ORDER BY date;
-            """,
-            conn,
-            params=(tank_id,),
-            parse_dates=["date"],
-        )
+    # --- Fetch data using the repository ---
+    # Fetch all data from the beginning of time until today for the selected tank.
+    start_date = "1970-01-01T00:00:00"
+    end_date = datetime.datetime.now().isoformat()
+    
+    all_tests_df = water_test_repo.fetch_by_date_range(
+        start=start_date,
+        end=end_date,
+        tank_id=tank_id
+    )
 
     # 2. Handle the case where there is no data
-    if df.empty:
+    if all_tests_df.empty:
         st.info("No water test data available for this tank. Log tests with ammonia, nitrite, and nitrate values to track the cycle.")
         return
+
+    # Select only the columns needed for this tab
+    df = all_tests_df[['date', 'ammonia', 'nitrite', 'nitrate']].copy()
 
     # 3. Check if the tank is cycled and display a status message
     if _is_tank_cycled(df):

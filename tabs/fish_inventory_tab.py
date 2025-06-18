@@ -9,19 +9,19 @@ master database.
 """
 import streamlit as st
 import pandas as pd
-from aqualog_db.connection import get_connection
-from aqualog_db.repositories import TankRepository
-from utils import show_toast
 import sqlite3
+from aqualog_db.repositories import TankRepository, FishRepository, OwnedFishRepository
+from utils import show_toast
 
 def fish_inventory_tab(key_prefix=""):
-    """
-    Manage per-tank fish inventory.
-    """
+    """Manage per-tank fish inventory."""
     try:
         tid = st.session_state.get('tank_id', 1)
         
         tank_repo = TankRepository()
+        fish_repo = FishRepository()
+        owned_fish_repo = OwnedFishRepository()
+        
         tanks = tank_repo.fetch_all()
         tank_name = next((t['name'] for t in tanks if t['id'] == tid), f"Tank #{tid}")
 
@@ -29,8 +29,7 @@ def fish_inventory_tab(key_prefix=""):
 
         # --- Search and Add Fish Section ---
         st.subheader('🔍 Search Fish Database')
-        with get_connection() as conn:
-            master = pd.read_sql_query("SELECT * FROM fish ORDER BY species_name COLLATE NOCASE", conn)
+        master = fish_repo.fetch_all()
         
         query = st.text_input('Search all fish to add to your inventory...', key=f'{key_prefix}fish_search').strip().lower()
 
@@ -42,7 +41,6 @@ def fish_inventory_tab(key_prefix=""):
             if filtered.empty:
                 st.info('No matching fish found in the database.')
             else:
-                # ... (Search results display logic remains the same)
                 st.write("---")
                 st.write("Search Results:")
                 for _, row in filtered.iterrows():
@@ -67,12 +65,7 @@ def fish_inventory_tab(key_prefix=""):
 
                         if cols[2].button('➕ Add to My Tank', key=f'{key_prefix}add_to_owned_{fid}'):
                             try:
-                                with get_connection() as conn:
-                                    conn.execute("""
-                                        INSERT INTO owned_fish (fish_id, tank_id, quantity)
-                                        VALUES (?, ?, 1) ON CONFLICT(fish_id, tank_id) DO NOTHING
-                                    """, (fid, tid))
-                                    conn.commit()
+                                owned_fish_repo.add_to_tank(fid, tid)
                                 show_toast('✅ Added', f'{name} added to {tank_name}')
                                 st.rerun() 
                             except Exception as e:
@@ -83,7 +76,6 @@ def fish_inventory_tab(key_prefix=""):
             with st.form("new_fish_form", clear_on_submit=True):
                 st.write("If a fish is not in the search results, you can add it to the master database here.")
                 
-                # Input fields for the new fish
                 species_name = st.text_input("Species Name (Scientific)*", help="e.g., Ancistrus sp.")
                 common_name = st.text_input("Common Name*", help="e.g., Bristlenose Pleco")
                 origin = st.text_input("Origin", help="e.g., South America")
@@ -99,19 +91,24 @@ def fish_inventory_tab(key_prefix=""):
                 tank_size = st.number_input("Min Tank Size (Liters)", value=75, step=5)
                 image_url = st.text_input("Image URL (optional)")
                 
-                # Save button
                 submitted = st.form_submit_button("💾 Save New Fish to Database")
                 if submitted:
                     if not species_name or not common_name:
                         st.error("Species Name and Common Name are required.")
                     else:
                         try:
-                            with get_connection() as conn:
-                                conn.execute("""
-                                    INSERT INTO fish (species_name, common_name, origin, phmin, phmax, temperature_min, temperature_max, tank_size_liter, image_url)
-                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                                """, (species_name, common_name, origin, phmin, phmax, temp_min, temp_max, tank_size, image_url))
-                                conn.commit()
+                            fish_data = {
+                                "species_name": species_name,
+                                "common_name": common_name,
+                                "origin": origin,
+                                "phmin": phmin,
+                                "phmax": phmax,
+                                "temperature_min": temp_min,
+                                "temperature_max": temp_max,
+                                "tank_size_liter": tank_size,
+                                "image_url": image_url
+                            }
+                            fish_repo.add_fish(fish_data)
                             show_toast("✅ Success", f"{common_name} has been added to the master database.")
                             st.rerun()
                         except sqlite3.IntegrityError:
@@ -122,16 +119,7 @@ def fish_inventory_tab(key_prefix=""):
 
         # --- Owned Fish Section ---
         st.subheader(f'🐟 Fish in {tank_name}')
-        # ... (Owned fish display logic remains the same) ...
-        with get_connection() as conn:
-            owned = pd.read_sql_query("""
-                SELECT
-                    o.id as owned_fish_id, o.quantity, p.*
-                FROM owned_fish o
-                JOIN fish p ON o.fish_id = p.fish_id
-                WHERE o.tank_id = ?
-                ORDER BY p.species_name COLLATE NOCASE
-            """, conn, params=(tid,))
+        owned = owned_fish_repo.fetch_for_tank_with_details(tid)
         
         if owned.empty:
             st.info(f"No fish recorded in {tank_name}. Use the search above to add some.")
@@ -162,9 +150,7 @@ def fish_inventory_tab(key_prefix=""):
                     
                     if cols[2].button('🗑️', key=f"{key_prefix}del_owned_fish_{owned_id}"):
                         try:
-                            with get_connection() as conn:
-                                conn.execute("DELETE FROM owned_fish WHERE id = ?", (owned_id,))
-                                conn.commit()
+                            owned_fish_repo.remove_from_tank(owned_id)
                             show_toast('🗑️ Removed', f"{name} removed from {tank_name}")
                             st.rerun()
                         except Exception as e:

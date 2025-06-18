@@ -90,7 +90,6 @@ class SchemaManager(BaseRepository):
                 swim            INTEGER
             );
         """,
-        # --- THIS TABLE DEFINITION HAS BEEN FIXED ---
         "owned_fish": """
             CREATE TABLE IF NOT EXISTS owned_fish (
                 id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -172,10 +171,20 @@ class SchemaManager(BaseRepository):
                 UNIQUE(tank_id, parameter),
                 FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
             );
+        """,
+        "equipment": """
+            CREATE TABLE IF NOT EXISTS equipment (
+                equipment_id  INTEGER PRIMARY KEY AUTOINCREMENT,
+                name          TEXT    NOT NULL,
+                category      TEXT    NOT NULL,
+                purchase_date TEXT,
+                notes         TEXT,
+                tank_id       INTEGER NOT NULL,
+                FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE
+            );
         """
     }
 
-    # The rest of the file is unchanged
     INDEXES = [
         "CREATE INDEX IF NOT EXISTS idx_water_tests_date ON water_tests(date);",
         "CREATE INDEX IF NOT EXISTS idx_water_tests_tank_id ON water_tests(tank_id);",
@@ -184,7 +193,8 @@ class SchemaManager(BaseRepository):
         "CREATE INDEX IF NOT EXISTS idx_maintenance_log_cycle_id ON maintenance_log(cycle_id);",
         "CREATE INDEX IF NOT EXISTS idx_custom_ranges_tank_id ON custom_ranges(tank_id);",
         "CREATE INDEX IF NOT EXISTS idx_owned_plants_tank_id ON owned_plants(tank_id);",
-        "CREATE INDEX IF NOT EXISTS idx_owned_fish_tank_id ON owned_fish(tank_id);"
+        "CREATE INDEX IF NOT EXISTS idx_owned_fish_tank_id ON owned_fish(tank_id);",
+        "CREATE INDEX IF NOT EXISTS idx_equipment_tank_id ON equipment(tank_id);"
     ]
     TRIGGERS = [
         """

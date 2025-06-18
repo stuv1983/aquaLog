@@ -8,106 +8,67 @@ such as filters, heaters, CO2 systems, and other equipment on a per-tank basis.
 """
 
 from __future__ import annotations
-
 import pandas as pd
 import streamlit as st
 from datetime import date
-import sqlite3  # <-- ADDED THIS MISSING IMPORT
+import sqlite3
 
-from aqualog_db.base import BaseRepository
-from aqualog_db.connection import get_connection
+from aqualog_db.repositories import EquipmentRepository
 from utils import show_toast
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 CATEGORIES = [
     "Filters",
     "Air Pumps & Stones",
     "CO₂ Bottle",
     "Fertilizers",
     "Seachem Products",
+    "Lighting",
+    "Heater",
+    "Substrate",
+    "Other",
 ]
-
-def _ensure_equipment_schema() -> None:
-    """Create equipment table if absent and add `tank_id` column if missing."""
-    with BaseRepository()._connection() as conn:
-        cur = conn.cursor()
-        cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS equipment (
-                equipment_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name          TEXT    NOT NULL,
-                category      TEXT    NOT NULL,
-                purchase_date TEXT,
-                notes         TEXT,
-                tank_id       INTEGER DEFAULT 1
-            );
-            """
-        )
-        # add column if legacy
-        cur.execute("PRAGMA table_info(equipment);")
-        cols = {row[1] for row in cur.fetchall()}
-        if "tank_id" not in cols:
-            cur.execute("ALTER TABLE equipment ADD COLUMN tank_id INTEGER DEFAULT 1;")
-        conn.commit()
 
 def equipment_tab() -> None:
     """Render the Equipment inventory tab (scoped to selected tank)."""
-    _ensure_equipment_schema()
-
+    
     st.header("⚙️ Equipment Inventory")
 
     tank_id: int = st.session_state.get("tank_id", 1)
+    if not tank_id:
+        st.warning("Please select a tank to manage equipment.")
+        return
 
-    # ───────────────────────── “Add New Equipment” ──────────────────────────
+    equipment_repo = EquipmentRepository()
+
+    # --- "Add New Equipment" Form ---
     with st.expander("➕ Add New Equipment"):
-        new_name = st.text_input("Name (e.g. ‘Fluval FX6 Filter’)", key="eq_new_name")
-        new_category = st.selectbox("Category", CATEGORIES, key="eq_new_category")
-        new_purchase = st.date_input(
-            "Purchase Date (optional)", value=date.today(), key="eq_new_purchase"
-        )
-        new_notes = st.text_area("Notes (optional)", key="eq_new_notes")
+        with st.form("add_equipment_form", clear_on_submit=True):
+            new_name = st.text_input("Name*", help="e.g., Fluval FX6 Filter")
+            new_category = st.selectbox("Category*", CATEGORIES, index=0)
+            new_purchase = st.date_input("Purchase Date (optional)", value=None)
+            new_notes = st.text_area("Notes (optional)")
 
-        if st.button("✅ Add Equipment", key="eq_add_btn"):
-            if not new_name.strip():
-                st.error("⚠️ Equipment name is required.")
-            else:
-                with BaseRepository()._connection() as conn:
+            if st.form_submit_button("✅ Add Equipment"):
+                if not new_name.strip():
+                    st.error("⚠️ Equipment name is required.")
+                else:
                     try:
-                        conn.execute(
-                            """
-                            INSERT INTO equipment (name, category, purchase_date, notes, tank_id)
-                            VALUES (?,?,?,?,?);
-                            """,
-                            (
-                                new_name.strip(),
-                                new_category,
-                                new_purchase.isoformat(),
-                                new_notes.strip() or None,
-                                tank_id,
-                            ),
+                        equipment_repo.add_equipment(
+                            name=new_name,
+                            category=new_category,
+                            purchase_date=new_purchase.isoformat() if new_purchase else None,
+                            notes=new_notes,
+                            tank_id=tank_id,
                         )
-                        conn.commit()
-                        show_toast("✅ Added", f"Added {new_name} to tank #{tank_id}.")
-                        st.experimental_rerun()
+                        show_toast("✅ Added", f"Added {new_name} to inventory.")
+                        st.rerun()
                     except sqlite3.Error as e:
                         st.error(f"Failed to add equipment: {e}")
 
     st.markdown("---")
 
-    # ───────────────────────── “My Equipment” list ──────────────────────────
-    with BaseRepository()._connection() as conn:
-        df = pd.read_sql_query(
-            """
-            SELECT equipment_id, name, category, purchase_date, notes
-            FROM equipment
-            WHERE tank_id = ?
-            ORDER BY category, name COLLATE NOCASE;
-            """,
-            conn,
-            params=(tank_id,),
-        )
+    # --- "My Equipment" List ---
+    df = equipment_repo.fetch_for_tank(tank_id)
 
     if df.empty:
         st.info("No equipment recorded for this tank yet.")
@@ -118,29 +79,28 @@ def equipment_tab() -> None:
 
     for _, row in df.iterrows():
         eid = int(row["equipment_id"])
-        label = f"{row['name']}  ({row['category']})"
-        if st.checkbox(label, key=f"eq_remove_{eid}"):
-            to_remove.append(eid)
+        label = f"{row['name']} ({row['category']})"
+        
+        # Use columns for better layout
+        col1, col2 = st.columns([0.9, 0.1])
+        with col1:
+            with st.expander(label):
+                st.write(f"• **Category:** {row['category']}")
+                if row["purchase_date"]:
+                    st.write(f"• **Purchased On:** {row['purchase_date']}")
+                if row["notes"]:
+                    st.write("• **Notes:**")
+                    st.write(row["notes"])
+        with col2:
+             if st.button("🗑️", key=f"del_eq_{eid}", help="Delete this item"):
+                to_remove.append(eid)
 
-        with st.expander(f"Details for: {row['name']}"):
-            st.write(f"• **Category:** {row['category']}")
-            if row["purchase_date"]:
-                st.write(f"• **Purchased On:** {row['purchase_date']}")
-            if row["notes"]:
-                st.write("• **Notes:**")
-                st.write(row["notes"])
 
-    # Bulk delete
+    # Bulk delete if any items were marked for removal
     if to_remove:
-        if st.button("🗑️ Remove Selected", key="eq_remove_btn"):
-            with BaseRepository()._connection() as conn:
-                try:
-                    conn.executemany(
-                        "DELETE FROM equipment WHERE equipment_id = ? AND tank_id = ?;",
-                        [(eid, tank_id) for eid in to_remove],
-                    )
-                    conn.commit()
-                    show_toast("🗑️ Removed", f"Removed {len(to_remove)} item(s).")
-                    st.experimental_rerun()
-                except sqlite3.Error as e:
-                    st.error(f"Error removing equipment: {e}")
+        try:
+            equipment_repo.remove_equipment(to_remove, tank_id)
+            show_toast("🗑️ Removed", f"Removed {len(to_remove)} item(s).")
+            st.rerun()
+        except sqlite3.Error as e:
+            st.error(f"Error removing equipment: {e}")

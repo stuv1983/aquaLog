@@ -12,10 +12,12 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 import altair as alt
+import datetime
 
-from aqualog_db.repositories import TankRepository
-from aqualog_db.base import BaseRepository
+# --- Import Repositories ---
+from aqualog_db.repositories import TankRepository, WaterTestRepository
 
+# --- Import Utilities ---
 from utils import (
     arrow_safe,
     is_mobile,
@@ -32,7 +34,11 @@ def render_overview_tab() -> None:
     
     selected_tank_id = st.session_state.get("tank_id", 0)
 
-    tanks = TankRepository().fetch_all()
+    # --- Instantiate Repositories ---
+    tank_repo = TankRepository()
+    water_test_repo = WaterTestRepository()
+
+    tanks = tank_repo.fetch_all()
     tank_name = "Overview"
     if tanks and selected_tank_id:
         tank_names = {t["id"]: t["name"] for t in tanks}
@@ -44,37 +50,33 @@ def render_overview_tab() -> None:
         st.info("Please add and/or select a tank from the sidebar to see an overview.")
         return
 
-    # ── Latest test (single row) ────────────────────────────────────────────
-    with BaseRepository()._connection() as conn:
-        df_latest = pd.read_sql_query(
-            "SELECT * FROM water_tests WHERE tank_id = ? ORDER BY date DESC LIMIT 1;",
-            conn,
-            params=(selected_tank_id,),
-        )
+    # --- Fetch latest test using the repository ---
+    latest_test = water_test_repo.get_latest_for_tank(selected_tank_id)
 
-    if df_latest.empty:
+    if not latest_test:
         st.info("No water tests available for this tank.")
         return
+        
+    df_latest = pd.DataFrame([latest_test])
 
     st.subheader("Latest Water Test")
     st.dataframe(arrow_safe(df_latest), use_container_width=True)
 
     show_out_of_range_banner()
 
-    # ── Parameter trends ────────────────────────────────────────────────────
-    with BaseRepository()._connection() as conn:
-        df_all = pd.read_sql_query(
-            """
-            SELECT date, ph, ammonia, nitrite, nitrate
-            FROM water_tests
-            WHERE tank_id = ?
-            ORDER BY date;
-            """,
-            conn,
-            params=(selected_tank_id,),
-            parse_dates=["date"],
-        )
-
+    # --- Fetch all tests for trends chart using the repository ---
+    start_date = "1970-01-01T00:00:00"
+    end_date = datetime.datetime.now().isoformat()
+    
+    df_all_tests = water_test_repo.fetch_by_date_range(
+        start=start_date,
+        end=end_date,
+        tank_id=selected_tank_id
+    )
+    
+    # Select only the columns needed for the chart
+    df_all = df_all_tests[['date', 'ph', 'ammonia', 'nitrite', 'nitrate']].copy()
+    
     df_all = arrow_safe(df_all)
 
     chart = (
