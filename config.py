@@ -82,14 +82,12 @@ ACTION_PLANS: dict[str, list[str]] = {
         "Temperature is high (>28°C). Turn off the aquarium heater and increase surface agitation for better oxygen exchange.",
         "If ambient room temperature is high, use a cooling fan or float sealed bottles of ice to gently lower the temperature.",
     ],
-    # --- UPDATED AMMONIA PLAN ---
     "ammonia": [
         "Ammonia is present. Perform an immediate 50% water change to reduce toxicity.",
         "Dose with FritzZyme 7 Live Nitrifying Bacteria: Use 4oz (119ml) per 10 US Gallons for new tanks, or 2oz (60ml) for established tanks.",
         "Consider using a detoxifier like Seachem Prime for immediate fish protection.",
         "Stop feeding for 24-48 hours and ensure the tank is well-aerated."
     ],
-    # --- UPDATED NITRITE PLAN ---
     "nitrite": [
         "Nitrite is present (>0 ppm), which is highly toxic to fish. Perform a 30-50% water change.",
         "Dose with FritzZyme 7 Live Nitrifying Bacteria to accelerate processing: Use 4oz (119ml) per 10 US Gallons for new tanks, or 2oz (60ml) for established tanks.",
@@ -185,10 +183,13 @@ CONVERSIONS: dict[tuple[str, str], Callable[[float], float]] = {
 # Legacy helper wrappers
 # ──────────────────────────────────────────────────────────────
 def is_too_low(param: str, value: float) -> bool:
-    return TOO_LOW_THRESHOLDS.get(param, float('inf')) > value
+    thresh = TOO_LOW_THRESHOLDS.get(param)
+    return thresh is not None and value < thresh
 
 def is_too_high(param: str, value: float) -> bool:
-    return value > TOO_HIGH_THRESHOLDS.get(param, -float('inf'))
+    thresh = TOO_HIGH_THRESHOLDS.get(param)
+    # FIX: Corrected variable from 'hi' to 'thresh'
+    return thresh is not None and value > thresh
 
 def get_low_action_plan(param: str) -> list[str]:
     return list(LOW_ACTION_PLANS.get(param, []))
