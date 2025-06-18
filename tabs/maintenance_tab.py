@@ -1,10 +1,12 @@
-# tabs/maintenance_tab.py (Corrected)
-"""
-tabs/maintenance_tab.py – multi-tank aware 🛠️
+# tabs/maintenance_tab.py
 
-Records and displays maintenance entries (water changes, filter cleans, etc.)
-for the selected tank via a dropdown. Now includes maintenance cycle management.
 """
+maintenance_tab.py – Maintenance Log & Scheduler
+
+Renders the "Maintenance" tab for logging and scheduling tasks. Users can record
+completed tasks like water changes and define recurring maintenance cycles.
+"""
+
 import sqlite3
 import streamlit as st
 import pandas as pd

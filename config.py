@@ -1,10 +1,11 @@
 # config.py
 
 """
-config.py – Central configuration for AquaLog
+config.py – Central Configuration File
 
-Defines global constants used for parameter thresholds, action plans,
-and the on-disk SQLite database path.
+Defines global constants and settings used throughout the application. This
+includes safe ranges for water parameters, action plans for warnings, unit
+conversion factors, and localization strings.
 """
 
 import os

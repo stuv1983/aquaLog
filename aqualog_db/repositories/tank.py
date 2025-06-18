@@ -1,7 +1,13 @@
+# aqualog_db/repositories/tank.py
+
 """
-aquaLog/aqualog_db/repositories
-/tank.py - Tank operations with comprehensive validation 
+tank.py – Tank Data Repository
+
+Handles all database operations (Create, Read, Update, Delete) related to the
+`tanks` table. Includes functions for adding, renaming, deleting, and querying
+tank information.
 """
+
 from typing import List, Dict, Optional, Any, Tuple
 from datetime import datetime
 from ..base import BaseRepository

@@ -1,6 +1,13 @@
+# aqualog_db/repositories/custom_range.py
+
 """
-custom_range.py - Custom parameter range operations with validation
+custom_range.py – Custom Safe Range Repository
+
+Manages custom safe parameter ranges on a per-tank basis. This allows users to
+override the global default safe ranges for specific aquariums with unique
+requirements.
 """
+
 from typing import Optional, Tuple, Dict, List, Any
 from ..base import BaseRepository
 

@@ -1,3 +1,13 @@
+# sidebar/release_notes.py
+
+"""
+release_notes.py – Release Notes Display
+
+Renders the expandable "Release Notes" section in the sidebar. This is used to
+display the application's current version number and a list of recent changes
+or new features.
+"""
+
 import streamlit as st
 from config import VERSION, RELEASE_NOTES
 

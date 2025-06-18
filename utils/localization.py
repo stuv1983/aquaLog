@@ -1,3 +1,13 @@
+# utils/localization.py
+
+"""
+localization.py – Translation and Unit Conversion
+
+Handles localization and unit conversion for the application. It allows for
+switching between languages and converting between different measurement
+systems (e.g., Metric/Imperial).
+"""
+
 from typing import Dict, Optional
 import streamlit as st
 

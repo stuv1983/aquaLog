@@ -1,10 +1,11 @@
-"""charts.py – shared chart helpers for AquaLog
+# utils/ui/charts.py
 
-This file **must** be located where your `data_analytics_tab` imports it, e.g.:
-    from charts import multi_param_line_chart
+"""
+charts.py – UI Charting Functions
 
-If your project instead imports `utils.ui.charts`, rename/move accordingly—
-this exact code must be the one Python actually loads.
+Provides UI-specific helper functions for creating standardized charts. Contains
+logic for generating multi-parameter line charts with Altair and cleaning
+DataFrames for visualization.
 """
 
 from __future__ import annotations

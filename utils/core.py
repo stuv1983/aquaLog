@@ -1,3 +1,12 @@
+# utils/core.py
+
+"""
+core.py – Core Utility Functions
+
+Provides high-level, application-wide utility functions, such as data caching
+wrappers and mobile device detection logic based on browser user agents.
+"""
+
 from functools import wraps
 from typing import Callable, Any
 import streamlit as st

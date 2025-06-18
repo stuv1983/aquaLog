@@ -1,4 +1,12 @@
-# utils/ui/alerts.py (Corrected)
+# utils/ui/alerts.py
+
+"""
+alerts.py – UI Alert Components
+
+Provides UI-specific helper functions for displaying alerts and notifications to
+the user. Includes functions for showing toast messages and formatted parameter
+advice cards.
+"""
 
 from typing import Optional
 import streamlit as st

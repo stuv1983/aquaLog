@@ -1,6 +1,13 @@
+# aqualog_db/repositories/water_test.py
+
 """
-water_test.py - Water test operations with comprehensive validation
+water_test.py – Water Test Data Repository
+
+Handles all database operations for the `water_tests` table. Includes methods
+for saving new water test entries and fetching historical data based on date
+ranges and tank IDs.
 """
+
 from datetime import datetime
 import pandas as pd
 from typing import Dict, Optional, List, Any, Tuple

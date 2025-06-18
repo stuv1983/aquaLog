@@ -1,9 +1,12 @@
-"""
-components.py – Reusable Streamlit UI Components
-Provides helper widgets, water-parameter warnings, metric cards, highlight styling, 
-and default troubleshooting suggestions for all tabs in AquaLog.
+# components.py
 
-Updated: 2025-06-11 (fixed nested expander)
+"""
+components.py – Reusable UI Components
+
+A collection of shared, reusable Streamlit UI components for the AquaLog
+dashboard. Provides standardized widgets and display elements like styled data
+tables or warning cards to ensure a consistent look and feel across tabs.
+
 """
 
 import streamlit as st

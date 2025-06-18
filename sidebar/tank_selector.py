@@ -1,3 +1,12 @@
+# sidebar/tank_selector.py
+
+"""
+tank_selector.py – Tank Selection Dropdown
+
+Renders the tank selection dropdown menu at the top of the sidebar. It allows the
+user to switch the application's context between different managed aquariums.
+"""
+
 import streamlit as st
 from typing import Dict, Any
 

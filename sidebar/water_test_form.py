@@ -1,7 +1,11 @@
-# sidebar/water_test_form.py (Updated with backdating)
+# sidebar/water_test_form.py
+
 """
-Sidebar - Water-test logging form (multi-tank aware)
-Allows users to specify the date and time for back-dated entries.
+water_test_form.py – Water Test Input Form
+
+Renders the "Log Water Test" form in the sidebar. It handles all user input fields
+for water parameters and saves the data to the database. It also includes logic
+for a multi-step "wizard" on mobile devices.
 """
 
 from __future__ import annotations

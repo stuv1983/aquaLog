@@ -1,7 +1,13 @@
 # tabs/tools_tab.py
+
 """
-Provides a collection of useful aquarium-related calculators.
+tools_tab.py – Aquarium Calculators
+
+Renders the "Tools" tab, which provides a collection of useful calculators.
+This includes a Dosing Calculator for common supplements and an Aquarium Volume
+Calculator based on tank dimensions.
 """
+
 import streamlit as st
 
 from utils.chemistry import (
@@ -15,6 +21,7 @@ from utils import show_toast, request_rerun
 
 def render_volume_calculator():
     """Renders the UI for the Aquarium Volume Calculator."""
+    # The form now only contains the input widgets and the primary calculation button.
     with st.form("volume_calculator_form"):
         st.subheader("📏 Aquarium Volume Calculator")
         st.write("Calculate the volume of your tank based on its dimensions.")
@@ -28,18 +35,19 @@ def render_volume_calculator():
         
         submitted = st.form_submit_button("Calculate Volume")
         
-        if submitted:
-            liters, gallons = calculate_volume(length, width, height, units)
-            st.metric("Calculated Volume", f"{liters:.2f} Liters / {gallons:.2f} Gallons")
-            
-            # Allow user to save this volume to the current tank
-            tank_id = st.session_state.get("tank_id")
-            if tank_id:
-                if st.button("Save this volume to current tank"):
-                    repo = TankRepository()
-                    repo.update_volume(tank_id, liters)
-                    show_toast("✅ Success", "Tank volume has been updated.")
-                    request_rerun()
+    # The results and the secondary "Save" button are now outside the form.
+    if submitted:
+        liters, gallons = calculate_volume(length, width, height, units)
+        st.metric("Calculated Volume", f"{liters:.2f} Liters / {gallons:.2f} Gallons")
+        
+        tank_id = st.session_state.get("tank_id")
+        if tank_id:
+            # This button is now outside the form and will work correctly.
+            if st.button("Save this volume to current tank"):
+                repo = TankRepository()
+                repo.update_volume(tank_id, liters)
+                show_toast("✅ Success", "Tank volume has been updated.")
+                request_rerun()
 
 
 def render_dosing_calculator():
@@ -52,7 +60,9 @@ def render_dosing_calculator():
     tank_volume = 0.0
     if tank_id:
         repo = TankRepository()
-        tank_info = repo.get_by_id(tank_id)
+        # A new repo method to get a single tank would be better, but this works for now.
+        tanks = repo.fetch_all()
+        tank_info = next((t for t in tanks if t['id'] == tank_id), None)
         if tank_info and tank_info.get("volume_l"):
             tank_volume = tank_info["volume_l"]
 

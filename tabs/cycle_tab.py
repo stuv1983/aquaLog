@@ -1,12 +1,13 @@
-# tabs/cycle_tab.py (Updated)
+# tabs/cycle_tab.py
 
 """
-tabs/cycle_tab.py – Nitrogen Cycle Tracker 📈
+cycle_tab.py – Nitrogen Cycle Tracker
 
-Displays a chart of ammonia, nitrite, and nitrate levels over time for the
-selected tank to visualize the progress of the aquarium's nitrogen cycle.
-Includes a check to determine if the cycle is complete.
+Renders the "Cycle" tab. This view visualizes the progression of ammonia,
+nitrite, and nitrate levels over time to help users monitor the establishment
+of their tank's biological filter.
 """
+
 from __future__ import annotations
 
 import pandas as pd

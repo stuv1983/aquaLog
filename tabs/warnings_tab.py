@@ -1,8 +1,13 @@
-"""
-tabs/warnings_tab.py – collapsible, structured warnings with dosing guidance
+# tabs/warnings_tab.py
 
-Displays structured warnings, including pH and temperature compatibility for owned fish.
 """
+warnings_tab.py – Water Quality Warnings
+
+Renders the "Warnings" tab, which displays structured alerts and recommended
+action plans. It highlights out-of-range parameters and fish compatibility
+issues based on the latest water tests.
+"""
+
 from __future__ import annotations
 from typing import Any, List, Dict
 from datetime import date

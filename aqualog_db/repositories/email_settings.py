@@ -1,6 +1,13 @@
+# aqualog_db/repositories/email_settings.py
+
 """
-email_settings.py - Email settings operations with validation
+email_settings.py – Email Settings Repository
+
+Manages user settings for email notifications. Handles saving and retrieving
+preferences for the weekly summary email, such as which tanks and data fields
+to include in the report.
 """
+
 import json
 from typing import Dict, Optional, Any, List
 from ..base import BaseRepository

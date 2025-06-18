@@ -1,7 +1,12 @@
-"""
-base.py – Core DB functionality with connection pooling, migrations, and cleanup.
-"""
+# aqualog_db/base.py
 
+"""
+base.py – Core Database Repository Class
+
+Provides the `BaseRepository` class, which manages thread-local database
+connections. This is the foundation that all specific repository classes
+inherit from to interact with the database safely.
+"""
 import os
 import sqlite3
 import threading

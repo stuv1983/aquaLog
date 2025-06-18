@@ -1,10 +1,13 @@
-"""
-analytics_tab.py – Analytics & Reporting (v3.3.0)
-Renders rolling averages, correlation matrices, scatter/regression analyses,
-and a 7-day Holt-Winters forecast for selected parameters.
-Updated: 2025-06-10
+# tabs/data_analytics_tab.py
 
 """
+data_analytics_tab.py – Advanced Data Analysis
+
+Renders the customizable "Data & Analytics" tab for in-depth visualization.
+Provides tools for viewing rolling averages, correlation matrices, scatter
+plots, and a 7-day forecast.
+"""
+
 import datetime
 import pandas as pd
 import streamlit as st

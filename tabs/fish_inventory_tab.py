@@ -1,7 +1,11 @@
-# tabs/fish_inventory_tab.py (with Add New Fish Form)
+# tabs/fish_inventory_tab.py
+
 """
-tabs/fish_inventory_tab.py – A robust tab for managing fish inventory.
-Allows users to add new species to the master database.
+fish_inventory_tab.py – Fish & Fauna Inventory Management
+
+Renders the "Fish" tab. Allows users to search a master database of fish, add
+livestock to their tank's inventory, and add new, unlisted fish species to the
+master database.
 """
 import streamlit as st
 import pandas as pd

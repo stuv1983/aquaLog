@@ -1,8 +1,11 @@
-# tabs/plant_inventory_tab.py (with Add New Plant Form)
-"""
-tabs/plant_inventory_tab.py – fully multi‑tank aware 🌿
+# tabs/plant_inventory_tab.py
 
-Manage your aquarium plant inventory per tank.
+"""
+plant_inventory_tab.py – Plant Inventory Management
+
+Renders the "Plants" tab. Allows users to search a master database of aquatic
+plants, add plants to their specific tank's inventory, and add new, unlisted
+plant species to the master database.
 """
 
 import pandas as pd

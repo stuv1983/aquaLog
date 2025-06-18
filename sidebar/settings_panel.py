@@ -1,4 +1,12 @@
-# sidebar/settings_panel.py (Reverted)
+# sidebar/settings_panel.py
+
+"""
+settings_panel.py – Application Settings UI
+
+Renders the collapsible "Settings" panel in the sidebar. Provides the user
+interface for adding/editing tanks, customizing parameter ranges, importing
+data from CSV, and configuring dashboard layouts.
+"""
 
 from __future__ import annotations
 import sqlite3

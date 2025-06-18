@@ -3,12 +3,9 @@
 """
 main.py – AquaLog Dashboard Launcher
 
-Entry point for the Streamlit app:
-- Sets up page config and favicons
-- Injects custom CSS for toasts & mobile tweaks
-- Initializes/migrates database schema (persisted on-disk)
-- Renders the sidebar and main tabs
-- Catches and displays unexpected errors
+Entry point for the Streamlit app. This script initializes the database,
+sets the page configuration (title, icon), injects custom CSS, and dynamically
+loads and renders the sidebar and all main application tabs.
 """
 
 import os

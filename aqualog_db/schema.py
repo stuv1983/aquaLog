@@ -1,8 +1,11 @@
-# aqualog_db/schema.py (Corrected)
+# aqualog_db/schema.py
 
 """
-schema.py – Full database schema with all tables, indexes, and triggers.
-This version is simplified for robust cloud deployment.
+schema.py – Authoritative Database Schema
+
+Defines the complete database structure for AquaLog. Contains all `CREATE TABLE`
+statements, as well as definitions for indexes and triggers that enforce data
+integrity and automate timestamp updates.
 """
 import sqlite3
 from .base import BaseRepository

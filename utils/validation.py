@@ -1,4 +1,12 @@
-# utils/validation.py (Corrected)
+# utils/validation.py
+
+"""
+validation.py – Data Validation and Sanitization
+
+Provides data validation functions for the application. Includes helpers for
+sanity-checking user-entered parameter readings and identifying out-of-range
+values against safe limits.
+"""
 
 import pandas as pd  
 from typing import Any, Optional

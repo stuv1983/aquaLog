@@ -1,10 +1,11 @@
 # tabs/overview_tab.py
-"""
-Overview dashboard — multi-tank aware 🏠
 
-- Displays data for the tank selected in the sidebar.
-- Latest-test preview is Arrow-safe
-- Trend chart uses Arrow-safe dataframe
+"""
+overview_tab.py – Main "Overview" Dashboard
+
+Renders the primary dashboard tab. This view provides a quick summary of the
+selected tank's current state, including the most recent water test results
+and a trend chart for key parameters.
 """
 
 from __future__ import annotations

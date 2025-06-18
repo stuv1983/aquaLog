@@ -1,7 +1,13 @@
 # sidebar/sidebar.py
+
 """
-sidebar.py – Assembles and renders the complete sidebar UI.
+sidebar.py – Main Sidebar UI Assembler
+
+This module's `sidebar_entry` function is the main entry point for rendering the
+entire sidebar. It calls other modules to render the tank selector, water test
+form, settings panel, and release notes.
 """
+
 import streamlit as st
 from typing import Dict, Any
 

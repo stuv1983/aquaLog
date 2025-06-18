@@ -1,3 +1,13 @@
+# aqualog_db/connection.py
+
+"""
+connection.py – Database Connection Manager
+
+A simple module that provides a managed `sqlite3.Connection` to the project's
+`aqualog.db` database file, ensuring a consistent and safe connection context
+for all database operations.
+"""
+
 import os
 import sqlite3
 from contextlib import contextmanager

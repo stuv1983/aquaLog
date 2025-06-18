@@ -1,4 +1,13 @@
 # utils/chemistry.py
+
+"""
+chemistry.py – Aquarium Chemistry Calculations
+
+Contains all chemistry-related calculation functions for AquaLog. Includes logic
+for calculating the toxic unionized ammonia (NH3) fraction and various dosing
+recommendations for common aquarium supplements.
+"""
+
 from typing import Optional
 
 def nh3_fraction(total_amm: float, ph: float, temp_c: float) -> float:

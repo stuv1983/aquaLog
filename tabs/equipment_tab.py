@@ -1,13 +1,10 @@
-# tabs/equipment_tab.py (Corrected)
-"""
-tabs/equipment_tab.py – multi‑tank aware ⚙️
-Equipment inventory tab.  Users can:
-  • add a piece of equipment (name, category, purchase date, notes)
-  • view equipment belonging to the **selected tank**
-  • bulk‑remove items.
+# tabs/equipment_tab.py
 
-The table now stores a `tank_id` column so every row belongs to one aquarium.
-If the column is missing (first run on a legacy DB) we create it on‑the‑fly.
+"""
+equipment_tab.py – Equipment Inventory Management
+
+Renders the "Equipment" tab. This allows users to track their aquarium hardware,
+such as filters, heaters, CO2 systems, and other equipment on a per-tank basis.
 """
 
 from __future__ import annotations
