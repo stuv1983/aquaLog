@@ -7,132 +7,23 @@ Renders the "Maintenance" tab for logging and scheduling tasks. Users can record
 completed tasks like water changes and define recurring maintenance cycles.
 """
 
-import sqlite3
 import streamlit as st
-import pandas as pd
 from datetime import date, timedelta
 
-# Use the modern repository to fetch tank info
-from aqualog_db.repositories import TankRepository
-from aqualog_db.connection import get_connection
+from aqualog_db.repositories import TankRepository, MaintenanceRepository
 from utils import show_toast
-
-print(">>> LOADING", __file__)
-# ─────────────────────────────────────────────────────────────────────────────
-# Local DB helpers for maintenance_log and maintenance_cycles
-# ─────────────────────────────────────────────────────────────────────────────
-
-def save_maintenance(
-    *,
-    tank_id: int,
-    date: str,
-    m_type: str,
-    description: str | None,
-    volume_changed: float | None,
-    cost: float | None,
-    notes: str | None,
-    next_due: str | None,
-    cycle_id: int | None = None
-) -> None:
-    """Insert a maintenance record for the given tank."""
-    with get_connection() as conn:
-        conn.execute(
-            """
-            INSERT INTO maintenance_log (
-                tank_id, date, maintenance_type, description,
-                volume_changed, cost, notes, next_due, cycle_id
-            ) VALUES (?,?,?,?,?,?,?,?,?);
-            """,
-            (
-                tank_id, date, m_type.strip(), description.strip() if description else None,
-                volume_changed, cost, notes.strip() if notes else None,
-                next_due, cycle_id
-            ),
-        )
-        conn.commit()
-
-def get_maintenance(*, tank_id: int) -> list[dict]:
-    """Return list of maintenance rows (latest first) for this tank."""
-    with get_connection() as conn:
-        conn.row_factory = sqlite3.Row
-        rows = conn.execute(
-            """
-            SELECT m.*, c.maintenance_type as cycle_name
-              FROM maintenance_log m
-              LEFT JOIN maintenance_cycles c ON m.cycle_id = c.id
-             WHERE m.tank_id = ?
-          ORDER BY m.date DESC, m.id DESC;
-            """,
-            (tank_id,),
-        ).fetchall()
-    return [dict(r) for r in rows]
-
-def delete_maintenance(record_id: int) -> None:
-    """Delete a maintenance row by id."""
-    with get_connection() as conn:
-        conn.execute("DELETE FROM maintenance_log WHERE id = ?;", (record_id,))
-        conn.commit()
-
-def fetch_maintenance_cycles(tank_id: int) -> list[dict]:
-    """Return list of maintenance cycles for this tank."""
-    with get_connection() as conn:
-        conn.row_factory = sqlite3.Row
-        rows = conn.execute(
-            """
-            SELECT id, maintenance_type as type, created_at as date,
-                   notes, frequency_days, is_active
-            FROM maintenance_cycles
-            WHERE tank_id = ?
-            ORDER BY datetime(created_at) DESC;
-            """,
-            (tank_id,),
-        ).fetchall()
-    return [dict(r) for r in rows]
-
-def save_maintenance_cycle(
-    *,
-    tank_id: int,
-    maintenance_type: str,
-    frequency_days: int,
-    description: str | None,
-    notes: str | None,
-    is_active: bool = True
-) -> None:
-    """Insert a maintenance cycle record."""
-    with get_connection() as conn:
-        conn.execute(
-            """
-            INSERT INTO maintenance_cycles (
-                tank_id, maintenance_type, frequency_days,
-                description, notes, is_active
-            ) VALUES (?,?,?,?,?,?);
-            """,
-            (
-                tank_id, maintenance_type.strip(), frequency_days,
-                description.strip() if description else None,
-                notes.strip() if notes else None, is_active
-            ),
-        )
-        conn.commit()
-
-def delete_maintenance_cycle(cycle_id: int) -> None:
-    """Delete a maintenance cycle by id."""
-    with get_connection() as conn:
-        conn.execute("DELETE FROM maintenance_cycles WHERE id = ?;", (cycle_id,))
-        conn.commit()
 
 def maintenance_tab() -> None:
     """Maintenance Log tab with cycle management and log history."""
     
-    # --- FIXED: REMOVED the redundant tank selector ---
-    # The tab now uses the tank_id from the main sidebar selector.
     tank_id = st.session_state.get("tank_id")
     if not tank_id:
         st.warning("Please select a tank from the sidebar to manage maintenance.")
         return
 
-    # Fetch tank details to get the name for the header
     tank_repo = TankRepository()
+    maintenance_repo = MaintenanceRepository()
+
     tanks = tank_repo.fetch_all()
     if not tanks:
         st.warning("No tanks found. Please add a tank in Settings first.")
@@ -143,9 +34,7 @@ def maintenance_tab() -> None:
 
     st.header(f"🛠️ Maintenance — {tank_name}")
     
-    # ... (The rest of the file remains the same) ...
     with st.expander("🔄 Manage Maintenance Cycles", expanded=False):
-        # ... form for adding cycles ...
         st.subheader("Add New Maintenance Cycle")
         with st.form("add_cycle_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
@@ -163,7 +52,7 @@ def maintenance_tab() -> None:
                 if not cycle_type:
                     show_toast("❌ Cycle type is required", icon="⚠️")
                 else:
-                    save_maintenance_cycle(
+                    maintenance_repo.save_maintenance_cycle(
                         tank_id=tank_id, maintenance_type=cycle_type, frequency_days=frequency,
                         description=cycle_desc or None, notes=cycle_notes or None, is_active=is_active
                     )
@@ -171,7 +60,7 @@ def maintenance_tab() -> None:
                     st.rerun()
 
         st.subheader("Existing Maintenance Cycles")
-        cycles = fetch_maintenance_cycles(tank_id)
+        cycles = maintenance_repo.fetch_maintenance_cycles(tank_id)
         if cycles:
             for cycle in cycles:
                 with st.expander(f"{cycle['type']} (every {cycle['frequency_days']} days)"):
@@ -185,7 +74,7 @@ def maintenance_tab() -> None:
                             st.markdown(f"**Notes:** {cycle['notes']}")
                     with col2:
                         if st.button("🗑️ Delete", key=f"del_cycle_{cycle['id']}", help="Delete this maintenance cycle"):
-                            delete_maintenance_cycle(cycle['id'])
+                            maintenance_repo.delete_maintenance_cycle(cycle['id'])
                             show_toast("⚠️ Cycle deleted")
                             st.rerun()
         else:
@@ -193,7 +82,7 @@ def maintenance_tab() -> None:
 
     st.subheader("➕ Add New Maintenance Entry")
     
-    active_cycles = [c for c in fetch_maintenance_cycles(tank_id) if c['is_active']]
+    active_cycles = [c for c in maintenance_repo.fetch_maintenance_cycles(tank_id) if c['is_active']]
     selected_cycle = None
     
     with st.form("add_maintenance_form", clear_on_submit=True):
@@ -240,7 +129,7 @@ def maintenance_tab() -> None:
                 show_toast("❌ Maintenance type is required", icon="⚠️")
             else:
                 cycle_id = selected_cycle["value"] if selected_cycle else None
-                save_maintenance(
+                maintenance_repo.save_maintenance(
                     tank_id=tank_id, date=date_in.isoformat(), m_type=m_type,
                     description=description or None, volume_changed=volume if volume > 0 else None,
                     cost=cost if cost > 0 else None, notes=notes or None,
@@ -253,7 +142,7 @@ def maintenance_tab() -> None:
     st.markdown("---")
 
     with st.expander("🕒 View Maintenance History", expanded=True):
-        rows = get_maintenance(tank_id=tank_id) or []
+        rows = maintenance_repo.get_maintenance(tank_id=tank_id) or []
         if not rows:
             st.info(f"No maintenance records found for {tank_name}.")
         else:
@@ -266,7 +155,7 @@ def maintenance_tab() -> None:
                             st.caption(f"Part of cycle: {row['cycle_name']}")
                     with col2:
                         if st.button("🗑️", key=f"del_maint_{row['id']}", help="Delete this record"):
-                            delete_maintenance(row['id'])
+                            maintenance_repo.delete_maintenance(row['id'])
                             show_toast("⚠️ Record deleted")
                             st.rerun()
                     

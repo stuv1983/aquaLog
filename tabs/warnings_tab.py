@@ -155,8 +155,14 @@ def warnings_tab(key_prefix=""):
                         param, value = low_item['param'], low_item['value']
                         plan_list = LOW_ACTION_PLANS.get(param, []).copy()
                         if volume_l and volume_l > 0 and param not in ['co2_indicator']:
-                            if param == 'kh': dose = calculate_alkaline_buffer_dose(volume_l, max(0, 4.0 - value)); plan_list.append(f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose:.2f}g** of Alkaline Buffer to raise KH.")
-                            elif param == 'gh': dose = calculate_equilibrium_dose(volume_l, max(0, 6.0 - value)); plan_list.append(f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose:.2f}g** of Equilibrium to raise GH.")
+                            if param == 'kh':
+                                safe_low_kh, _ = SAFE_RANGES.get('kh', (4.0, 8.0))
+                                dose = calculate_alkaline_buffer_dose(volume_l, max(0, safe_low_kh - value))
+                                plan_list.append(f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose:.2f}g** of Alkaline Buffer to raise KH.")
+                            elif param == 'gh':
+                                safe_low_gh, _ = SAFE_RANGES.get('gh', (6.0, 10.0))
+                                dose = calculate_equilibrium_dose(volume_l, max(0, safe_low_gh - value))
+                                plan_list.append(f"**Dosage:** For your {volume_l:.0f}L tank, dose **{dose:.2f}g** of Equilibrium to raise GH.")
                         for step in plan_list:
                             st.markdown(f" • {step}")
                         st.markdown("---")

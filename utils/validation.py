@@ -62,7 +62,7 @@ def is_too_high(param: str, value: float) -> bool:
     Returns True if `value` > the configured TOO_HIGH_THRESHOLDS for `param`.
     """
     thresh = TOO_HIGH_THRESHOLDS.get(param)
-    return thresh is not None and value > hi
+    return thresh is not None and value > thresh
 
 def is_out_of_range(
     param: str,
