@@ -1,4 +1,4 @@
-# tabs/data_analytics_tab.py (Final Version)
+# tabs/data_analytics_tab.py (Final Version with Interactive Dashboard)
 """
 tabs/data_analytics_tab.py – multi-tank aware 🎛️
 
@@ -24,6 +24,60 @@ from config import SAFE_RANGES
 # ======================================================================================
 # MODULAR RENDER FUNCTIONS FOR EACH PANEL
 # ======================================================================================
+
+def render_interactive_dashboard(vis_df: pd.DataFrame):
+    """
+    Renders an interactive dashboard with cross-filtering.
+    """
+    with st.expander("🔬 Interactive Cross-Filtering Dashboard", expanded=True):
+        if vis_df.empty or vis_df.shape[0] < 2:
+            st.info("Not enough data to create an interactive dashboard.")
+            return
+
+        # 1. Create an interval selection brush
+        brush = alt.selection_interval(encodings=['x'], name="date_brush")
+
+        # 2. Create the main time-series chart
+        base_chart = alt.Chart(vis_df).mark_line(point=True).encode(
+            x=alt.X('date:T', title='Date'),
+            tooltip=[
+                alt.Tooltip('date:T'),
+                alt.Tooltip('parameter:N'),
+                alt.Tooltip('value:Q', format='.2f')
+            ]
+        ).transform_fold(
+            ['ph', 'ammonia', 'nitrite', 'nitrate'],
+            as_=['parameter', 'value']
+        ).properties(
+            title="Parameter Trends (Drag on chart to select a date range)",
+            height=300
+        )
+
+        main_chart_with_brush = base_chart.encode(
+            color=alt.condition(brush, 'parameter:N', alt.value('lightgray'), title="Parameter")
+        ).add_selection(
+            brush
+        )
+        
+        # 3. Create the detail chart (Scatter Plot)
+        scatter_plot = alt.Chart(vis_df).mark_circle(size=80).encode(
+            x=alt.X('kh:Q', title='KH (°dKH)'),
+            y=alt.Y('gh:Q', title='GH (°dGH)'),
+            tooltip=[
+                alt.Tooltip('date:T'),
+                alt.Tooltip('kh:Q'),
+                alt.Tooltip('gh:Q')
+            ]
+        ).properties(
+            title="KH vs. GH (Updates based on selected date range)"
+        ).transform_filter(
+            brush
+        )
+
+        # 4. Combine and display the charts
+        dashboard = main_chart_with_brush & scatter_plot
+
+        st.altair_chart(dashboard, use_container_width=True)
 
 def render_raw_data_table(vis_df: pd.DataFrame, tank_name: str, start_date: datetime.date, end_date: datetime.date):
     """Renders the raw data table and download button."""
@@ -188,6 +242,7 @@ def data_analytics_tab() -> None:
 
     # --- Widget Definition ---
     WIDGETS: Dict[str, Tuple[str, Callable]] = {
+        "interactive": ("🔬 Interactive Dashboard", render_interactive_dashboard),
         "raw_data": ("🗂️ Raw Data Table", render_raw_data_table),
         "rolling_avg": ("🔄 30-Day Rolling Averages", render_rolling_averages),
         "correlation": ("🔗 Correlation Matrix", render_correlation_matrix),
@@ -210,9 +265,12 @@ def data_analytics_tab() -> None:
     if 'dashboard_panels' not in st.session_state:
         st.session_state.dashboard_panels = list(WIDGETS.keys())
 
-    # Loop through the user's selections (set in the sidebar) and render the panels
+    # ADD THE NEW INTERACTIVE DASHBOARD
+    render_interactive_dashboard(vis_df)
+
+    # Loop through the user's selections (set in the sidebar) and render the other panels
     for panel_key in st.session_state.dashboard_panels:
-        if panel_key in WIDGETS:
+        if panel_key in WIDGETS and panel_key != "interactive":
             _label, render_func = WIDGETS[panel_key]
             if panel_key == 'raw_data':
                 render_func(vis_df, tank_name, start_date, end_date)
