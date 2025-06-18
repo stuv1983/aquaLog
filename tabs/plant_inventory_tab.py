@@ -1,5 +1,4 @@
-# tabs/plant_inventory_tab.py (Final Corrected Version)
-
+# tabs/plant_inventory_tab.py (with Add New Plant Form)
 """
 tabs/plant_inventory_tab.py – fully multi‑tank aware 🌿
 
@@ -9,6 +8,7 @@ Manage your aquarium plant inventory per tank.
 import pandas as pd
 import streamlit as st
 import numpy as np
+import sqlite3
 
 from aqualog_db.repositories import TankRepository
 from aqualog_db.connection import get_connection
@@ -51,21 +51,16 @@ def plant_inventory_tab(key_prefix=""):
         query = st.text_input('Search all plants to add to your inventory...', key=f'{key_prefix}plant_search').strip().lower()
 
         if query:
-            # --- NEW, MORE ROBUST SEARCH LOGIC ---
-            # This new block replaces the previous one-liner to avoid the 'str' attribute error.
             search_cols = [col for col in master.columns if master[col].dtype == 'object']
             
             if search_cols:
-                # Manually concatenate text columns into a single pandas Series for searching
                 search_series = master[search_cols[0]].fillna('').astype(str)
                 for col in search_cols[1:]:
                     search_series = search_series + ' ' + master[col].fillna('').astype(str)
                 
-                # Perform the search on the combined text series
                 filtered = master[search_series.str.lower().str.contains(query, na=False)]
             else:
-                filtered = pd.DataFrame() # No text columns to search
-            # --- END OF NEW LOGIC ---
+                filtered = pd.DataFrame()
             
             if filtered.empty:
                 st.info('No matching plants found in the database.')
@@ -89,7 +84,7 @@ def plant_inventory_tab(key_prefix=""):
                                     display_label = col_name.replace('_', ' ').title()
                                     st.write(f"**{display_label}:** {row[col_name]}")
                         
-                        if cols[2].button('➕ Add', key=f'{key_prefix}add_{pid}'):
+                        if cols[2].button('➕ Add to My Tank', key=f'{key_prefix}add_plant_to_owned_{pid}'):
                             try:
                                 with get_connection() as conn:
                                     conn.execute("""
@@ -101,6 +96,38 @@ def plant_inventory_tab(key_prefix=""):
                                 st.rerun()
                             except Exception as e:
                                 st.error(f"Couldn't add plant: {str(e)}")
+        
+        # --- ADD NEW PLANT TO DATABASE SECTION ---
+        with st.expander("➕ Add New Plant to Database"):
+            with st.form("new_plant_form", clear_on_submit=True):
+                st.write("If a plant is not in the search results, you can add it to the master database here.")
+                
+                plant_name = st.text_input("Plant Name*")
+                origin = st.text_input("Origin")
+                growth_rate = st.text_input("Growth Rate")
+                height_cm = st.text_input("Height (cm)")
+                light_demand = st.text_input("Light Demand")
+                co2_demand = st.text_input("CO2 Demand")
+                thumbnail_url = st.text_input("Image URL (optional)")
+                
+                submitted = st.form_submit_button("💾 Save New Plant to Database")
+                if submitted:
+                    if not plant_name:
+                        st.error("Plant Name is required.")
+                    else:
+                        try:
+                            with get_connection() as conn:
+                                conn.execute("""
+                                    INSERT INTO plants (plant_name, origin, growth_rate, height_cm, light_demand, co2_demand, thumbnail_url)
+                                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                                """, (plant_name, origin, growth_rate, height_cm, light_demand, co2_demand, thumbnail_url))
+                                conn.commit()
+                            show_toast("✅ Success", f"{plant_name} has been added to the master database.")
+                            st.rerun()
+                        except sqlite3.IntegrityError:
+                             st.error(f"A plant with the name '{plant_name}' may already exist.")
+                        except Exception as e:
+                            st.error(f"Could not save plant: {e}")
         st.write("---")
         
         # 2. List owned plants in the current tank

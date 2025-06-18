@@ -1,4 +1,4 @@
-# main.py (Reverted)
+# main.py (with Tools Tab)
 
 """
 main.py – AquaLog Dashboard Launcher
@@ -14,6 +14,8 @@ Entry point for the Streamlit app:
 import os
 import sys
 import streamlit as st
+from PIL import Image
+import base64
 
 # ───────────────────────────────────────────────────────────
 # Project root on path for utils & db
@@ -28,7 +30,7 @@ from utils import is_mobile
 from aqualog_db import init_tables
 
 # ───────────────────────────────────────────────────────────
-# Sidebar entry (refactored into its own package)
+# Sidebar entry
 # ───────────────────────────────────────────────────────────
 from sidebar.sidebar import sidebar_entry
 
@@ -52,40 +54,42 @@ overview_tab           = load_tab("overview_tab",        "tabs/overview_tab.py")
 warnings_tab           = load_tab("warnings_tab",        "tabs/warnings_tab.py")
 data_analytics_tab     = load_tab("data_analytics_tab",  "tabs/data_analytics_tab.py")
 cycle_tab              = load_tab("cycle_tab",           "tabs/cycle_tab.py")
-failed_tests_tab       = load_tab("failed_tests_tab",    "tabs/failed_tests_tab.py")
 plant_inventory_tab    = load_tab("plant_inventory_tab", "tabs/plant_inventory_tab.py")
 fish_inventory_tab     = load_tab("fish_inventory_tab",  "tabs/fish_inventory_tab.py")
 equipment_tab          = load_tab("equipment_tab",       "tabs/equipment_tab.py")
 maintenance_tab        = load_tab("maintenance_tab",     "tabs/maintenance_tab.py")
+# --- IMPORT THE NEW TOOLS TAB ---
+tools_tab              = load_tab("tools_tab", "tabs/tools_tab.py")
 
-VERSION = "v3.7.1"
+
+VERSION = "v3.11.0"
 RELEASE_NOTES = """
-### v3.7.1 (2025-06-12)
-* **Fix:** Database now persists to `aqualog.db` on disk.
-* **Fix:** `init_tables()` called at startup to initialize/migrate schema.
+### v3.11.0
+* **Feature:** Consolidated calculators into a single "Tools" tab.
+* **Feature:** Added an Aquarium Volume Calculator to the "Tools" tab.
 """
 
 def main() -> None:
     # Initialize DB
     init_tables()
 
+    # --- FAVICON SETUP ---
+    favicon = None
+    try:
+        with open("static/apple-touch-icon.png", "rb") as f:
+            favicon_data = base64.b64encode(f.read()).decode()
+        favicon = f"data:image/png;base64,{favicon_data}"
+    except FileNotFoundError:
+        favicon = "🐠"
+
     # Page config
     st.set_page_config(
         page_title="AquaLog Dashboard",
-        page_icon="favicon-32x32.png",
+        page_icon=favicon,
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.write(
-        """
-        <link rel="manifest" href="site.webmanifest">
-        <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-        """,
-        unsafe_allow_html=True,
-    )
-
+    
     # Custom CSS
     st.markdown(
         """
@@ -106,20 +110,21 @@ def main() -> None:
     sidebar_entry()
 
     try:
+        # --- ADD "Tools" TO THE UI ---
         tabs = st.tabs([
             "Overview", "Warnings", "Data & Analytics", "Cycle",
-            "Failed Tests", "Plants", "Fish", "Equipment", "Maintenance",
+            "Plants", "Fish", "Equipment", "Maintenance", "Tools"
         ])
         tab_map = {
             "Overview": overview_tab,
             "Warnings": warnings_tab,
             "Data & Analytics": data_analytics_tab,
             "Cycle": cycle_tab,
-            "Failed Tests": failed_tests_tab,
             "Plants": plant_inventory_tab,
             "Fish": fish_inventory_tab,
             "Equipment": equipment_tab,
             "Maintenance": maintenance_tab,
+            "Tools": tools_tab,
         }
         for idx, title in enumerate(tab_map):
             with tabs[idx]:

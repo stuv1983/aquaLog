@@ -1,3 +1,4 @@
+# utils/chemistry.py
 from typing import Optional
 
 def nh3_fraction(total_amm: float, ph: float, temp_c: float) -> float:
@@ -67,3 +68,26 @@ def calculate_fritzzyme7_dose(volume_l: float, is_new_system: bool = True) -> tu
     dose_oz = dose_ml / 29.5735
     
     return dose_ml, dose_oz
+
+def calculate_volume(length: float, width: float, height: float, units: str) -> tuple[float, float]:
+    """
+    Calculates the volume of a rectangular tank in liters and US gallons.
+
+    Args:
+        length: The length of the tank.
+        width: The width of the tank.
+        height: The height of the tank.
+        units: The units of the dimensions ('cm' or 'inches').
+
+    Returns:
+        A tuple containing the volume in (liters, gallons).
+    """
+    if units == 'cm':
+        volume_liters = (length * width * height) / 1000
+    elif units == 'inches':
+        volume_liters = (length * width * height) * 0.0163871
+    else:
+        return 0.0, 0.0
+        
+    volume_gallons = volume_liters * 0.264172
+    return volume_liters, volume_gallons

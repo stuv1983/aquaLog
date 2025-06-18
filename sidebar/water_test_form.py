@@ -1,10 +1,12 @@
-# sidebar/water_test_form.py (Reverted)
+# sidebar/water_test_form.py (Updated with backdating)
 """
 Sidebar - Water-test logging form (multi-tank aware)
+Allows users to specify the date and time for back-dated entries.
 """
 
 from __future__ import annotations
-from datetime import datetime
+from datetime import datetime, date, time
+
 from typing import Dict, Any
 
 import pandas as pd
@@ -22,6 +24,18 @@ def render_water_test_form(tank_map: Dict[int, Dict[str, Any]]) -> None:
     st.sidebar.header("🔬 Log Water Test")
 
     with st.sidebar.form("desktop_form"):
+        
+        # --- NEW DATE AND TIME INPUTS ---
+        st.write("**Test Date & Time**")
+        col1, col2 = st.columns(2)
+        with col1:
+            test_date = st.date_input("Date", value=date.today())
+        with col2:
+            test_time = st.time_input("Time", value=datetime.now().time())
+        # --- END NEW INPUTS ---
+
+        st.markdown("---")
+        
         ph = st.number_input("pH", min_value=0.0, step=0.1, value=7.6)
         ammonia = st.number_input("Ammonia (ppm)", min_value=0.0, step=0.01, value=0.0)
         nitrite = st.number_input("Nitrite (ppm)", min_value=0.0, step=0.01, value=0.0)
@@ -39,8 +53,12 @@ def render_water_test_form(tank_map: Dict[int, Dict[str, Any]]) -> None:
             if tank_id == 0:
                 st.error("Please add and select a tank before saving a test.")
             else:
+                # Combine the selected date and time into a single datetime object
+                combined_datetime = datetime.combine(test_date, test_time)
+
                 data = {
-                    "date": datetime.now().isoformat(timespec="seconds"),
+                    # Use the combined datetime for the 'date' field
+                    "date": combined_datetime.isoformat(timespec="seconds"),
                     "ph": ph, "ammonia": ammonia, "nitrite": nitrite, "nitrate": nitrate,
                     "kh": float(kh_drops), "gh": float(gh_drops), "co2_indicator": co2_color,
                     "temperature": temperature, "notes": notes,
