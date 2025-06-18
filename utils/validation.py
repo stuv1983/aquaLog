@@ -1,8 +1,20 @@
 # utils/validation.py
+
+"""
+validation.py – Data Validation and Sanitization
+
+Provides data validation functions for the application. Includes helpers for
+sanity-checking user-entered parameter readings and identifying out-of-range
+values against safe limits.
+"""
+
 import pandas as pd  
 from typing import Any, Optional
 from config import SAFE_RANGES, TOO_LOW_THRESHOLDS, TOO_HIGH_THRESHOLDS
 from .chemistry import nh3_fraction
+# FIXED: Import the repository instead of the legacy function
+from aqualog_db.repositories import CustomRangeRepository 
+
 # Hard physical limits for parameter sanity checks
 HARD_LIMITS: dict[str, tuple[float, float]] = {
     "temperature": (0.0, 40.0),
@@ -50,7 +62,7 @@ def is_too_high(param: str, value: float) -> bool:
     Returns True if `value` > the configured TOO_HIGH_THRESHOLDS for `param`.
     """
     thresh = TOO_HIGH_THRESHOLDS.get(param)
-    return thresh is not None and value > thresh
+    return thresh is not None and value > hi
 
 def is_out_of_range(
     param: str,
