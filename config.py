@@ -11,37 +11,46 @@ conversion factors, and localization strings.
 import os
 from typing import Callable, Any
 
+# Path to the SQLite database file. It will be created in the current working directory.
 DB_FILE: str = os.path.join(os.getcwd(), "aqualog.db")
 
+# Dictionary defining the ideal/safe ranges for various water parameters.
+# Format: "parameter_name": (safe_low_value, safe_high_value)
 SAFE_RANGES: dict[str, tuple[float, float]] = {
-    "temperature":   (18.0, 28.0),
-    "ammonia":       (0.0, 0.0),
-    "nitrite":       (0.0, 0.0),
-    "nitrate":       (20.0, 50.0),
-    "ph":            (6.0, 8.0),
-    "kh":            (4.0, 8.0),
-    "gh":            (6.0, 10.0),
-    "co2_indicator": (2.0, 2.0),
+    "temperature":   (18.0, 28.0), # Temperature in Celsius
+    "ammonia":       (0.0, 0.0),   # Ammonia in parts per million (ppm) - ideally 0
+    "nitrite":       (0.0, 0.0),   # Nitrite in ppm - ideally 0
+    "nitrate":       (20.0, 50.0), # Nitrate in ppm (target for planted tanks)
+    "ph":            (6.0, 8.0),   # pH value (unitless)
+    "kh":            (4.0, 8.0),   # Carbonate Hardness in dKH (degrees of Carbonate Hardness)
+    "gh":            (6.0, 10.0),  # General Hardness in dGH (degrees of General Hardness)
+    "co2_indicator": (2.0, 2.0), # CO2 indicator value (conceptual for 'Green' state)
 }
 
+# Thresholds below which a parameter is considered "too low".
+# Format: "parameter_name": threshold_value
 TOO_LOW_THRESHOLDS: dict[str, float] = {
     "nitrate":       20.0,
     "kh":            4.0,
     "ph":            6.0,
-    "co2_indicator": 2.0,
+    "co2_indicator": 2.0, # Corresponds to "Blue" indicator
 }
 
+# Thresholds above which a parameter is considered "too high".
+# Format: "parameter_name": threshold_value
 TOO_HIGH_THRESHOLDS: dict[str, float] = {
     "temperature":   28.0,
-    "nitrite":       0.0,
+    "nitrite":       0.0, # Any non-zero nitrite is too high
     "nitrate":       50.0,
     "ph":            8.0,
     "kh":            8.0,
     "gh":            10.0,
-    "co2_indicator": 2.0,
-    "ammonia":       0.02,
+    "co2_indicator": 2.0, # Corresponds to "Yellow" indicator
+    "ammonia":       0.02, # Any non-zero unionized ammonia is too high (specific for calculation)
 }
 
+# Action plans provided when a parameter is detected as "too low".
+# Format: "parameter_name": [list_of_action_steps_as_strings]
 LOW_ACTION_PLANS: dict[str, list[str]] = {
     "nitrate": [
         "Nitrate is low (<20 ppm). Dose a nitrate fertilizer to reach the 20-40 ppm target range.",
@@ -63,7 +72,8 @@ LOW_ACTION_PLANS: dict[str, list[str]] = {
     ],
 }
 
-
+# Action plans provided when a parameter is detected as "too high".
+# Format: "parameter_name": [list_of_action_steps_as_strings]
 ACTION_PLANS: dict[str, list[str]] = {
     "temperature": [
         "Temperature is high (>28°C). Turn off the aquarium heater and increase surface agitation for better oxygen exchange.",
@@ -101,12 +111,16 @@ ACTION_PLANS: dict[str, list[str]] = {
     ],
 }
 
+# Advice messages based on CO2 indicator color (e.g., from a drop checker).
+# Format: "color_string": "advice_message"
 CO2_COLOR_ADVICE: dict[str, str] = {
     "Blue":   "CO₂ low – raise injection rate.",
     "Green":  "CO₂ ideal – no action.",
     "Yellow": "CO₂ high – reduce injection / add aeration.",
 }
 
+# Localization strings for different locales.
+# Format: "locale_code": {"original_label": "translated_label"}
 LOCALIZATIONS: dict[str, dict[str, str]] = {
     "en_US": {
         "Temperature":      "Temperature",
@@ -124,18 +138,21 @@ LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Dismiss Warning":  "Dismiss Warning",
         "Show Warning":     "Show Warning",
     },
+    # Future: Add other languages here, e.g., "es_ES": {...}
 }
 
+# Defines the display units for different parameters based on the selected unit system.
+# Format: "System_Name": {"parameter_name": "unit_string"}
 UNIT_SYSTEMS: dict[str, dict[str, str]] = {
     "Metric": {
         "temperature":   "°C",
         "ammonia":       "ppm",
         "nitrite":       "ppm",
         "nitrate":       "ppm",
-        "ph":            "",
+        "ph":            "",     # pH is unitless
         "kh":            "°dKH",
         "gh":            "°dGH",
-        "co2_indicator": "",
+        "co2_indicator": "",     # CO2 indicator is unitless (color-based)
     },
     "Imperial": {
         "temperature":   "°F",
@@ -143,46 +160,91 @@ UNIT_SYSTEMS: dict[str, dict[str, str]] = {
         "nitrite":       "ppm",
         "nitrate":       "ppm",
         "ph":            "",
-        "kh":            "°GH",
+        "kh":            "°GH",  # General Hardness used for KH in some imperial contexts
         "gh":            "°GH",
         "co2_indicator": "",
     },
+    # Future: Add other unit systems as needed
 }
 
+# Dictionary of conversion functions between different units.
+# Keys are tuples (from_unit, to_unit), values are lambda functions for conversion.
 CONVERSIONS: dict[tuple[str, str], Callable[[float], float]] = {
     ("°C", "°F"): lambda c: c * 9 / 5 + 32,
     ("°F", "°C"): lambda f: (f - 32) * 5 / 9,
 }
 
 def is_too_low(param: str, value: float) -> bool:
+    """
+    Checks if a parameter's value is below its configured 'too low' threshold.
+
+    Args:
+        param: The name of the parameter (e.g., "nitrate", "kh").
+        value: The measured value of the parameter.
+
+    Returns:
+        True if the value is below the threshold, False otherwise.
+    """
     thresh = TOO_LOW_THRESHOLDS.get(param)
     return thresh is not None and value < thresh
 
 def is_too_high(param: str, value: float) -> bool:
+    """
+    Checks if a parameter's value is above its configured 'too high' threshold.
+
+    Args:
+        param: The name of the parameter (e.g., "temperature", "ammonia").
+        value: The measured value of the parameter.
+
+    Returns:
+        True if the value is above the threshold, False otherwise.
+    """
     thresh = TOO_HIGH_THRESHOLDS.get(param)
     return thresh is not None and value > thresh
 
 def get_low_action_plan(param: str) -> list[str]:
+    """
+    Retrieves the action plan for a parameter when its value is too low.
+
+    Args:
+        param: The name of the parameter.
+
+    Returns:
+        A list of strings representing the action plan steps, or an empty list if no plan exists.
+    """
     return list(LOW_ACTION_PLANS.get(param, []))
 
 def get_high_action_plan(param: str) -> list[str]:
+    """
+    Retrieves the action plan for a parameter when its value is too high.
+
+    Args:
+        param: The name of the parameter.
+
+    Returns:
+        A list of strings representing the action plan steps, or an empty list if no plan exists.
+    """
     return list(ACTION_PLANS.get(param, []))
 
+# Configuration for the weekly summary email feature.
 WEEKLY_EMAIL_TIME: dict[str, Any] = {
-    'day_of_week': 'mon',
-    'hour': 9,
-    'minute': 0,
-    'from_address': 'your_email@example.com',
-    'smtp': {
-        'host': 'smtp.example.com',
-        'port': 587,
-        'tls': True,
-        'username': 'smtp_user',
-        'password': 'smtp_password',
+    'day_of_week': 'mon',         # Day of the week to send the email (e.g., 'mon', 'tue')
+    'hour': 9,                    # Hour to send the email (24-hour format)
+    'minute': 0,                  # Minute to send the email
+    'from_address': 'your_email@example.com', # Sender's email address
+    'smtp': {                     # SMTP server settings
+        'host': 'smtp.example.com', # SMTP host
+        'port': 587,                # SMTP port (e.g., 587 for TLS)
+        'tls': True,                # Use TLS encryption
+        'username': 'smtp_user',    # SMTP username
+        'password': 'smtp_password',# SMTP password (consider environment variables for production)
     },
 }
 
+# Current version of the application.
 VERSION = "v3.7.1"
+
+# Release notes for the current version.
 RELEASE_NOTES = """
 ### v3.7.1 (2025-06-12)
 * **Fix:** Database now persists to `aqualog.db` on disk.
