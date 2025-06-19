@@ -11,6 +11,7 @@ advice cards.
 from typing import Optional
 import streamlit as st
 from config import SAFE_RANGES, ACTION_PLANS, LOW_ACTION_PLANS
+from aqualog_db.repositories import WaterTestRepository # New import
 
 # FIXED: Corrected the relative import paths for both validation and localization
 from ..validation import is_out_of_range
@@ -52,13 +53,43 @@ def _build_banner_details(param: str, value: float, low: float, high: float) -> 
 
 def show_out_of_range_banner(*_args, **_kwargs) -> None:
     """
-    Re-enabled banner for out-of-range parameters.
-    Since the original 'runtime issues' are not known, this version
-    provides a general warning and directs to the Warnings tab.
+    Displays a banner warning if the most recent water test has out-of-range parameters.
     """
-    # This function would ideally check actual data to determine if a banner is needed.
-    # For now, as a re-enabled placeholder, it suggests checking the dedicated Warnings tab.
-    st.warning("⚠️ Some water parameters might be out of range. Check the 'Warnings' tab for details.", icon="❗")
+    tank_id = st.session_state.get("tank_id") #
+    if not tank_id:
+        return # No tank selected, no banner to show
+
+    repo = WaterTestRepository()
+    latest_test = repo.get_latest_for_tank(tank_id) #
+
+    if not latest_test:
+        return # No test data for this tank, no banner
+
+    out_of_range_found = False
+    
+    # Define a set of parameters to check for out-of-range status
+    relevant_params = ["ph", "ammonia", "nitrite", "nitrate", "temperature", "kh", "gh", "co2_indicator"]
+
+    for param in relevant_params: #
+        value = latest_test.get(param) #
+        if value is not None:
+            # Call is_out_of_range, passing necessary context like tank_id, ph, and temperature for ammonia calculation
+            if is_out_of_range(
+                param,
+                value,
+                tank_id=tank_id,
+                ph=latest_test.get("ph"),
+                temp_c=latest_test.get("temperature")
+            ):
+                out_of_range_found = True
+                break # Found one out of range, no need to check further
+
+    if out_of_range_found: #
+        st.warning(
+            "⚠️ The most recent water test has out-of-range parameters. "
+            "Check the 'Warnings' tab for details.",
+            icon="❗"
+        )
 
 
 def show_parameter_advice(param: str, value: float) -> None:
@@ -81,7 +112,7 @@ def show_parameter_advice(param: str, value: float) -> None:
     if value > high:
         with st.container(border=True):
             st.error(f"❗ {param.upper()} is too HIGH ({formatted_value})")
-            st.caption(f"Safe range: {format_with_units(low, param)}–{format_with_units(high, param)}")
+            st.caption(f"Safe range: {format_ Bunits(low, param)}–{format_with_units(high, param)}")
             for line in ACTION_PLANS.get(param, ["No plan available."]):
                 st.write(f"• {line}")
         return
