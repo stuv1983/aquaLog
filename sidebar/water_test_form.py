@@ -8,6 +8,8 @@ for water parameters and saves the data to the database. It also includes logic
 for a multi-step "wizard" on mobile devices.
 """
 
+# sidebar/water_test_form.py
+
 from __future__ import annotations
 from datetime import datetime, date, time
 
@@ -22,6 +24,7 @@ from utils import (
     show_out_of_range_banner,
     arrow_safe,
 )
+from utils.localization import format_with_units # New import for unit formatting
 
 def render_water_test_form(tank_map: Dict[int, Dict[str, Any]]) -> None:
     """Render the water-test logging form in the sidebar."""
@@ -45,8 +48,17 @@ def render_water_test_form(tank_map: Dict[int, Dict[str, Any]]) -> None:
         nitrite = st.number_input("Nitrite (ppm)", min_value=0.0, step=0.01, value=0.0)
         nitrate = st.number_input("Nitrate (ppm)", min_value=0.0, step=0.1, value=0.0, format="%.1f")
         st.markdown("---")
+        
         kh_drops = st.number_input("KH Test Drops", min_value=0, step=1, value=4)
+        # Display converted KH value in real-time
+        # Assuming 1 drop = 1 dKH for the actual KH level
+        st.write(f"Actual KH: **{format_with_units(float(kh_drops), 'kh')}**")
+
         gh_drops = st.number_input("GH Test Drops", min_value=0, step=1, value=8)
+        # Display converted GH value in real-time
+        # Assuming 1 drop = 1 dGH for the actual GH level
+        st.write(f"Actual GH: **{format_with_units(float(gh_drops), 'gh')}**")
+
         st.markdown("---")
         co2_color = st.selectbox("CO₂ Indicator", ["Green", "Blue", "Yellow"], index=0)
         temperature = st.number_input("Temperature (°C)", min_value=0.0, step=0.5, value=26.0)

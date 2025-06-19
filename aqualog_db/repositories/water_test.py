@@ -12,7 +12,7 @@ from datetime import datetime
 import pandas as pd
 from typing import Dict, Optional, List, Any, Tuple
 import sqlite3
-from aqualog_db.connection import get_connection  # import the contextmanager
+from aqualog_db.connection import get_connection
 from ..base import BaseRepository
 
 class WaterTestRepository(BaseRepository):
@@ -21,9 +21,9 @@ class WaterTestRepository(BaseRepository):
     VALID_CO2_INDICATORS = {"Green", "Blue", "Yellow"}
     VALID_PARAMETERS = {
         "ph": (0, 14),
-        "ammonia": (0, 10),
-        "nitrite": (0, 5),
-        "nitrate": (0, 100),
+        "ammonia": (0, 100), # CHANGED: Max value for ammonia updated from 10 to 100
+        "nitrite": (0, 100), # CHANGED: Max value for nitrite updated from 10 to 100
+        "nitrate": (0, 100), # Already 100, no change needed
         "temperature": (0, 40),
         "kh": (0, 30),
         "gh": (0, 30)
@@ -34,7 +34,6 @@ class WaterTestRepository(BaseRepository):
         self._validate_input(data, tank_id)
         payload = self._prepare_payload(data, tank_id)
         
-        # Use get_connection directly to avoid GeneratorContextManager misusage
         with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("PRAGMA table_info(water_tests);")

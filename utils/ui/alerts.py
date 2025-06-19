@@ -52,10 +52,44 @@ def _build_banner_details(param: str, value: float, low: float, high: float) -> 
 
 def show_out_of_range_banner(*_args, **_kwargs) -> None:
     """
-    This banner has been temporarily disabled to avoid runtime issues.
-    Callers can safely import & call it, but it now does nothing.
+    Displays a banner warning if the most recent water test has out-of-range parameters.
     """
-    return  # ← no-op
+    # Import WaterTestRepository locally to break a potential circular dependency
+    from aqualog_db.repositories import WaterTestRepository
+
+    tank_id = st.session_state.get("tank_id")
+    if not tank_id:
+        return
+
+    repo = WaterTestRepository()
+    latest_test = repo.get_latest_for_tank(tank_id)
+
+    if not latest_test:
+        return
+
+    out_of_range_found = False
+    
+    relevant_params = ["ph", "ammonia", "nitrite", "nitrate", "temperature", "kh", "gh", "co2_indicator"]
+
+    for param in relevant_params:
+        value = latest_test.get(param)
+        if value is not None:
+            if is_out_of_range(
+                param,
+                value,
+                tank_id=tank_id,
+                ph=latest_test.get("ph"),
+                temp_c=latest_test.get("temperature")
+            ):
+                out_of_range_found = True
+                break
+
+    if out_of_range_found:
+        st.warning(
+            "⚠️ The most recent water test has out-of-range parameters. "
+            "Check the 'Warnings' tab for details.",
+            icon="❗"
+        )
 
 
 def show_parameter_advice(param: str, value: float) -> None:

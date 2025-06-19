@@ -33,9 +33,9 @@ class SchemaManager(BaseRepository):
                 id            INTEGER PRIMARY KEY,
                 date          TEXT    NOT NULL CHECK(date != ''),
                 ph            REAL    CHECK(ph >= 0 AND ph <= 14),
-                ammonia       REAL    CHECK(ammonia >= 0 AND ammonia <= 10),
-                nitrite       REAL    CHECK(nitrite >= 0 AND nitrite <= 5),
-                nitrate       REAL    CHECK(nitrate >= 0 AND nitrate <= 100),
+                ammonia       REAL    CHECK(ammonia >= 0 AND ammonia <= 100), -- CHANGED: Max value for ammonia updated from 10 to 100
+                nitrite       REAL    CHECK(nitrite >= 0 AND nitrite <= 100), -- CHANGED: Max value for nitrite updated from 10 to 100
+                nitrate       REAL    CHECK(nitrate >= 0 AND nitrate <= 100), -- Already 100, no change needed
                 temperature   REAL    CHECK(temperature >= 0 AND temperature <= 40),
                 kh            REAL    DEFAULT 0 CHECK(kh >= 0 AND kh <= 30),
                 co2_indicator TEXT    CHECK(co2_indicator IN ('Green', 'Blue', 'Yellow')),
