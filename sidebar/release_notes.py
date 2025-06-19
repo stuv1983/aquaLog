@@ -5,15 +5,22 @@ release_notes.py – Release Notes Display
 
 Renders the expandable "Release Notes" section in the sidebar. This is used to
 display the application's current version number and a list of recent changes
-or new features.
+or new features, providing users with information about updates.
 """
 
 import streamlit as st
 from config import VERSION, RELEASE_NOTES
 
 def render_release_notes() -> None:
-    """Render the release notes expander."""
-    # MODIFICATION: Added the 'icon' parameter
+    """
+    Renders the collapsible "Release Notes" expander in the Streamlit sidebar.
+
+    Displays the current application version and detailed release notes
+    as configured in `config.py`.
+    """
+    # Use a Streamlit expander for a collapsible section, with a relevant icon.
     with st.sidebar.expander("📦 Release Notes", expanded=False, icon="💧"):
+        # Display the current version clearly.
         st.markdown(f"**{VERSION}**")
+        # Display the detailed release notes.
         st.markdown(RELEASE_NOTES)

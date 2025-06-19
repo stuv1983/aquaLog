@@ -4,99 +4,138 @@
 chemistry.py – Aquarium Chemistry Calculations
 
 Contains all chemistry-related calculation functions for AquaLog. Includes logic
-for calculating the toxic unionized ammonia (NH3) fraction and various dosing
-recommendations for common aquarium supplements.
+for calculating the toxic unionized ammonia (NH₃) fraction and various dosing
+recommendations for common aquarium supplements. It also provides a utility
+for calculating aquarium volumes.
 """
 
 from typing import Optional
 
 def nh3_fraction(total_amm: float, ph: float, temp_c: float) -> float:
     """
-    Calculates unionized NH₃ from total ammonia based on pH & temperature.
-    
+    Calculates the fraction of highly toxic unionized ammonia (NH₃) from
+    total ammonia (NH₃ + NH₄⁺) based on water pH and temperature.
+
+    This calculation is crucial because only unionized ammonia is toxic to fish,
+    and its proportion varies significantly with pH and temperature.
+
     Args:
-        total_amm: Total ammonia concentration
-        ph: Current pH
-        temp_c: Temperature in Celsius
-        
+        total_amm: The total ammonia concentration in ppm (parts per million).
+        ph: The current pH value of the water.
+        temp_c: The temperature of the water in Celsius.
+
     Returns:
-        Fraction of unionized NH₃
+        float: The calculated concentration of unionized NH₃ in ppm.
+               This is `total_ammonia * fraction_of_unionized_ammonia`.
     """
+    # pKa (acid dissociation constant) for ammonia is temperature-dependent.
+    # This formula is an approximation for typical aquarium temperatures.
     pka = 0.09018 + 2729.92 / (273.15 + temp_c)
+    
+    # Calculate the fraction of unionized ammonia (NH3) using the Henderson-Hasselbalch equation.
+    # The higher the pH and temperature, the greater the fraction of toxic NH3.
     frac = 1 / (1 + 10 ** (pka - ph))
+    
     return total_amm * frac
 
 def calculate_alkaline_buffer_dose(volume_l: float, delta_kh: float) -> float:
     """
-    Calculates grams of Seachem Alkaline Buffer needed to raise KH.
-    
+    Calculates the recommended dosage (in grams) of Seachem Alkaline Buffer
+    needed to raise the Carbonate Hardness (KH) in an aquarium.
+
+    The calculation is based on typical product instructions where 1 teaspoon
+    of Seachem Alkaline Buffer (approx. 6 grams) raises KH by 2.8 dKH in 80 liters.
+
     Args:
-        volume_l: Tank volume in liters
-        delta_kh: Desired KH increase in dKH
-        
+        volume_l: The volume of the tank in liters.
+        delta_kh: The desired increase in KH, in dKH (degrees of Carbonate Hardness).
+                  For example, if current KH is 2 and target is 4, delta_kh would be 2.
+
     Returns:
-        Grams of buffer needed
+        float: The calculated amount of Seachem Alkaline Buffer needed in grams.
     """
-    tsp_per_l_per_dkh = 1 / (80 * 2.8)  # ~0.004464 tsp
-    grams_per_tsp = 6
+    # The factor 1 / (80 * 2.8) represents tsp/L/dKH based on product claims.
+    # 80 L is the volume, 2.8 dKH is the rise per 1 teaspoon.
+    tsp_per_l_per_dkh = 1 / (80 * 2.8)  # ~0.004464 tsp per liter per dKH
+    grams_per_tsp = 6 # Approximately 6 grams per teaspoon of Alkaline Buffer
+    
+    # Calculate total grams needed: (volume * desired_change_dKH * conversion_factor)
     return volume_l * delta_kh * tsp_per_l_per_dkh * grams_per_tsp
 
 def calculate_equilibrium_dose(volume_l: float, delta_gh: float) -> float:
     """
-    Calculates grams of Seachem Equilibrium needed to raise GH.
-    
+    Calculates the recommended dosage (in grams) of Seachem Equilibrium
+    needed to raise the General Hardness (GH) in an aquarium.
+
+    The calculation is based on typical product instructions where 16 grams
+    of Seachem Equilibrium raises GH by 3 dGH in 80 liters.
+
     Args:
-        volume_l: Tank volume in liters
-        delta_gh: Desired GH increase in dGH
-        
+        volume_l: The volume of the tank in liters.
+        delta_gh: The desired increase in GH, in dGH (degrees of General Hardness).
+                  For example, if current GH is 4 and target is 6, delta_gh would be 2.
+
     Returns:
-        Grams of Equilibrium needed
+        float: The calculated amount of Seachem Equilibrium needed in grams.
     """
-    grams_per_l_per_dgh = 16 / (80 * 3)  # ≈ 0.0667
+    # The factor 16 / (80 * 3) represents grams/L/dGH based on product claims.
+    # 80 L is the volume, 3 dGH is the rise per 16 grams.
+    grams_per_l_per_dgh = 16 / (80 * 3)  # ~ 0.0667 grams per liter per dGH
+    
+    # Calculate total grams needed: (volume * desired_change_dGH * conversion_factor)
     return volume_l * delta_gh * grams_per_l_per_dgh
 
 def calculate_fritzzyme7_dose(volume_l: float, is_new_system: bool = True) -> tuple[float, float]:
     """
-    Calculates the recommended dose of FritzZyme 7 based on tank volume.
+    Calculates the recommended dose of FritzZyme 7 nitrifying bacteria solution
+    based on tank volume and whether it's a new or established system.
+
+    Dosage rates differ for new (cycling) versus established (maintenance/rescue) systems.
 
     Args:
         volume_l: The volume of the tank in liters.
-        is_new_system: True for new system dosage, False for established system dosage.
+        is_new_system: A boolean. True for new system dosage (higher dose),
+                       False for established system dosage (lower dose).
 
     Returns:
         A tuple containing the calculated dose in (milliliters, fluid ounces).
     """
     if is_new_system:
-        # New systems: 119 ml per 38 L
+        # New systems: 119 ml per 38 L (approx. 10 US Gallons)
         dose_ml = (volume_l / 38.0) * 119.0
     else:
-        # Established systems: 60 ml per 38 L
+        # Established systems: 60 ml per 38 L (approx. 10 US Gallons)
         dose_ml = (volume_l / 38.0) * 60.0
     
-    # Convert ml to fluid ounces (1 fl oz ≈ 29.5735 ml)
+    # Convert milliliters to fluid ounces (1 fl oz ≈ 29.5735 ml)
     dose_oz = dose_ml / 29.5735
     
     return dose_ml, dose_oz
 
 def calculate_volume(length: float, width: float, height: float, units: str) -> tuple[float, float]:
     """
-    Calculates the volume of a rectangular tank in liters and US gallons.
+    Calculates the volume of a rectangular aquarium tank in liters and US gallons.
 
     Args:
         length: The length of the tank.
         width: The width of the tank.
         height: The height of the tank.
-        units: The units of the dimensions ('cm' or 'inches').
+        units: The units of the input dimensions ('cm' or 'inches').
 
     Returns:
         A tuple containing the volume in (liters, gallons).
+        Returns (0.0, 0.0) if an unsupported unit is provided.
     """
     if units == 'cm':
+        # Volume in cubic centimeters, then convert to liters (1000 cm³ = 1 L)
         volume_liters = (length * width * height) / 1000
     elif units == 'inches':
+        # Volume in cubic inches, then convert to liters (1 cubic inch ≈ 0.0163871 L)
         volume_liters = (length * width * height) * 0.0163871
     else:
+        # Return zeros for unsupported units
         return 0.0, 0.0
         
+    # Convert liters to US gallons (1 US gallon ≈ 3.78541 liters, so 1 L ≈ 0.264172 US gallons)
     volume_gallons = volume_liters * 0.264172
     return volume_liters, volume_gallons
