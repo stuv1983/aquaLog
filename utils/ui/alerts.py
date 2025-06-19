@@ -52,10 +52,13 @@ def _build_banner_details(param: str, value: float, low: float, high: float) -> 
 
 def show_out_of_range_banner(*_args, **_kwargs) -> None:
     """
-    This banner has been temporarily disabled to avoid runtime issues.
-    Callers can safely import & call it, but it now does nothing.
+    Re-enabled banner for out-of-range parameters.
+    Since the original 'runtime issues' are not known, this version
+    provides a general warning and directs to the Warnings tab.
     """
-    return  # ← no-op
+    # This function would ideally check actual data to determine if a banner is needed.
+    # For now, as a re-enabled placeholder, it suggests checking the dedicated Warnings tab.
+    st.warning("⚠️ Some water parameters might be out of range. Check the 'Warnings' tab for details.", icon="❗")
 
 
 def show_parameter_advice(param: str, value: float) -> None:
