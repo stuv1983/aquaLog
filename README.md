@@ -14,7 +14,7 @@ A Python & Streamlit–powered local dashboard for tracking water quality, lives
 
 - [🚀 Quick Start](#-quick-start)
 
-- [⚙️ Configuration](#️-configuration)
+- [⚙️ Configuration](#-configuration)
 
 - [📂 Folder Structure](#-folder-structure)
 

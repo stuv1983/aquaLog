@@ -160,7 +160,7 @@ UNIT_SYSTEMS: dict[str, dict[str, str]] = {
         "nitrite":       "ppm",
         "nitrate":       "ppm",
         "ph":            "",
-        "kh":            "°GH",  # General Hardness used for KH in some imperial contexts
+        "kh":            "°dKH",  # General Hardness used for KH in some imperial contexts
         "gh":            "°GH",
         "co2_indicator": "",
     },

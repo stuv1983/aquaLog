@@ -35,7 +35,7 @@ def render_interactive_dashboard(vis_df: pd.DataFrame):
     that updates based on the date range selected on the main chart.
 
     Args:
-        vis_df: The DataFrame containing the water test data for visualization.
+        vis_df: The DataFrame containing the water test data for visualisation.
                 Expected to have a 'date' column and numeric parameter columns.
     """
     with st.expander("🔬 Interactive Cross-Filtering Dashboard", expanded=True):
