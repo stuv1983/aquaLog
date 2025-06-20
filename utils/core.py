@@ -50,25 +50,3 @@ def is_mobile() -> bool:
     ua = st.session_state.get("_browser_user_agent", "")
     # Check for common mobile keywords (case-insensitive).
     return any(mob in ua.lower() for mob in ("iphone", "android", "mobile"))
-
-
-def load_config(config_path: str = "config.json") -> dict:
-    """
-    Loads configuration data from a specified JSON file.
-
-    This function attempts to open and parse a JSON file, providing a structured
-    way to manage application settings externally.
-
-    Args:
-        config_path: The path to the configuration JSON file. Defaults to "config.json".
-
-    Returns:
-        dict: A dictionary containing the loaded configuration. Returns an empty
-              dictionary if the file is not found or an error occurs during loading.
-    """
-    path = Path(config_path)
-    if not path.exists():
-        st.error(f"Config file not found: {config_path}")
-        return {}
-    with open(path, "r") as f:
-        return json.load(f)

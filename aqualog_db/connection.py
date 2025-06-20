@@ -22,8 +22,8 @@ def get_connection():
     project_root = os.path.dirname(os.path.dirname(__file__)) #
     db_path = os.path.join(project_root, "aqualog.db") #
 
-    # ADD THIS LINE TO REVEAL THE PATH
-    print(f"--- !!! APPLICATION IS USING DATABASE AT: {db_path} !!! ---")
+    # LINE TO REVEAL THE PATH to the database
+    #print(f"--- !!! APPLICATION IS USING DATABASE AT: {db_path} !!! ---")
 
     # Connect with type parsing and row factory for dict-like access
     conn = sqlite3.connect(
