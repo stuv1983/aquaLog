@@ -17,17 +17,17 @@ import streamlit as st
 import altair as alt
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 
-from aqualog_db.repositories import TankRepository, WaterTestRepository
-from aqualog_db.connection import get_connection
-from utils import is_mobile, clean_numeric_df, translate
-from config import SAFE_RANGES
+from aqualog_db.repositories import TankRepository, WaterTestRepository #
+from aqualog_db.connection import get_connection #
+from utils import is_mobile, clean_numeric_df, translate #
+from config import SAFE_RANGES #
 
 # ======================================================================================
 # MODULAR RENDER FUNCTIONS FOR EACH PANEL
 # These functions are responsible for rendering individual sections of the analytics tab.
 # ======================================================================================
 
-def render_interactive_dashboard(vis_df: pd.DataFrame):
+def render_interactive_dashboard(vis_df: pd.DataFrame, numeric_params: List[str]):
     """
     Renders an interactive dashboard with cross-filtering capabilities using Altair.
 
@@ -37,11 +37,47 @@ def render_interactive_dashboard(vis_df: pd.DataFrame):
     Args:
         vis_df: The DataFrame containing the water test data for visualisation.
                 Expected to have a 'date' column and numeric parameter columns.
+        numeric_params: A list of all available numeric parameters in the DataFrame.
     """
     with st.expander("🔬 Interactive Cross-Filtering Dashboard", expanded=True):
         if vis_df.empty or vis_df.shape[0] < 2:
             st.info("Not enough data to create an interactive dashboard. Please log more water tests.")
             return
+
+        # --- Parameter Selection for Charts ---
+        st.markdown("**Chart Parameters Selection:**")
+        
+        # Multiselect for main trend chart parameters
+        default_main_chart_params = [p for p in ['ph', 'ammonia', 'nitrite', 'nitrate'] if p in numeric_params]
+        main_chart_params = st.multiselect(
+            "Select parameters for **Main Trend Chart**:",
+            options=numeric_params,
+            default=default_main_chart_params,
+            key="interactive_main_chart_params"
+        )
+
+        if not main_chart_params:
+            st.warning("Please select at least one parameter for the Main Trend Chart.")
+            return
+
+        # Selectboxes for scatter plot parameters
+        col_x, col_y = st.columns(2)
+        with col_x:
+            scatter_x_param = st.selectbox(
+                "Select X-axis for **Scatter Plot**:",
+                options=numeric_params,
+                index=numeric_params.index('kh') if 'kh' in numeric_params else (0 if numeric_params else 0), # Default to 'kh'
+                key="interactive_scatter_x"
+            )
+        with col_y:
+            scatter_y_param = st.selectbox(
+                "Select Y-axis for **Scatter Plot**:",
+                options=numeric_params,
+                index=numeric_params.index('gh') if 'gh' in numeric_params else (1 if len(numeric_params) > 1 else 0), # Default to 'gh'
+                key="interactive_scatter_y"
+            )
+        
+        st.markdown("---") # Separator for visual clarity
 
         # 1. Create an interval selection brush for date range filtering.
         brush = alt.selection_interval(encodings=['x'], name="date_brush")
@@ -56,7 +92,7 @@ def render_interactive_dashboard(vis_df: pd.DataFrame):
                 alt.Tooltip('value:Q', format='.2f')
             ]
         ).transform_fold(
-            ['ph', 'ammonia', 'nitrite', 'nitrate'], # Parameters to plot on the main chart
+            main_chart_params, # Use selected parameters for the main chart
             as_=['parameter', 'value']
         ).properties(
             title="Parameter Trends (Drag on chart to select a date range)",
@@ -73,15 +109,15 @@ def render_interactive_dashboard(vis_df: pd.DataFrame):
         # 3. Create the detail chart (Scatter Plot).
         # This chart is filtered by the date range selected on the main chart.
         scatter_plot = alt.Chart(vis_df).mark_circle(size=80).encode(
-            x=alt.X('kh:Q', title='KH (°dKH)'), # Example: KH on X-axis
-            y=alt.Y('gh:Q', title='GH (°dGH)'), # Example: GH on Y-axis
+            x=alt.X(f'{scatter_x_param}:Q', title=scatter_x_param.capitalize()), # Use selected X parameter
+            y=alt.Y(f'{scatter_y_param}:Q', title=scatter_y_param.capitalize()), # Use selected Y parameter
             tooltip=[
                 alt.Tooltip('date:T'),
-                alt.Tooltip('kh:Q', format=".1f"), # Format tooltip values
-                alt.Tooltip('gh:Q', format=".1f")
+                alt.Tooltip(f'{scatter_x_param}:Q', format=".1f"), # Format tooltip values
+                alt.Tooltip(f'{scatter_y_param}:Q', format=".1f")
             ]
         ).properties(
-            title="KH vs. GH (Updates based on selected date range)"
+            title=f"{scatter_x_param.capitalize()} vs. {scatter_y_param.capitalize()} (Updates based on selected date range)"
         ).transform_filter(
             brush # Filter this scatter plot based on the brush selection
         )
@@ -127,9 +163,20 @@ def render_rolling_averages(vis_df: pd.DataFrame, numeric_params: List[str]):
             st.info("Not enough data points (at least 30 recommended) for rolling averages.")
             return
 
+        # Multiselect for rolling averages
+        rolling_params = st.multiselect(
+            "Select parameters for rolling averages:",
+            options=numeric_params,
+            default=[p for p in ['ph', 'ammonia', 'nitrite', 'nitrate'] if p in numeric_params],
+            key="rolling_avg_params"
+        )
+        if not rolling_params:
+            st.info("No parameters selected for rolling averages.")
+            return
+
         df_idx = vis_df.set_index("date") # Set 'date' as index for rolling window
         all_roll = []
-        for param in numeric_params:
+        for param in rolling_params: # Use selected rolling parameters
             # Calculate rolling mean for each parameter
             roll_ser = df_idx[param].rolling("30D", min_periods=1).mean().reset_index().rename(columns={param: "value"})
             roll_ser["param"] = param # Add parameter name as a column for Altair
@@ -145,7 +192,7 @@ def render_rolling_averages(vis_df: pd.DataFrame, numeric_params: List[str]):
             ).properties(height=300)
             st.altair_chart(chart, use_container_width=True)
         else:
-            st.info("No numeric parameters with sufficient data to compute rolling averages.")
+            st.info("No numeric parameters with sufficient data to compute rolling averages based on your selection.")
 
 def render_correlation_matrix(vis_df: pd.DataFrame, numeric_params: List[str]):
     """
@@ -159,12 +206,24 @@ def render_correlation_matrix(vis_df: pd.DataFrame, numeric_params: List[str]):
         if len(numeric_params) < 2:
             st.info("Need at least two numeric parameters to compute a correlation matrix.")
             return
+
+        # Multiselect for correlation matrix parameters
+        corr_params = st.multiselect(
+            "Select parameters for correlation matrix:",
+            options=numeric_params,
+            default=numeric_params[:4] if len(numeric_params) >= 4 else numeric_params,
+            key="correlation_matrix_params"
+        )
+        if len(corr_params) < 2:
+            st.info("Please select at least two parameters for the correlation matrix.")
+            return
+
         try:
-            # Calculate pairwise correlation for numeric columns
-            corr = vis_df[numeric_params].corr()
+            # Calculate pairwise correlation for selected numeric columns
+            corr = vis_df[corr_params].corr()
             st.dataframe(corr, use_container_width=True)
-        except Exception:
-            st.error("Unable to compute correlation matrix. Ensure there is enough variance in the data.")
+        except Exception as e:
+            st.error(f"Unable to compute correlation matrix. Ensure there is enough variance in the data and no missing values for selected parameters. Error: {e}")
 
 def render_scatter_regression(vis_df: pd.DataFrame, numeric_params: List[str]):
     """
@@ -182,10 +241,20 @@ def render_scatter_regression(vis_df: pd.DataFrame, numeric_params: List[str]):
         col1, col2 = st.columns(2)
         with col1:
             # Select parameter for X-axis
-            xcol = st.selectbox("X-axis", numeric_params, index=0, key="scatter_x")
+            xcol = st.selectbox(
+                "X-axis",
+                numeric_params,
+                index=numeric_params.index('kh') if 'kh' in numeric_params else (0 if numeric_params else 0), # Default to 'kh'
+                key="scatter_x"
+            )
         with col2:
             # Select parameter for Y-axis, defaulting to the second parameter if available
-            ycol = st.selectbox("Y-axis", numeric_params, index=1 if len(numeric_params) > 1 else 0, key="scatter_y")
+            ycol = st.selectbox(
+                "Y-axis",
+                numeric_params,
+                index=numeric_params.index('gh') if 'gh' in numeric_params else (1 if len(numeric_params) > 1 else 0), # Default to 'gh'
+                key="scatter_y"
+            )
         
         # Drop rows with NaN in selected columns for accurate plotting
         df_sc = vis_df.dropna(subset=[xcol, ycol])
@@ -200,7 +269,7 @@ def render_scatter_regression(vis_df: pd.DataFrame, numeric_params: List[str]):
             reg = scatter.transform_regression(xcol, ycol).mark_line(color="red")
             st.altair_chart(scatter + reg, use_container_width=True)
         else:
-            st.write("Not enough data for scatter/regression plot after dropping missing values.")
+            st.write("Not enough data for scatter/regression plot after dropping missing values for selected parameters.")
 
 def render_forecast(vis_df: pd.DataFrame, numeric_params: List[str]):
     """
@@ -215,18 +284,21 @@ def render_forecast(vis_df: pd.DataFrame, numeric_params: List[str]):
             st.info("Not enough data to generate a forecast. Please log more water tests.")
             return
 
-        forecast_opts = ["All"] + numeric_params
+        # Multiselect for forecast parameters
+        params_to_forecast_options = numeric_params
         params_to_forecast = st.multiselect(
-            "Forecast parameter(s)", options=forecast_opts, default=["All"], key="forecast_params"
+            "Forecast parameter(s)",
+            options=params_to_forecast_options,
+            default=[p for p in ['ph', 'nitrate'] if p in numeric_params], # Default to a few common parameters
+            key="forecast_params"
         )
 
-        if "All" in params_to_forecast or not params_to_forecast:
-            params_to_plot = numeric_params
-        else:
-            params_to_plot = params_to_forecast
+        if not params_to_forecast:
+            st.info("Select one or more parameters with sufficient data to generate a forecast.")
+            return
 
         all_plot_dfs = []
-        for param in params_to_plot:
+        for param in params_to_forecast:
             # Create a time series from the parameter data, indexed by date, dropping NaNs
             series = vis_df.set_index("date")[param].dropna()
             
@@ -272,7 +344,7 @@ def render_forecast(vis_df: pd.DataFrame, numeric_params: List[str]):
             styled_line = line.encode(strokeDash=alt.condition(alt.datum.type == 'forecast', alt.value([5, 5]), alt.value([0])))
             st.altair_chart(styled_line, use_container_width=True)
         else:
-            st.info("Select one or more parameters with sufficient data to generate a forecast.")
+            st.info("No forecast can be displayed with current selections or data.")
 
 
 def _get_min_max_dates(cur: sqlite3.Cursor, tank_id: int) -> tuple[Optional[datetime.date], Optional[datetime.date]]:
@@ -288,7 +360,7 @@ def _get_min_max_dates(cur: sqlite3.Cursor, tank_id: int) -> tuple[Optional[date
         A tuple containing the minimum and maximum dates as datetime.date objects,
         or (None, None) if no data is found for the tank.
     """
-    cur.execute("SELECT MIN(date), MAX(date) FROM water_tests WHERE tank_id = ?;", (tank_id,))
+    cur.execute("SELECT MIN(date), MAX(date) FROM water_tests WHERE tank_id = ?;", (tank_id,)) #
     row = cur.fetchone()
 
     def _parse(val: str | None) -> Optional[datetime.date]:
@@ -318,34 +390,34 @@ def data_analytics_tab() -> None:
     
     # --- Data Loading and Preparation ---
     tank_id: int = st.session_state.get("tank_id", 1) # Get current tank ID
-    tank_repo = TankRepository()
-    tanks = tank_repo.fetch_all()
+    tank_repo = TankRepository() #
+    tanks = tank_repo.fetch_all() #
     tank_name = next((t["name"] for t in tanks if t["id"] == tank_id), f"Tank #{tank_id}")
-    st.header(f"📊 {translate('Data & Analytics')} — {tank_name}")
+    st.header(f"📊 {translate('Data & Analytics')} — {tank_name}") #
 
     # Fetch min/max dates for the selected tank to set date picker bounds
-    with get_connection() as conn:
+    with get_connection() as conn: #
         cur = conn.cursor()
         min_date, max_date = _get_min_max_dates(cur, tank_id)
     
     if min_date is None or max_date is None:
-        st.info(translate("No data available for") + f" {tank_name}. Please log water tests to see analytics.")
+        st.info(translate("No data available for") + f" {tank_name}. Please log water tests to see analytics.") #
         return
 
     # Fetch all water test data for the selected tank
-    water_test_repo = WaterTestRepository()
-    df = water_test_repo.fetch_by_date_range(
+    water_test_repo = WaterTestRepository() #
+    df = water_test_repo.fetch_by_date_range( #
         datetime.datetime.combine(min_date, datetime.time.min).isoformat(),
         datetime.datetime.combine(max_date, datetime.time.max).isoformat(),
         tank_id
     )
     
     if df.empty:
-        st.info(translate("No data to display for") + f" {tank_name} within the available date range.")
+        st.info(translate("No data to display for") + f" {tank_name} within the available date range.") #
         return
         
     # Clean and preprocess data for numeric analysis
-    df_clean = clean_numeric_df(df).dropna(subset=["date"])
+    df_clean = clean_numeric_df(df).dropna(subset=["date"]) #
     
     # Identify numeric parameters available in the data for analysis
     numeric_params = df_clean.select_dtypes(include=np.number).columns.tolist()
@@ -353,7 +425,7 @@ def data_analytics_tab() -> None:
     numeric_params = [p for p in numeric_params if p not in ['id', 'tank_id']]
 
     if not numeric_params:
-        st.info(translate("No numeric parameters found for") + f" {tank_name} to perform analytics.")
+        st.info(translate("No numeric parameters found for") + f" {tank_name} to perform analytics.") #
         return
 
     # --- Widget Definition Map ---
@@ -371,8 +443,28 @@ def data_analytics_tab() -> None:
     with st.expander("🔧 Visualisation Controls", expanded=True):
         # Date range selector for filtering the data displayed in the panels
         selected_date_range = st.date_input(
-            translate("Select Date Range"), value=[min_date, max_date],
+            translate("Select Date Range"), value=[min_date, max_date], #
             min_value=min_date, max_value=max_date, key="vis_date_range"
+        )
+        
+        # Read the panel selection from st.session_state.dashboard_panels
+        # This state is managed by the multiselect in sidebar/settings_panel.py
+        # Provide a default if it's not set yet (e.g., on first load before settings are opened)
+        initial_dashboard_panels_default = [k for k in WIDGETS.keys() if k != 'interactive']
+        selected_panels_from_settings = st.session_state.get("dashboard_panels", initial_dashboard_panels_default)
+
+        # Allow user to refine/reorder panels if they choose, but this is secondary to the settings panel.
+        # This multiselect can be removed if strictly only the settings panel should control visibility.
+        # For now, it's kept to reflect the previous attempt but with the key changed.
+        # It's also using a different key to avoid conflict.
+        # The key for the setting in render_analytics_settings is "dashboard_panels".
+        # We need to ensure we are *using* the value from that key.
+        st.session_state.dashboard_panels_display_order = st.multiselect(
+            "Select other analytics panels to display:",
+            options=[k for k in WIDGETS.keys() if k != 'interactive'], # Exclude interactive as it's always shown
+            default=selected_panels_from_settings,
+            format_func=lambda key: WIDGETS[key][0],
+            key="dashboard_panels_multiselect_display" # Changed key to avoid conflict and indicate its purpose
         )
     
     # Ensure selected_date_range is a tuple of two dates
@@ -386,17 +478,14 @@ def data_analytics_tab() -> None:
     # Filter dataframe based on date controls selected by the user
     vis_df = df_clean[(df_clean["date"].dt.date >= start_date) & (df_clean["date"].dt.date <= end_date)]
 
-    # Initialize dashboard_panels in session state if not already present
-    # This prevents an error if the user hasn't interacted with the multiselect yet.
-    if 'dashboard_panels' not in st.session_state:
-        st.session_state.dashboard_panels = list(WIDGETS.keys()) # Default to all panels
-
     # Always render the new interactive dashboard first (it's the primary view now)
-    render_interactive_dashboard(vis_df)
+    render_interactive_dashboard(vis_df, numeric_params)
 
     # Loop through the user's selections and render the other panels
-    # Skip 'interactive' as it's already rendered
-    for panel_key in st.session_state.dashboard_panels:
+    # Use the value from the new display order multiselect, or fall back to the settings one.
+    panels_to_render = st.session_state.get("dashboard_panels_multiselect_display", selected_panels_from_settings)
+    
+    for panel_key in panels_to_render:
         if panel_key in WIDGETS and panel_key != "interactive":
             _label, render_func = WIDGETS[panel_key]
             # Pass specific arguments based on the panel type

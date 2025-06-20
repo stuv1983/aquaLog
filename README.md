@@ -88,7 +88,7 @@ A Python & Streamlit–powered local dashboard for tracking water quality, lives
 
 # Clone the repository
 
-git  clone <your-repo-url>
+git  clone https://github.com/stuv1983/aquaLog
 
 cd  aquaLog
 

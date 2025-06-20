@@ -1,0 +1,32 @@
+Type,Malawian Cichlids,Tanganyikan Cichlids,Misc. African Cichlids,New World Cichlids,Angelfish,Barbs,Bettas,Cory Cats,Danios / Minnows,Discus,Fancy Goldfish,Gouramis,Guppies,Hatchetfish,Killifish,Larger Catfish,Loaches,Mollies,Platies,Plecos,Rainbowfish,Rasboras,Sharks,Suckermouth Catfish,Swordtails,Tetras,Misc. Fish,Invertebrates,Brackish Fish,Pond Fish,Freshwater Plants
+Malawian Cichlids,Y,Y,C,Y,N,Y,N,Y,Y,N,N,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,Y,Y,N,Y,Y
+Tanganyikan Cichlids,C,Y,C,N,N,C,N,Y,N,N,N,N,N,N,N,C,Y,N,N,Y,Y,Y,N,Y,N,N,C,Y,C,N,Y
+Misc. African Cichlids,C,C,Y,C,N,C,N,C,N,N,N,N,N,N,N,C,Y,N,N,Y,Y,Y,N,Y,N,N,C,Y,C,N,Y
+New World Cichlids,C,N,C,C,N,C,N,C,N,N,N,N,N,N,N,C,Y,N,N,Y,Y,Y,N,Y,N,N,C,Y,C,N,Y
+Angelfish,N,N,N,N,Y,N,N,Y,Y,N,N,Y,Y,Y,Y,C,Y,N,N,Y,Y,Y,Y,C,Y,Y,Y,C,Y,N,Y,Y
+Barbs,Y,C,C,C,C,Y,N,Y,Y,N,N,Y,Y,Y,Y,Y,C,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,N,Y,Y
+Bettas,N,N,N,N,N,N,C,Y,N,N,N,N,Y,N,N,C,Y,N,N,Y,Y,Y,N,Y,N,N,C,Y,C,N,Y
+Cory Cats,Y,Y,C,C,Y,Y,Y,Y,Y,N,N,Y,Y,Y,Y,C,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Danios / Minnows,N,N,N,N,Y,Y,N,Y,Y,N,N,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Discus,N,N,N,N,N,N,N,N,N,Y,N,N,N,N,N,N,N,N,N,N,N,N,N,N,N,N,N,C,Y,N,Y
+Fancy Goldfish,N,N,N,N,N,N,N,N,N,N,Y,N,N,N,N,N,N,N,N,N,N,N,N,N,N,N,N,C,N,Y,Y
+Gouramis,N,N,N,N,Y,Y,N,Y,Y,N,N,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Guppies,N,N,N,N,Y,Y,Y,Y,Y,N,N,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Hatchetfish,N,N,N,N,Y,Y,N,Y,Y,N,N,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Killifish,N,N,N,N,Y,Y,N,Y,Y,N,N,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Larger Catfish,C,C,C,C,C,C,C,C,C,N,N,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C
+Loaches,C,Y,Y,Y,Y,Y,Y,Y,Y,Y,N,Y,Y,Y,Y,C,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Mollies,N,N,N,N,Y,Y,N,Y,Y,N,N,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Platies,N,N,N,N,Y,Y,N,Y,Y,N,N,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Plecos,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y
+Rainbowfish,N,N,N,N,Y,Y,N,Y,Y,N,N,Y,Y,Y,Y,C,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Rasboras,N,N,N,N,Y,Y,N,Y,Y,N,N,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Sharks,C,N,N,N,C,C,N,C,C,N,N,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C
+Suckermouth Catfish,C,C,C,C,C,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Swordtails,N,N,N,N,C,Y,Y,Y,Y,N,N,Y,Y,Y,Y,C,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Tetras,N,N,N,N,Y,Y,N,Y,Y,N,N,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,C,Y,Y,Y,C,Y,C,Y,Y
+Misc. Fish,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C
+Invertebrates,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,N,C
+Brackish Fish,N,N,N,N,C,N,N,N,N,N,N,N,N,N,N,C,N,N,N,C,N,N,N,N,N,N,C,N,C,N,Y
+Pond Fish,N,N,N,N,N,N,N,N,N,Y,Y,N,N,N,N,N,N,N,N,N,N,N,N,N,N,N,N,N,C,N,Y
+Freshwater Plants,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,C,Y,Y
