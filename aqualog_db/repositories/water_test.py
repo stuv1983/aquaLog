@@ -262,7 +262,7 @@ class WaterTestRepository(BaseRepository):
         if not isinstance(tank_id, int) or tank_id < 1:
             raise ValueError("Invalid tank ID")
         # Queries the custom_ranges table for the given tank_id
-        ranges = self._query_all(
+        ranges = self.fetch_all( # Corrected: Changed from self._query_all to self.fetch_all
             "SELECT parameter, safe_low, safe_high FROM custom_ranges WHERE tank_id = ?;",
             (tank_id,)
         )
