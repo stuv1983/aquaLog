@@ -48,57 +48,6 @@ def _build_banner_details(param: str, value: float, low: float, high: float) -> 
             f"{format_with_units(high, param)}); " + "; ".join(plan))
 
 
-def show_out_of_range_banner(*_args, **_kwargs) -> None:
-    """
-    Displays a prominent banner warning if the most recent water test for
-    the current tank has any out-of-range parameters.
-
-    This function dynamically imports `WaterTestRepository` to avoid circular
-    dependencies and checks the latest test for any deviations from safe ranges.
-    It's designed to be called in various tabs to provide consistent warnings.
-    """
-    # Import WaterTestRepository locally to break a potential circular dependency.
-    from aqualog_db.repositories import WaterTestRepository
-
-    # Get the currently selected tank ID.
-    tank_id = st.session_state.get("tank_id")
-    if not tank_id:
-        return # Do nothing if no tank is selected.
-
-    repo = WaterTestRepository()
-    latest_test = repo.get_latest_for_tank(tank_id)
-
-    if not latest_test:
-        return # Do nothing if no latest test data exists.
-
-    out_of_range_found = False
-    
-    # Check relevant parameters for being out of range.
-    # Note: `is_out_of_range` is from utils.validation and handles custom ranges
-    # and specific calculations (like unionized ammonia).
-    from utils.validation import is_out_of_range # Local import to prevent circular dependency
-
-    for param in VALID_PARAMETERS:
-        value = latest_test.get(param)
-        if value is not None:
-            if is_out_of_range(
-                param,
-                value,
-                tank_id=tank_id,
-                ph=latest_test.get("ph"),
-                temp_c=latest_test.get("temperature")
-            ):
-                out_of_range_found = True
-                break # Found an out-of-range parameter, no need to check further.
-
-    if out_of_range_found:
-        st.warning(
-            "⚠️ The most recent water test has out-of-range parameters. "
-            "Check the 'Warnings' tab for details.",
-            icon="❗"
-        )
-
-
 def show_parameter_advice(param: str, value: float) -> None:
     """
     Displays formatted advice for a single parameter based on whether its value
