@@ -119,7 +119,7 @@ def render_add_tank_section(tank_repo: TankRepository, custom_range_repo: Custom
 
     if submitted:
         if not name.strip():
-            st.error("Tank name cannot be empty.")
+            st.error("⚠️ Tank name cannot be empty. Please provide a name.")
         else:
             try:
                 # Add the new tank to the database
@@ -128,12 +128,13 @@ def render_add_tank_section(tank_repo: TankRepository, custom_range_repo: Custom
                 # If custom ranges were specified, save them
                 for param, (low, high) in new_ranges.items():
                     custom_range_repo.set(new_id, param, low, high)
-                st.success(f"Added tank '{name.strip()}' ({volume} L)")
+                st.success(f"✅ Added tank '{name.strip()}' ({volume} L).")
                 request_rerun() # Rerun to update sidebar tank selector
-            except ValueError as e:
-                st.error(f"Error adding tank: {e}")
+            except ValueError as e: # Catch specific validation errors from the repository
+                st.error(f"❌ Input Error: {e}. Please correct the values.")
             except Exception as e:
-                st.error(f"An unexpected error occurred: {e}")
+                st.error(f"❗ An unexpected error occurred while adding tank: {e}.")
+                # Log the full traceback for debugging (if a logging setup were in place)
 
 
 def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]], tank_repo: TankRepository) -> None:
@@ -156,27 +157,35 @@ def render_edit_tank_section(tank_map: Dict[int, Dict[str, Any]], tank_repo: Tan
         with col1:
             if st.button("Save Changes", key="save_tank_changes_btn"):
                 try:
-                    # Update tank name if changed
+                    # Use a flag to track if any actual update occurred
+                    changes_made = False
                     if new_name.strip() != current["name"]:
                         tank_repo.rename(tid, new_name.strip())
-                    # Update tank volume if changed
+                        changes_made = True
                     if (current.get("volume") or 0) != new_vol:
                         tank_repo.update_volume(tid, new_vol)
-                    st.success(f"Updated tank to '{new_name.strip()}' ({new_vol} L)")
-                    request_rerun()
-                except ValueError as e:
-                    st.error(f"Error saving changes: {e}")
+                        changes_made = True
+
+                    if changes_made:
+                        st.success(f"✅ Updated tank to '{new_name.strip()}' ({new_vol} L).")
+                        request_rerun()
+                    else:
+                        st.info("ℹ️ No changes detected to save.")
+                except ValueError as e: # Catch specific validation errors from the repository
+                    st.error(f"❌ Input Error: {e}. Please correct the values.")
                 except Exception as e:
-                    st.error(f"An unexpected error occurred: {e}")
+                    st.error(f"❗ An unexpected error occurred while saving changes: {e}.")
+                    # Log the full traceback for debugging
         with col2:
             if st.button("Delete This Tank", key="delete_tank_btn"):
                 try:
                     # Confirm deletion to user (handled by Streamlit's button behavior)
                     tank_repo.remove(tid)
-                    st.success(f"Deleted tank '{current['name']}'")
+                    st.success(f"🗑️ Deleted tank '{current['name']}'.")
                     request_rerun() # Rerun to update UI after deletion
                 except Exception as e:
-                    st.error(f"Error deleting tank: {e}")
+                    st.error(f"❗ Error deleting tank: {e}.")
+                    # Log the full traceback for debugging
     else:
         st.info("Select a tank to edit its settings.")
 
@@ -211,12 +220,13 @@ def render_custom_ranges_section(tank_map: Dict[int, Dict[str, Any]], custom_ran
         if st.button("Save Custom Range", key="save_custom_range_btn"):
             try:
                 custom_range_repo.set(tid, sel_param, low_new, high_new)
-                st.success(f"Custom range for {sel_param.capitalize()} saved.")
+                st.success(f"✅ Custom range for {sel_param.capitalize()} saved.")
                 request_rerun()
-            except ValueError as e:
-                st.error(f"Error saving range: {e}")
+            except ValueError as e: # Catch specific validation errors from the repository
+                st.error(f"❌ Input Error: {e}. Please correct the values.")
             except Exception as e:
-                st.error(f"An unexpected error occurred: {e}")
+                st.error(f"❗ An unexpected error occurred: {e}.")
+                # Log the full traceback for debugging
 
 def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) -> None:
     """
@@ -252,16 +262,16 @@ def render_clear_tests_section(tid: int, tank_map: Dict[int, Dict[str, Any]]) ->
                     try:
                         conn.execute("DELETE FROM water_tests WHERE tank_id = ?;", (tid,))
                         conn.commit()
-                        st.success(f"All tests for '{name}' deleted.")
+                        st.success(f"✅ All tests for '{name}' deleted.")
                     except sqlite3.Error as e:
-                        st.error(f"Error deleting tests: {e}")
+                        st.error(f"❌ Error deleting tests: {e}")
                         conn.rollback()
                 st.session_state.pop(flag_key, None) # Clear flag after action
                 request_rerun()
         with col_cancel:
             if st.button("Cancel", key=cancel_key):
                 st.session_state.pop(flag_key, None)
-                st.info("Clear-tests operation cancelled.")
+                st.info("ℹ️ Clear-tests operation cancelled.")
                 request_rerun()
 
 def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
@@ -294,13 +304,17 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                 df = df.drop(columns=['id'])
             
             if "date" not in df.columns:
-                st.error("CSV must contain a 'date' column.")
+                st.error("❌ CSV must contain a 'date' column.")
                 return
             
             # Convert 'date' column to datetime and format for ISO string storage
             df["date"] = pd.to_datetime(df["date"], errors="coerce").dt.strftime("%Y-%m-%dT%H:%M:%S")
             df.dropna(subset=['date'], inplace=True) # Remove rows where date conversion failed
             
+            if df.empty: # Check if all rows were dropped due to bad dates
+                st.error("❌ No valid date entries found in the CSV after parsing. Please ensure your 'date' column is correctly formatted.")
+                return
+
             df["tank_id"] = tid # Assign all imported records to the current tank
             
             with get_connection() as conn:
@@ -312,6 +326,10 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
             # Filter DataFrame to include only columns that exist in the database table
             df_to_insert = df[[col for col in df.columns if col in db_columns]]
             
+            if df_to_insert.empty:
+                st.warning("⚠️ No recognized data columns found in the CSV to import. Check CSV headers against expected water test parameters.")
+                return
+
             with get_connection() as conn:
                 # Delete existing records for the same dates in this tank to prevent duplicates
                 # This ensures an "upsert" behavior where new data replaces old data for given dates
@@ -322,12 +340,13 @@ def render_csv_import_section(tank_map: Dict[int, Dict[str, Any]]) -> None:
                 df_to_insert.to_sql("water_tests", conn, if_exists="append", index=False)
                 conn.commit() # Explicitly commit after to_sql
             
-            st.success(f"Imported {len(df_to_insert)} records into '{tank_map[tid]['name']}'.")
+            st.success(f"✅ Imported {len(df_to_insert)} records into '{tank_map[tid]['name']}'.")
             request_rerun()
         except pd.errors.EmptyDataError:
-            st.error("The uploaded CSV file is empty.")
+            st.error("❌ The uploaded CSV file is empty. Please upload a CSV with data.")
         except Exception as e:
-            st.error(f"Import failed: {e}")
+            st.error(f"❌ Import failed: {e}. Please check the CSV format and try again.")
+            # Log the full traceback for developer debugging
 
 def render_localization_section() -> None:
     """
@@ -400,9 +419,10 @@ def render_weekly_email_section(tank_map: Dict[int, Dict[str, Any]], email_repo:
                 include_stats=st.session_state["include_stats"],
                 include_cycle=st.session_state["include_cycle"],
             )
-            st.success("Email settings saved successfully!")
+            st.success("✅ Email settings saved successfully!")
             request_rerun()
         except ValueError as e:
-            st.error(f"Error saving email settings: {e}")
+            st.error(f"❌ Error saving email settings: {e}")
         except Exception as e:
-            st.error(f"An unexpected error occurred: {e}")
+            st.error(f"❗ An unexpected error occurred: {e}")
+            # Log the full traceback for developer debugging

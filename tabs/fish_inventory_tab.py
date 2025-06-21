@@ -119,30 +119,36 @@ def fish_inventory_tab(key_prefix=""):
                 
                 submitted = st.form_submit_button("💾 Save New Fish to Database")
                 if submitted:
-                    if not species_name or not common_name:
-                        st.error("Species Name and Common Name are required.")
+                    if not species_name.strip() or not common_name.strip():
+                        st.error("⚠️ Species Name and Common Name are required. Please fill them out.")
                     else:
                         try:
                             # Package new fish data into a dictionary.
                             fish_data = {
-                                "species_name": species_name,
-                                "common_name": common_name,
-                                "origin": origin,
+                                "species_name": species_name.strip(),
+                                "common_name": common_name.strip(),
+                                "origin": origin.strip() if origin else None,
                                 "phmin": phmin,
                                 "phmax": phmax,
                                 "temperature_min": temp_min,
                                 "temperature_max": temp_max,
                                 "tank_size_liter": tank_size,
-                                "image_url": image_url
+                                "image_url": image_url.strip() if image_url else None
                             }
                             fish_repo.add_fish(fish_data) # Add to master database
-                            show_toast("✅ Success", f"{common_name} has been added to the master database.")
+                            show_toast("✅ Success", f"'{common_name}' has been added to the master database.")
                             st.rerun() # Rerun to refresh search results and owned fish list
-                        except sqlite3.IntegrityError:
-                             # Handle case where a fish with the same species name already exists.
-                             st.error(f"A fish with the species name '{species_name}' may already exist.")
+                        except sqlite3.IntegrityError as e:
+                            # Handle case where a fish with the same species name already exists.
+                            if "UNIQUE constraint failed: fish.species_name" in str(e):
+                                st.error(f"❌ Error: A fish with the species name '{species_name}' already exists in the master database. Please use a unique name.")
+                            else:
+                                st.error(f"❌ Database Constraint Error: {e}. Please check your inputs.")
+                        except ValueError as e: # Assuming fish_repo.add_fish could raise ValueError from a base class
+                            st.error(f"❌ Input Validation Error: {e}. Please check your values.")
                         except Exception as e:
-                            st.error(f"Could not save fish: {e}")
+                            st.error(f"❗ An unexpected error occurred while saving fish: {e}. Please try again.")
+                            # Consider logging the full traceback here for developer debugging
         st.write("---") # Separator
         
         # --- Owned Fish Section (fish in the current tank) ---
@@ -184,7 +190,7 @@ def fish_inventory_tab(key_prefix=""):
                     if cols[2].button('🗑️', key=f"{key_prefix}del_owned_fish_{owned_id}"):
                         try:
                             owned_fish_repo.remove_from_tank(owned_id)
-                            show_toast('🗑️ Removed', f"{name} removed from {tank_name}")
+                            show_toast('🗑️ Removed', f"'{common_name} ({name})' removed from {tank_name}")
                             st.rerun() # Rerun to update the list after deletion
                         except Exception as e:
                             st.error(f"Couldn't remove fish: {str(e)}")

@@ -142,14 +142,29 @@ class WaterTestRepository(BaseRepository):
         
         # Validate and coerce numeric parameters to float
         for field, (min_val, max_val) in self.VALID_PARAMETERS.items():
-            if field in payload and payload[field] is not None:
+            if field in payload: # Only process if the field exists in the payload
+                raw_value = payload[field]
+                if raw_value is None or raw_value == '': # Treat empty string as None
+                    payload[field] = None
+                    continue # Skip range validation for None values
+                
                 try:
-                    value = float(payload[field])
+                    value = float(raw_value)
                     if not (min_val <= value <= max_val):
-                        raise ValueError(f"{field} must be between {min_val} and {max_val}")
+                        raise ValueError(f"{field} ({value}) is outside acceptable range ({min_val} to {max_val}).")
                     payload[field] = value
                 except (ValueError, TypeError):
-                    raise ValueError(f"Invalid value for {field} - must be numeric between {min_val} and {max_val}")
+                    raise ValueError(f"Invalid value for {field} ('{raw_value}') - must be a number between {min_val} and {max_val}.")
+            else:
+                # If a numeric field is missing from the payload, ensure it's set to None or default if applicable
+                payload.setdefault(field, None) # Ensure missing numeric fields are set to None
+                
+        # Ensure 'notes' is handled gracefully if not provided or empty string
+        if 'notes' in payload and (payload['notes'] is None or payload['notes'].strip() == ''):
+            payload['notes'] = None
+        elif 'notes' in payload:
+            payload['notes'] = payload['notes'].strip() # Strip notes if present
+
         return payload
 
     def fetch_by_date_range(
