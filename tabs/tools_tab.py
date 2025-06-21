@@ -16,6 +16,7 @@ from utils.chemistry import (
     calculate_equilibrium_dose,
     calculate_fritzzyme7_dose,
     calculate_volume, # Import the new volume calculator
+    calculate_water_change_percentage, # Import the new water change percentage calculator
 )
 from aqualog_db.repositories import TankRepository
 from utils import show_toast, request_rerun # Utilities for UI feedback
@@ -135,6 +136,51 @@ def render_dosing_calculator():
                 dose_ml, dose_oz = calculate_fritzzyme7_dose(volume_l, is_new_system)
                 st.metric("Recommended FritzZyme 7 Dose", f"{dose_ml:.0f} ml  /  {dose_oz:.1f} oz")
 
+def render_water_change_calculator():
+    """
+    Renders the user interface for the Water Change Calculator.
+
+    This calculator helps users determine the percentage of water to change
+    to reduce a specific water parameter to a desired target level.
+    """
+    st.subheader("💧 Water Change Calculator")
+    st.write("Calculate the percentage of water to change to reduce a parameter.")
+
+    # --- Get the current tank's volume ---
+    tank_id = st.session_state.get("tank_id")
+    tank_volume = 0.0
+    if tank_id:
+        repo = TankRepository()
+        tanks = repo.fetch_all()
+        tank_info = next((t for t in tanks if t['id'] == tank_id), None)
+        if tank_info and tank_info.get("volume_l"):
+            tank_volume = tank_info["volume_l"]
+    
+    with st.form("water_change_form"):
+        # Input for current parameter value
+        current_value = st.number_input("Current Parameter Value", min_value=0.01, value=40.0, step=0.1, help="e.g., current Nitrate level")
+        # Input for target parameter value
+        target_value = st.number_input("Target Parameter Value", min_value=0.0, value=20.0, step=0.1, help="e.g., desired Nitrate level after water change")
+        
+        # Display current tank volume, or allow manual input if not available
+        volume_l = st.number_input("Tank Volume (Liters)", min_value=0.1, value=tank_volume if tank_volume > 0 else 50.0)
+
+        submitted = st.form_submit_button("Calculate Water Change")
+
+    if submitted:
+        if current_value <= 0:
+            st.error("Current parameter value must be greater than 0.")
+        elif target_value >= current_value:
+            st.warning("Target value must be less than current value to calculate a reduction.")
+        else:
+            percentage = calculate_water_change_percentage(current_value, target_value)
+            st.metric("Recommended Water Change", f"{percentage:.1f}%")
+            
+            # Calculate and display the actual volume to change
+            volume_to_change = volume_l * (percentage / 100)
+            st.info(f"This equates to changing approximately **{volume_to_change:.1f} Liters** of water.")
+
+
 def tools_tab():
     """
     Main function to render the "Aquarium Tools & Calculators" tab.
@@ -147,7 +193,7 @@ def tools_tab():
     # Selectbox to choose between different tools.
     tool_choice = st.selectbox(
         "Select a Tool",
-        ("Aquarium Volume Calculator", "Dosing Calculator")
+        ("Aquarium Volume Calculator", "Dosing Calculator", "Water Change Calculator")
     )
     
     st.markdown("---") # Separator
@@ -157,3 +203,5 @@ def tools_tab():
         render_volume_calculator()
     elif tool_choice == "Dosing Calculator":
         render_dosing_calculator()
+    elif tool_choice == "Water Change Calculator":
+        render_water_change_calculator()

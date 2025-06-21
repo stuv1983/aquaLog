@@ -82,7 +82,7 @@ def calculate_equilibrium_dose(volume_l: float, delta_gh: float) -> float:
     # 80 L is the volume, 3 dGH is the rise per 16 grams.
     grams_per_l_per_dgh = 16 / (80 * 3)  # ~ 0.0667 grams per liter per dGH
     
-    # Calculate total grams needed: (volume * desired_change_dGH * conversion_factor)
+    # Calculate total grams needed: (volume * desired_change_dKH * conversion_factor)
     return volume_l * delta_gh * grams_per_l_per_dgh
 
 def calculate_fritzzyme7_dose(volume_l: float, is_new_system: bool = True) -> tuple[float, float]:
@@ -139,3 +139,26 @@ def calculate_volume(length: float, width: float, height: float, units: str) -> 
     # Convert liters to US gallons (1 US gallon ≈ 3.78541 liters, so 1 L ≈ 0.264172 US gallons)
     volume_gallons = volume_liters * 0.264172
     return volume_liters, volume_gallons
+
+def calculate_water_change_percentage(current_value: float, target_value: float) -> float:
+    """
+    Calculates the percentage of water to change to reduce a specific parameter
+    from its current value to a target value.
+
+    Args:
+        current_value: The current concentration of the parameter.
+        target_value: The desired concentration of the parameter.
+
+    Returns:
+        float: The calculated water change percentage (0-100%).
+               Returns 0 if current_value is not positive, or if target_value >= current_value.
+    """
+    if current_value <= 0:
+        return 0.0 # Cannot calculate if current value is zero or negative
+
+    if target_value >= current_value:
+        return 0.0 # No reduction needed or possible
+
+    # Calculate reduction factor, then percentage
+    reduction_factor = (current_value - target_value) / current_value
+    return reduction_factor * 100
