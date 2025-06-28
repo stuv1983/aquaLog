@@ -14,7 +14,6 @@ from __future__ import annotations # Added for type hinting consistency
 import os
 import sys
 import streamlit as st
-from PIL import Image
 import base64
 from typing import Callable # Ensure Callable is imported for type hints
 
@@ -73,13 +72,8 @@ maintenance_tab        = load_tab("maintenance_tab",     "tabs/maintenance_tab.p
 # --- IMPORT THE NEW TOOLS TAB ---
 tools_tab              = load_tab("tools_tab", "tabs/tools_tab.py")
 
-
-VERSION = "v3.11.0"
-RELEASE_NOTES = """
-### v3.11.0
-* **Feature:** Consolidated calculators into a single "Tools" tab.
-* **Feature:** Added an Aquarium Volume Calculator to the "Tools" tab.
-"""
+# The VERSION and RELEASE_NOTES are now defined only in config.py
+# and are displayed via sidebar/release_notes.py
 
 def main() -> None:
     """
