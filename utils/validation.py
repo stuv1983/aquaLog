@@ -153,13 +153,13 @@ def is_out_of_range(
     """
 
     # Special-case handling for unionized ammonia, which depends on pH and temperature.
-    if param == "ammonia" and ph is not None and temp_c is not None:
+    if param == "ammonia" and ph is not None and temp_c is not None and value is not None:
         try:
-            nh3 = nh3_fraction(value, ph, temp_c)
+            nh3 = nh3_fraction(float(value), ph, temp_c)
             if isinstance(nh3, pd.Series):
                 return nh3.gt(TOO_HIGH_THRESHOLDS.get("ammonia", 0.02)).any()
             return nh3 > TOO_HIGH_THRESHOLDS.get("ammonia", 0.02)
-        except Exception:
+        except (TypeError, ValueError):
             return False
 
     # Special-case handling for CO₂ indicator, which is categorical (color-based).

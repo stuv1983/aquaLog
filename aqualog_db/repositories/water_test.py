@@ -97,6 +97,11 @@ class WaterTestRepository(BaseRepository):
             raise ValueError("Data must be a dictionary")
         if not isinstance(tank_id, int) or tank_id < 1:
             raise ValueError("Invalid tank ID: must be positive integer")
+        
+        from .tank import TankRepository
+        if not TankRepository().get_by_id(tank_id):
+            raise ValueError(f"Tank with ID {tank_id} does not exist.")
+
         if 'date' in data and not isinstance(data['date'], str):
             raise ValueError("Date must be a string (ISO format expected).")
         if 'co2_indicator' in data and data['co2_indicator'] not in self.VALID_CO2_INDICATORS:
