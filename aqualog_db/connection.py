@@ -8,11 +8,12 @@ A simple module that provides a managed `sqlite3.Connection` to the project's
 for all database operations.
 """
 
-from __future__ import annotations # Added for type hinting consistency
-
-import os
+from __future__ import annotations
 import sqlite3
 from contextlib import contextmanager
+
+# Import the DB_FILE constant from your central configuration
+from config import DB_FILE
 
 @contextmanager
 def get_connection() -> sqlite3.Connection:
@@ -27,16 +28,9 @@ def get_connection() -> sqlite3.Connection:
     Yields:
         sqlite3.Connection: A configured database connection object.
     """
-    # Determine project root (parent of this module's directory)
-    project_root = os.path.dirname(os.path.dirname(__file__))
-    db_path = os.path.join(project_root, "aqualog.db")
-
-    # LINE TO REVEAL THE PATH to the database
-    #print(f"--- !!! APPLICATION IS USING DATABASE AT: {db_path} !!! ---")
-
     # Connect with type parsing and row factory for dict-like access
     conn = sqlite3.connect(
-        db_path,
+        DB_FILE,  # Use the imported DB_FILE constant
         detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
     )
     conn.row_factory = sqlite3.Row
