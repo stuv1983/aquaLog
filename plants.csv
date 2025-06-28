@@ -1,0 +1,778 @@
+plant_id,plant_name,origin,origin_info,growth_rate,growth_info,height_cm,height_info,light_demand,light_info,co2_demand,co2_info,thumbnail_url
+1,Anubias barteri ’Coin Leaf’,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101F CLP/2.JPG&crop=resize&class=product
+2,Bolbitis heudelotii,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/006 CLP/2.JPG&crop=resize&class=product
+3,Echinodorus x barthii,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/072A CLP/2.JPG&crop=resize&class=product
+4,Aegagropila linnaei,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/000C ST/2.png&crop=resize&class=product
+5,Aegagropila linnaei,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/000D MP/2.png&crop=resize&class=product
+6,Aegagropila linnaei,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/000E POR/2.png&crop=resize&class=product
+7,Alternanthera reineckii 'Mini',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,5 - 10+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/023C TC/2.png&crop=resize&class=product
+8,Alternanthera reineckii 'Pink',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/023 CLP/2.JPG&crop=resize&class=product
+9,Alternanthera reineckii 'Pink',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/023 XL/2.png&crop=resize&class=product
+10,Alternanthera reineckii 'Pink',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/023/2.png&crop=resize&class=product
+11,Alternanthera reineckii 'Rosanervig',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,5 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/023D/2.png&crop=resize&class=product
+12,Ammannia crassicaulis,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/033B/2.png&crop=resize&class=product
+13,Anubias barteri ’Coin Leaf’,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101F/2.png&crop=resize&class=product
+14,Anubias barteri caladiifolia,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101U CLP/2.JPG&crop=resize&class=product
+15,Anubias barteri caladiifolia,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101U PCS/2.png&crop=resize&class=product
+16,Anubias barteri 'Mini Coin',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101B TC/2.png&crop=resize&class=product
+17,Anubias barteri nana,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101 CLP/2.JPG&crop=resize&class=product
+18,Anubias barteri nana,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101 TC/2.png&crop=resize&class=product
+19,Anubias barteri 'Petite',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101H CLP/2.JPG&crop=resize&class=product
+20,Anubias barteri 'Petite',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101H/2.png&crop=resize&class=product
+21,Anubias barteri sp.,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101 YWX/2.png&crop=resize&class=product
+22,Anubias barteri var. barteri,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101A/2.png&crop=resize&class=product
+23,Anubias barteri var. caladiifolia,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101U XL/2.png&crop=resize&class=product
+24,Anubias barteri var. caladiifolia,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101U/2.png&crop=resize&class=product
+25,Anubias barteri var. 'Coffeifolia',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101G/2.png&crop=resize&class=product
+26,Anubias barteri var. glabra,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101C/2.png&crop=resize&class=product
+27,Anubias barteri var. nana,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101 PCS/2.png&crop=resize&class=product
+28,Anubias barteri var. nana,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101 YLS/2.png&crop=resize&class=product
+29,Anubias barteri var. nana,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101 YWS/2.png&crop=resize&class=product
+30,Anubias barteri var. nana,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101 ZWS/2.png&crop=resize&class=product
+31,Anubias barteri var. nana,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101/2.png&crop=resize&class=product
+32,Anubias barteri var. nana,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/510 YCS/2.JPG&crop=resize&class=product
+33,Anubias barteri var. nana ’Kirin’,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101K/2.png&crop=resize&class=product
+34,Anubias barteri var. nana ’Kirin’,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101K CLP/2.JPG&crop=resize&class=product
+35,Anubias barteri var. nana ’Pinto’,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,0 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101E/2.png&crop=resize&class=product
+36,Anubias barteri var. nana ’Pinto’,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,0 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101E CLP/2.JPG&crop=resize&class=product
+37,Anubias barteri var. nana 'Large',Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101L/2.png&crop=resize&class=product
+38,Anubias gracilis,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101D CLP/2.JPG&crop=resize&class=product
+39,Anubias gracilis,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/101D/2.png&crop=resize&class=product
+40,Aponogeton boivinianus,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/088 KN/2.png&crop=resize&class=product
+41,Aponogeton longiplumulosus,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/089D KN/2.png&crop=resize&class=product
+42,Aponogeton madagascariensis,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/089 KN/2.png&crop=resize&class=product
+43,Aponogeton ulvaceus,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/086 KN/2.png&crop=resize&class=product
+44,Bacopa australis,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/043A/2.png&crop=resize&class=product
+45,Bacopa caroliniana,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/043 BDT/2.png&crop=resize&class=product
+46,Bacopa caroliniana,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/043 MP/2.png&crop=resize&class=product
+47,Bacopa caroliniana,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/043 TC/2.png&crop=resize&class=product
+48,Bacopa caroliniana,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/043/2.png&crop=resize&class=product
+49,Bacopa monnieri 'Compact',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/044A CLP/2.JPG&crop=resize&class=product
+50,Bacopa monnieri 'Compact',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/044A PCS/2.png&crop=resize&class=product
+51,Bacopa salzmanni 'Purple',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,0 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/043B/2.png&crop=resize&class=product
+52,Blyxa japonica,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/057 TC/2.png&crop=resize&class=product
+53,Bolbitis heudelotii,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/006 XL/2.png&crop=resize&class=product
+54,Bolbitis heudelotii,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/006 YWS/2.png&crop=resize&class=product
+55,Bolbitis heudelotii,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/006/2.png&crop=resize&class=product
+56,Bucephalandra 'Kedagang',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/139B TC/2.JPG&crop=resize&class=product
+57,Bucephalandra 'Kedagang',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/139B/2.JPG&crop=resize&class=product
+58,Bucephalandra pygmaea 'Bukit Kelam',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/139 TC/2.JPG&crop=resize&class=product
+59,Bucephalandra pygmaea 'Bukit Kelam',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/139/2.png&crop=resize&class=product
+60,Bucephalandra pygmaea 'Wavy Green',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/139 YLS/2.JPG&crop=resize&class=product
+61,Bucephalandra sordidula 'Blue',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/139D/2.JPG&crop=resize&class=product
+62,Bucephalandra sp. 'Needle Leaf',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/139C TC/2.JPG&crop=resize&class=product
+63,Bucephalandra sp. 'Red',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/139A/2.png&crop=resize&class=product
+64,Cabomba aquatica,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/015 BDT/2.png&crop=resize&class=product
+65,Cardamine lyrata,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/024/2.png&crop=resize&class=product
+66,Ceratophyllum demersum,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/021A POR/2.png&crop=resize&class=product
+67,Ceratopteris thalictroides,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/005A/2.png&crop=resize&class=product
+68,Crinum calamistratum,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/094A/2.png&crop=resize&class=product
+69,Crinum thaianum,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/093/2.png&crop=resize&class=product
+70,Cryptocoryne albida 'Brown',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/126B/2.png&crop=resize&class=product
+71,Cryptocoryne beckettii 'Petchii',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/108A CLP/2.JPG&crop=resize&class=product
+72,Cryptocoryne beckettii 'Petchii',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/108A PCS/2.png&crop=resize&class=product
+73,Cryptocoryne beckettii 'Petchii',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/108A YLS/2.png&crop=resize&class=product
+74,Cryptocoryne beckettii 'Petchii',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/108A/2.png&crop=resize&class=product
+75,Cryptocoryne crispatula,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/125 TC/2.jpg&crop=resize&class=product
+76,Cryptocoryne crispatula,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/125/2.png&crop=resize&class=product
+77,Cryptocoryne nurii,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/126 TC/2.JPG&crop=resize&class=product
+78,Cryptocoryne parva,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 10+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/106 TC/2.png&crop=resize&class=product
+79,Cryptocoryne parva,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 10+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/106/2.png&crop=resize&class=product
+80,Cryptocoryne spiralis 'Red',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/105/2.JPG&crop=resize&class=product
+81,Cryptocoryne undulata 'Broad Leaf',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/110A/2.png&crop=resize&class=product
+82,Cryptocoryne undulata 'Broad Leaf',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/110B TC/2.JPG&crop=resize&class=product
+83,Cryptocoryne usteriana,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/120/2.png&crop=resize&class=product
+84,Cryptocoryne wendtii 'Green',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/109 TC/2.png&crop=resize&class=product
+85,Cryptocoryne wendtii 'Green',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/109/2.png&crop=resize&class=product
+86,Cryptocoryne wendtii 'Mi Oya',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/109D TC/2.png&crop=resize&class=product
+87,Cryptocoryne wendtii 'Tropica',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/109E XL/2.png&crop=resize&class=product
+88,Cryptocoryne wendtii 'Tropica',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/109E/2.png&crop=resize&class=product
+89,Cryptocoryne x willisii,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/107 CLP/2.JPG&crop=resize&class=product
+90,Cryptocoryne x willisii,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/107 PCS/2.png&crop=resize&class=product
+91,Cryptocoryne x willisii,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/107/2.png&crop=resize&class=product
+92,Cyperus helferi,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/133A CLP/2.JPG&crop=resize&class=product
+93,Cyperus helferi,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/133A/2.png&crop=resize&class=product
+94,Echinodorus 'Aquartica',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/074F/2.png&crop=resize&class=product
+95,Echinodorus cordifolius 'Fluitans',North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/073D/2.png&crop=resize&class=product
+96,Echinodorus grisebachii 'Bleherae',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/071 BDT/2.png&crop=resize&class=product
+97,Echinodorus grisebachii 'Bleherae',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/071 CLP/2.JPG&crop=resize&class=product
+98,Echinodorus grisebachii 'Bleherae',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/071 XL/2.png&crop=resize&class=product
+99,Echinodorus grisebachii 'Bleherae',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/071/2.png&crop=resize&class=product
+100,Echinodorus grisebachii 'Tropica',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/071E TC/2.JPG&crop=resize&class=product
+101,Echinodorus 'Ozelot',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/073F XL/2.png&crop=resize&class=product
+102,Echinodorus 'Ozelot',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/073F/2.png&crop=resize&class=product
+103,Echinodorus 'Ozelot Green',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/073G/2.png&crop=resize&class=product
+104,Echinodorus 'Red Diamond',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/074D/2.png&crop=resize&class=product
+105,Echinodorus 'Reni',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/072D PCS/2.png&crop=resize&class=product
+106,Echinodorus 'Reni',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/072D TC/2.png&crop=resize&class=product
+107,Echinodorus 'Reni',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/072D/2.png&crop=resize&class=product
+108,Echinodorus 'Rosé',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/072B XL/2.png&crop=resize&class=product
+109,Echinodorus 'Rosé',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/072B/2.png&crop=resize&class=product
+110,Echinodorus x barthii,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/072A XL/2.png&crop=resize&class=product
+111,Echinodorus x barthii,Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/072A/2.png&crop=resize&class=product
+112,Egeria densa,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/058 BDT/2.png&crop=resize&class=product
+113,Eleocharis acicularis,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/133 TC/2.png&crop=resize&class=product
+114,Eleocharis montevidensis,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/132D/2.png&crop=resize&class=product
+115,Eleocharis parvula,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/132C PCS/2.JPG&crop=resize&class=product
+116,Eleocharis parvula,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/132C/2.png&crop=resize&class=product
+117,Eleocharis pusilla 'Mini',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/132B TC/2.JPG&crop=resize&class=product
+118,Eriocaulon cinereum,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/091 TC/2.png&crop=resize&class=product
+119,Eriocaulon sp. 'Vietnam',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/091A/2.JPG&crop=resize&class=product
+120,Fissidens fontanus,,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/002F/2.png&crop=resize&class=product
+121,Glossostigma elatinoides,Australia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/045A TC/2.png&crop=resize&class=product
+122,Gratiola viscidula,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/042 TC/2.png&crop=resize&class=product
+123,Helanthium bolivianum 'Quadricostatus',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/068 TC/2.png&crop=resize&class=product
+124,Helanthium bolivianum 'Quadricostatus',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/068/2.png&crop=resize&class=product
+125,Helanthium tenellum 'Green',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/067A TC/2.png&crop=resize&class=product
+126,Hemianthus micranthemoides,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/048A TC/2.png&crop=resize&class=product
+127,Heteranthera zosterifolia,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/096 TC/2.png&crop=resize&class=product
+128,Hottonia palustris,,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/027 TC/2.png&crop=resize&class=product
+129,Hottonia palustris,,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/027/2.png&crop=resize&class=product
+130,Hydrocotyle tripartita,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/039B TC/2.png&crop=resize&class=product
+131,Hydrocotyle tripartita,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/039B/2.png&crop=resize&class=product
+132,Hydrocotyle verticillata,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/039/2.png&crop=resize&class=product
+133,Hygrophila corymbosa,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053 BDT/2.png&crop=resize&class=product
+134,Hygrophila corymbosa 'Compact',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/052D/2.png&crop=resize&class=product
+135,Hygrophila corymbosa 'Siamensis 53B',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053B CLP/2.JPG&crop=resize&class=product
+136,Hygrophila corymbosa 'Siamensis 53B',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053B MP/2.png&crop=resize&class=product
+137,Hygrophila corymbosa 'Siamensis 53B',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053B PCS/2.png&crop=resize&class=product
+138,Hygrophila corymbosa 'Siamensis 53B',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053B/2.png&crop=resize&class=product
+139,Hygrophila corymbosa 'Stricta',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053A XL/2.png&crop=resize&class=product
+140,Hygrophila corymbosa 'Stricta',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053A/2.png&crop=resize&class=product
+141,Hygrophila costata,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/052A/2.png&crop=resize&class=product
+142,Hygrophila difformis,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",High,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Low,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Low,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/051 BDT/2.png&crop=resize&class=product
+143,Hygrophila lancea 'Araguaia',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/051B TC/2.png&crop=resize&class=product
+144,Hygrophila odora,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/051D TC/2.png&crop=resize&class=product
+145,Hygrophila pinnatifida,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/051A TC/2.png&crop=resize&class=product
+146,Hygrophila pinnatifida,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/051A/2.png&crop=resize&class=product
+147,Hygrophila pinnatifida,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/509 YCS/2.JPG&crop=resize&class=product
+148,Hygrophila pinnatifida and moss,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/051A YWS/2.png&crop=resize&class=product
+149,Hygrophila polysperma,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/050/2.png&crop=resize&class=product
+150,Hygrophila polysperma 'Rosanervig',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/050B/2.png&crop=resize&class=product
+151,Hygrophila serpyllum,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/052B TC/2.png&crop=resize&class=product
+152,Juncus repens,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/133F TC/2.JPG&crop=resize&class=product
+153,Lagenandra meeboldii 'Red',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/103 CLP/2.JPG&crop=resize&class=product
+154,Lagenandra meeboldii 'Red',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/103/2.png&crop=resize&class=product
+155,Leptodictyum riparium,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003E TC/2.png&crop=resize&class=product
+156,Lilaeopsis brasiliensis,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/040 PCS/2.png&crop=resize&class=product
+157,Lilaeopsis brasiliensis,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/040 TC/2.png&crop=resize&class=product
+158,Lilaeopsis brasiliensis,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/040/2.png&crop=resize&class=product
+159,Limnobium laevigatum,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/063 TC/2.png&crop=resize&class=product
+160,Limnophila aquatica,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/046/2.png&crop=resize&class=product
+161,Limnophila hippuridoides,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/047C/2.png&crop=resize&class=product
+162,Limnophila sessiliflora,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/047 CLP/2.JPG&crop=resize&class=product
+163,Limnophila sessiliflora,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/047 MP/2.png&crop=resize&class=product
+164,Limnophila sessiliflora,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/047 PCS/2.png&crop=resize&class=product
+165,Limnophila sessiliflora,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/047/2.png&crop=resize&class=product
+166,Lindernia rotundifolia,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/045/2.png&crop=resize&class=product
+167,Littorella uniflora,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/081 TC/2.png&crop=resize&class=product
+168,Lobelia cardinalis,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053C MP/2.png&crop=resize&class=product
+169,Lobelia cardinalis,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053C PCS/2.png&crop=resize&class=product
+170,Lobelia cardinalis,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053C/2.png&crop=resize&class=product
+171,Lobelia cardinalis 'Mini',North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 15+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/143 TC/2.JPG&crop=resize&class=product
+172,Ludwigia glandulosa,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/035A/2.png&crop=resize&class=product
+173,Ludwigia palustris 'Green',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/035D/2.png&crop=resize&class=product
+174,Ludwigia palustris 'Super Red',Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/035B CLP/2.JPG&crop=resize&class=product
+175,Ludwigia palustris 'Super Red',Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/035B/2.png&crop=resize&class=product
+176,Ludwigia repens 'Rubin',North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/033D/2.png&crop=resize&class=product
+177,Marsilea hirsuta,Australia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,5 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/010 TC/2.png&crop=resize&class=product
+178,Marsilea minuta,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/010B TC/2.png&crop=resize&class=product
+179,Mayaca fluviatilis,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/140 BDT/2.png&crop=resize&class=product
+180,Micranthemum callitrichoides ´Cuba´,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/048B/2.png&crop=resize&class=product
+181,Micranthemum callitrichoides 'Cuba',North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/048B TC/2.png&crop=resize&class=product
+182,Micranthemum glomeratum,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,5 - 15+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/048A/2.png&crop=resize&class=product
+183,Micranthemum tweediei 'Monte Carlo',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/025 TC/2.png&crop=resize&class=product
+184,Micranthemum tweediei 'Monte Carlo',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/025/2.png&crop=resize&class=product
+185,Micranthemum umbrosum,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/048 ST/2.png&crop=resize&class=product
+186,Micranthemum umbrosum,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,10 - 15+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/048/2.png&crop=resize&class=product
+187,Microsorum - Anubias 'Duet',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008N YWX/2.png&crop=resize&class=product
+188,Microsorum pteropus,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008 CLP/2.JPG&crop=resize&class=product
+189,Microsorum pteropus,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008 XL/2.png&crop=resize&class=product
+190,Microsorum pteropus,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008 YLS/2.png&crop=resize&class=product
+191,Microsorum pteropus,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008 YWS/2.png&crop=resize&class=product
+192,Microsorum pteropus,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008 YWX/2.png&crop=resize&class=product
+193,Microsorum pteropus,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008/2.png&crop=resize&class=product
+194,Microsorum pteropus nano wood,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/501/2.png&crop=resize&class=product
+195,Microsorum pteropus 'Narrow',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008A PCS/2.JPG&crop=resize&class=product
+196,Microsorum pteropus 'Narrow',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008A YWS/2.png&crop=resize&class=product
+197,Microsorum pteropus 'Narrow',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008A ZWS/2.png&crop=resize&class=product
+198,Microsorum pteropus 'Narrow',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008A/2.png&crop=resize&class=product
+199,Microsorum pteropus 'Trident',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008G YWS/2.png&crop=resize&class=product
+200,Microsorum pteropus 'Trident',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 20+,Average height (cm) of the plant after two months in the tank.,Low,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Low,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008G ZWM/2.JPG&crop=resize&class=product
+201,Microsorum pteropus 'Trident',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008G ZWS/2.png&crop=resize&class=product
+202,Microsorum pteropus 'Trident',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,15 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008G/2.png&crop=resize&class=product
+203,Microsorum pteropus 'Windeløv',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008B YWS/2.png&crop=resize&class=product
+204,Microsorum pteropus 'Windeløv',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008B YWX/2.png&crop=resize&class=product
+205,Microsorum pteropus 'Windeløv',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,Low,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Low,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008B ZWM/2.JPG&crop=resize&class=product
+206,Microsorum pteropus 'Windeløv',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008B ZWS/2.png&crop=resize&class=product
+207,Microsorum pteropus 'Windeløv',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,10 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/008B/2.png&crop=resize&class=product
+208,Microsorum sp.,,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,-,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/500 OWX/2.png&crop=resize&class=product
+209,Monosolenium tenerum,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/002C TC/2.png&crop=resize&class=product
+210,Murdannia keisak,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 20+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/135/2.png&crop=resize&class=product
+211,Myriophyllum mattogrossense,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/037/2.png&crop=resize&class=product
+212,Myriophyllum sp. 'Guyana',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/037E TC/2.png&crop=resize&class=product
+213,Nymphaea lotus,Africa,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/019/2.png&crop=resize&class=product
+214,Nymphoides hydrophylla 'Taiwan',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/041B TC/2.png&crop=resize&class=product
+215,Nymphoides hydrophylla 'Taiwan',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/041B/2.png&crop=resize&class=product
+216,Phyllanthus fluitans,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/028 TC/2.png&crop=resize&class=product
+217,Pogostemon deccanensis,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053F TC/2.png&crop=resize&class=product
+218,Pogostemon deccanensis,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053F/2.png&crop=resize&class=product
+219,Pogostemon helferi,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053H TC/2.png&crop=resize&class=product
+220,Pogostemon helferi,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053H YLS/2.png&crop=resize&class=product
+221,Pogostemon helferi,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053H/2.png&crop=resize&class=product
+222,Pogostemon stellatus,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053G/2.png&crop=resize&class=product
+223,Proserpinaca palustris 'Cuba',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/037C TC/2.png&crop=resize&class=product
+224,Ranunculus inundatus,Australia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,5 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/022C TC/2.png&crop=resize&class=product
+225,Riccardia chamedryfolia,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003D TC/2.PNG&crop=resize&class=product
+226,Riccia fluitans,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/001 TC/2.png&crop=resize&class=product
+227,Rotala indica 'Bonsai',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,5 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/033E TC/2.png&crop=resize&class=product
+228,Rotala macrandra,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/032 TC/2.png&crop=resize&class=product
+229,Rotala rotundifolia,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/033 MP/2.png&crop=resize&class=product
+230,Rotala rotundifolia,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/033 PCS/2.png&crop=resize&class=product
+231,Rotala rotundifolia,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,15 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/033/2.png&crop=resize&class=product
+232,Rotala rotundifolia 'Blood Red',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,5 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/032D TC/2.png&crop=resize&class=product
+233,Rotala rotundifolia 'Green',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/033A TC/2.png&crop=resize&class=product
+234,Rotala rotundifolia 'H'ra',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 20+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/032C TC/2.png&crop=resize&class=product
+235,Rotala wallichii,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/032A TC/2.png&crop=resize&class=product
+236,Sagittaria subulata,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/079 TC/2.png&crop=resize&class=product
+237,Sagittaria subulata,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/079/2.png&crop=resize&class=product
+238,Sagittaria subulata 'Needle Leaf',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,5 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/144 TC/2.PNG&crop=resize&class=product
+239,Salvinia minima,Cosmopolitan,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/011 TC/2.png&crop=resize&class=product
+240,Schismatoglottis prietoi,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/102 TC/2.png&crop=resize&class=product
+241,Shinnersia rivularis 'Weiss-Grün',Cultivar,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,10 - 30+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/053E/2.png&crop=resize&class=product
+242,Spirodela polyrrhiza,North America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/131 TC/2.JPG&crop=resize&class=product
+243,Staurogyne repens,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/049G PCS/2.png&crop=resize&class=product
+244,Staurogyne repens,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/049G TC/2.png&crop=resize&class=product
+245,Staurogyne repens,South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/049G/2.png&crop=resize&class=product
+246,Taxiphyllum alternans 'Taiwan Moss',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003C TC/2.png&crop=resize&class=product
+247,Taxiphyllum barbieri 'Bogor Moss',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003 POR/2.png&crop=resize&class=product
+248,Taxiphyllum barbieri 'Bogor Moss',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003 TC/2.png&crop=resize&class=product
+249,Taxiphyllum sp. ’Flame Moss’,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Slow,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003H TC/2.png&crop=resize&class=product
+250,Taxiphyllum sp. 'Spiky Moss',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003G POR/2.png&crop=resize&class=product
+251,Taxiphyllum sp. 'Spiky Moss',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003G TC/2.png&crop=resize&class=product
+252,Utricularia graminifolia,Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 10+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",Medium,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/049B TC/2.png&crop=resize&class=product
+253,Vallisneria americana 'Gigantea',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/054/2.png&crop=resize&class=product
+254,Vallisneria spiralis 'Tiger',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",,Growth rate of the plant compared to other aquatic plants.,20 - 30+,Average height (cm) of the plant after two months in the tank.,,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/055A/2.png&crop=resize&class=product
+255,Vesicularia ferriei 'Weeping Moss',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003B POR/2.png&crop=resize&class=product
+256,Vesicularia ferriei 'Weeping Moss',Asia,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003B TC/2.png&crop=resize&class=product
+257,Vesicularia montagnei 'Christmas',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003A YWS/2.png&crop=resize&class=product
+258,Vesicularia montagnei 'Christmas Moss',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003A POR/2.png&crop=resize&class=product
+259,Vesicularia montagnei 'Christmas Moss',South America,"Country or continent where a plant is the most common.
+Cultivars arise or are bred in cultivation.",Medium,Growth rate of the plant compared to other aquatic plants.,3 - 5+,Average height (cm) of the plant after two months in the tank.,Medium,"The average or medium light demand of an aquarium plant is 0,5 W/L.",,"A medium need in CO2 is 6-14 mg/L.
+A high demand in CO2 is approx. 15-25 mg/L.",https://tropica.com/imagegen.ashx?width=200&image=/Plants/003A TC/2.png&crop=resize&class=product

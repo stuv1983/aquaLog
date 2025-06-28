@@ -1,0 +1,10 @@
+streamlit>=1.18.0
+pandas
+numpy
+altair
+statsmodels
+requests
+opencv-python   # Only if you need image processing later
+apscheduler>=3.10
+XlsxWriter
+reportlab
