@@ -193,34 +193,6 @@ CONVERSIONS: dict[tuple[str, str], Callable[[float], float]] = {
     ("°F", "°C"): lambda f: (f - 32) * 5 / 9,
 }
 
-def is_too_low(param: str, value: float) -> bool:
-    """
-    Checks if a parameter's value is below its configured 'too low' threshold.
-
-    Args:
-        param (str): The name of the parameter (e.g., "nitrate", "kh").
-        value (float): The measured value of the parameter.
-
-    Returns:
-        bool: True if the value is below the threshold, False otherwise.
-    """
-    thresh = TOO_LOW_THRESHOLDS.get(param)
-    return thresh is not None and value < thresh
-
-def is_too_high(param: str, value: float) -> bool:
-    """
-    Checks if a parameter's value is above its configured 'too high' threshold.
-
-    Args:
-        param (str): The name of the parameter (e.g., "temperature", "ammonia").
-        value (float): The measured value of the parameter.
-
-    Returns:
-        bool: True if the value is above the threshold, False otherwise.
-    """
-    thresh = TOO_HIGH_THRESHOLDS.get(param)
-    return thresh is not None and value > thresh
-
 def get_low_action_plan(param: str) -> list[str]:
     """
     Retrieves the action plan for a parameter when its value is too low.
