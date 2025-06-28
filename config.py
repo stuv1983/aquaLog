@@ -13,9 +13,9 @@ from __future__ import annotations # Added for type hinting consistency
 import os
 from typing import Callable, Any, TypedDict # Added TypedDict for more specific type hints
 
-# Path to the SQLite database file. It will be created in the current working directory.
-# This file stores all application data, including tank profiles, water tests, and inventory.
-DB_FILE: str = os.path.join(os.getcwd(), "aqualog.db")
+# Path to the SQLite database file. It will be created in the project's root directory.
+# This ensures a consistent database location regardless of where the script is run from.
+DB_FILE: str = os.path.join(os.path.dirname(__file__), "aqualog.db")
 
 # Default CO2 'on' schedule (24-hour format: start_hour, end_hour (exclusive))
 # This is used to suppress 'CO2 low' warnings when CO2 injection is expected to be off.
