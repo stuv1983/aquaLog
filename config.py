@@ -252,12 +252,14 @@ WEEKLY_EMAIL_TIME: WeeklyEmailTimeConfig = { # Updated type hint to use TypedDic
 }
 
 # Current version of the application.
-VERSION: str = "v3.7.1"
+VERSION: str = "v3.8.0"
 
 # Release notes for the current version.
 # This Markdown-formatted string is displayed in the application's sidebar.
 RELEASE_NOTES: str = """
-### v3.7.1 (2025-06-12)
-* **Fix:** Database now persists to `aqualog.db` on disk.
-* **Fix:** `init_tables()` called at startup to initialize/migrate schema.
+### v3.8.0 (2025-06-29)
+* **Fix:** Added validation to the `rename` method in `TankRepository` to prevent empty tank names.
+* **Fix:** The `save` method in `WaterTestRepository` now validates `tank_id` to prevent orphaned records.
+* **Fix:** Enhanced `is_out_of_range` in `utils.validation` to safely handle missing pH or temperature values during ammonia toxicity calculations.
+* **Chore:** Identified unused `opencv-python` dependency for removal to streamline the environment.
 """
