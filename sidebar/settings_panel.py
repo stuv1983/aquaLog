@@ -82,6 +82,7 @@ def render_add_tank_section(tank_repo: TankRepository, custom_range_repo: Custom
         volume = st.number_input("Tank Volume (L)", min_value=0.0, step=0.1,
                                  value=st.session_state.get("new_tank_volume", 0.0),
                                  key="new_tank_volume_input")
+        has_co2 = st.checkbox("This tank uses CO₂", value=True, key="add_tank_has_co2")
         
         init_ranges = st.checkbox("Set initial parameter ranges", key="addtank_init_ranges_checkbox")
         new_ranges: Dict[str, Tuple[float, float]] = {}
@@ -105,7 +106,7 @@ def render_add_tank_section(tank_repo: TankRepository, custom_range_repo: Custom
             st.error("⚠️ Tank name cannot be empty. Please provide a name.")
         else:
             try:
-                new_tank = tank_repo.add(name.strip(), volume or None)
+                new_tank = tank_repo.add(name.strip(), volume or None, has_co2=has_co2)
                 new_id = new_tank['id']
                 for param, (low, high) in new_ranges.items():
                     custom_range_repo.set(new_id, param, low, high)
@@ -130,8 +131,7 @@ def render_edit_tank_section(tank_map: Dict[int, TankRecord], tank_repo: TankRep
         new_vol  = st.number_input("Volume (L)", min_value=0.0, step=0.1,
                                    value=current.get("volume_l") or 0.0,
                                    key="edit_tank_volume_input")
-        has_co2 = st.checkbox("This tank uses CO₂", value=current.get("has_co2", True), key="edit_tank_co2_status")
-
+        has_co2_edit = st.checkbox("This tank uses CO₂", value=current.get("has_co2", True), key="edit_tank_co2_status")
 
         if st.button("Save Changes", key="save_tank_changes_btn"):
             try:
@@ -142,8 +142,8 @@ def render_edit_tank_section(tank_map: Dict[int, TankRecord], tank_repo: TankRep
                 if (current.get("volume_l") or 0) != new_vol:
                     tank_repo.update_volume(tid, new_vol)
                     changes_made = True
-                if current.get("has_co2", True) != has_co2:
-                    tank_repo.set_co2_status(tid, has_co2)
+                if current.get("has_co2", True) != has_co2_edit:
+                    tank_repo.set_co2_status(tid, has_co2_edit)
                     changes_made = True
 
                 if changes_made:
