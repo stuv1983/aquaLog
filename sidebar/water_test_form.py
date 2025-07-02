@@ -91,7 +91,12 @@ def render_water_test_form(tank_map: Dict[int, TankRecord]) -> None:
 
         st.markdown("---")
         
-        co2_color = st.selectbox("CO₂ Indicator", ["Green", "Blue", "Yellow"], index=0, help=tooltips.get("co2"))
+        tank_has_co2 = tank_map.get(tank_id, {}).get("has_co2", True)
+        if tank_has_co2:
+            co2_color = st.selectbox("CO₂ Indicator", ["Green", "Blue", "Yellow"], index=0, help=tooltips.get("co2"))
+        else:
+            co2_color = None
+        
         temperature = st.number_input("Temperature (°C)", min_value=0.0, step=0.5, value=26.0, help=tooltips.get("temperature"))
         notes = st.text_area("Notes (optional)", "")
         

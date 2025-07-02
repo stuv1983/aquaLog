@@ -23,6 +23,7 @@ class TankRecord(TypedDict, total=False):
     volume_l: Optional[float]
     start_date: Optional[str]
     notes: Optional[str]
+    has_co2: bool # New field
     co2_on_hour: Optional[int] # New field
     co2_off_hour: Optional[int] # New field
     created_at: str
@@ -54,7 +55,7 @@ class TankRepository(BaseRepository):
             RuntimeError: If a database error occurs during fetching.
         """
         return [TankRecord(r) for r in super().fetch_all("""
-            SELECT id, name, volume_l, start_date, notes, co2_on_hour, co2_off_hour, -- Added new columns
+            SELECT id, name, volume_l, start_date, notes, has_co2, co2_on_hour, co2_off_hour, -- Added new columns
                    datetime(created_at) as created_at,
                    datetime(updated_at) as updated_at
             FROM tanks 
@@ -255,6 +256,31 @@ class TankRepository(BaseRepository):
             except sqlite3.Error as e:
                 conn.rollback()
                 raise RuntimeError(f"Database error: {str(e)}") from e
+
+    def set_co2_status(self, tank_id: int, has_co2: bool) -> None:
+        """
+        Sets the CO2 usage status for a specific tank.
+
+        Args:
+            tank_id (int): The ID of the tank to update.
+            has_co2 (bool): The new CO2 usage status for the tank.
+
+        Raises:
+            ValueError: If tank_id is invalid.
+            RuntimeError: If a database error occurs during the update.
+        """
+        self._validate_tank_id(tank_id)
+        
+        with self._connection() as conn:
+            try:
+                conn.execute(
+                    "UPDATE tanks SET has_co2 = ? WHERE id = ?;",
+                    (has_co2, tank_id)
+                )
+                conn.commit()
+            except sqlite3.Error as e:
+                conn.rollback()
+                raise RuntimeError(f"Database error: {e}") from e
 
 
     def get_by_id(self, tank_id: int) -> Optional[TankRecord]:

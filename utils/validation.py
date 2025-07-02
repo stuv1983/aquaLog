@@ -164,13 +164,16 @@ def is_out_of_range(
 
     # Special-case handling for CO₂ indicator, which is categorical (color-based).
     if param == "co2_indicator":
+        tank_repo = TankRepository()
+        tank_info = tank_repo.get_by_id(tank_id)
+        if not tank_info or not tank_info.get("has_co2", True):
+            return False # No warning if the tank does not have CO2 enabled
+
         if isinstance(value, pd.Series):
             return (~value.eq("Green")).any()
         if isinstance(value, str):
             if value == "Blue":
                 if test_time:
-                    tank_repo = TankRepository()
-                    tank_info = tank_repo.get_by_id(tank_id)
                     
                     custom_on_hour = tank_info.get("co2_on_hour") if tank_info else None
                     custom_off_hour = tank_info.get("co2_off_hour") if tank_info else None

@@ -280,10 +280,19 @@ def tools_tab() -> None: # Added return type hint
     """
     st.header("🛠️ Aquarium Tools & Calculators")
     
+    # Check if any tank has CO2 enabled
+    tank_repo = TankRepository()
+    tanks = tank_repo.fetch_all()
+    any_tank_has_co2 = any(tank.get("has_co2", True) for tank in tanks)
+
     # Selectbox to choose between different tools.
+    tool_options = ["Aquarium Volume Calculator", "Dosing Calculator", "Water Change Calculator"]
+    if any_tank_has_co2:
+        tool_options.append("CO₂ Canister Duration Calculator")
+
     tool_choice: str = st.selectbox( # Explicitly type tool_choice
         "Select a Tool",
-        ("Aquarium Volume Calculator", "Dosing Calculator", "Water Change Calculator", "CO₂ Canister Duration Calculator")
+        tool_options
     )
     
     st.markdown("---") # Separator

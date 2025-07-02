@@ -130,6 +130,8 @@ def render_edit_tank_section(tank_map: Dict[int, TankRecord], tank_repo: TankRep
         new_vol  = st.number_input("Volume (L)", min_value=0.0, step=0.1,
                                    value=current.get("volume_l") or 0.0,
                                    key="edit_tank_volume_input")
+        has_co2 = st.checkbox("This tank uses CO₂", value=current.get("has_co2", True), key="edit_tank_co2_status")
+
 
         if st.button("Save Changes", key="save_tank_changes_btn"):
             try:
@@ -139,6 +141,9 @@ def render_edit_tank_section(tank_map: Dict[int, TankRecord], tank_repo: TankRep
                     changes_made = True
                 if (current.get("volume_l") or 0) != new_vol:
                     tank_repo.update_volume(tid, new_vol)
+                    changes_made = True
+                if current.get("has_co2", True) != has_co2:
+                    tank_repo.set_co2_status(tid, has_co2)
                     changes_made = True
 
                 if changes_made:

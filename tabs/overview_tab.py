@@ -71,7 +71,10 @@ def overview_tab() -> None:
     st.markdown(f"Last updated: **{test_date_time_obj.strftime('%Y-%m-%d %H:%M %p')}**")
 
     # Parameters to display as metrics
-    metrics_params = ["ph", "ammonia", "nitrite", "nitrate", "temperature", "kh", "gh", "co2_indicator"]
+    metrics_params = ["ph", "ammonia", "nitrite", "nitrate", "temperature", "kh", "gh"]
+    if tank_repo.get_by_id(selected_tank_id).get("has_co2", True):
+        metrics_params.append("co2_indicator")
+    
     cols = st.columns(4)
     out_of_range_found = False
 

@@ -36,6 +36,7 @@ class SchemaManager(BaseRepository):
                 volume_l    REAL    CHECK(volume_l IS NULL OR volume_l >= 0),
                 start_date  TEXT, -- Date the tank was set up (ISO format)
                 notes       TEXT,
+                has_co2     BOOLEAN DEFAULT 1, -- New: Flag for CO2 usage
                 co2_on_hour INTEGER CHECK(co2_on_hour >= 0 AND co2_on_hour <= 23), -- New: Custom CO2 ON hour (0-23)
                 co2_off_hour INTEGER CHECK(co2_off_hour >= 0 AND co2_off_hour <= 23), -- New: Custom CO2 OFF hour (0-23)
                 created_at  TEXT DEFAULT (datetime('now')),
