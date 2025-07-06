@@ -8,3 +8,4 @@ opencv-python   # Only if you need image processing later
 apscheduler>=3.10
 XlsxWriter
 reportlab
+scikit-learn

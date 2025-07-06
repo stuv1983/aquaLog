@@ -1,4 +1,4 @@
-# utils/__init__.py (Corrected)
+# utils/__init__.py (Updated)
 
 """
 utils — Main utility package for AquaLog
@@ -35,6 +35,7 @@ from .ui.charts import (
     rolling_summary,
     multi_param_line_chart,
 )
+from .anomaly_detection import detect_anomalies # Import the new function
 
 __all__ = [
     # core
@@ -64,4 +65,6 @@ __all__ = [
     "clean_numeric_df",
     "rolling_summary",
     "multi_param_line_chart",
+    # anomaly detection
+    "detect_anomalies", # Add to __all__
 ]

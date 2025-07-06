@@ -1,4 +1,5 @@
 # tabs/data_analytics_tab.py
+
 """
 tabs/data_analytics_tab.py – multi-tank aware 🎛️
 
@@ -19,17 +20,16 @@ from statsmodels.tsa.holtwinters import ExponentialSmoothing
 
 from aqualog_db.repositories import TankRepository, WaterTestRepository
 from aqualog_db.connection import get_connection
-from utils import is_mobile, clean_numeric_df, translate
+from utils import is_mobile, clean_numeric_df, translate, detect_anomalies
 from config import SAFE_RANGES
 
 # ======================================================================================
 # MODULAR RENDER FUNCTIONS FOR EACH PANEL
-# These functions are responsible for rendering individual sections of the analytics tab.
 # ======================================================================================
 
 def render_interactive_dashboard(vis_df: pd.DataFrame, numeric_params: List[str]) -> None:
     """
-    Renders an interactive dashboard with cross-filtering capabilities using Altair. [cite: uploaded:data_analytics_tab.py]
+    Renders an interactive dashboard with cross-filtering capabilities using Altair.
 
     This dashboard includes a main time-series chart and a detail scatter plot
     that updates dynamically based on the date range selected on the main chart,
@@ -133,7 +133,7 @@ def render_interactive_dashboard(vis_df: pd.DataFrame, numeric_params: List[str]
 
 def render_raw_data_table(vis_df: pd.DataFrame, tank_name: str, start_date: datetime.date, end_date: datetime.date) -> None:
     """
-    Renders the raw data table for the selected date range and provides a download button. [cite: uploaded:data_analytics_tab.py]
+    Renders the raw data table for the selected date range and provides a download button.
 
     Args:
         vis_df (pd.DataFrame): The DataFrame containing the water test data to display.
@@ -157,7 +157,7 @@ def render_raw_data_table(vis_df: pd.DataFrame, tank_name: str, start_date: date
 
 def render_rolling_averages(vis_df: pd.DataFrame, numeric_params: List[str]) -> None:
     """
-    Renders a line chart showing 30-day rolling averages for selected numeric parameters. [cite: uploaded:data_analytics_tab.py]
+    Renders a line chart showing 30-day rolling averages for selected numeric parameters.
 
     This helps in identifying longer-term trends by smoothing out short-term fluctuations.
 
@@ -209,7 +209,7 @@ def render_rolling_averages(vis_df: pd.DataFrame, numeric_params: List[str]) -> 
 
 def render_correlation_matrix(vis_df: pd.DataFrame, numeric_params: List[str]) -> None:
     """
-    Renders a correlation matrix for selected numeric parameters. [cite: uploaded:data_analytics_tab.py]
+    Renders a correlation matrix for selected numeric parameters.
 
     This matrix helps visualize the statistical relationship between different
     water parameters.
@@ -246,7 +246,7 @@ def render_correlation_matrix(vis_df: pd.DataFrame, numeric_params: List[str]) -
 
 def render_scatter_regression(vis_df: pd.DataFrame, numeric_params: List[str]) -> None:
     """
-    Renders a scatter plot with an optional linear regression line between two selected parameters. [cite: uploaded:data_analytics_tab.py]
+    Renders a scatter plot with an optional linear regression line between two selected parameters.
 
     This plot helps visualize the direct relationship between two parameters and
     identify potential linear trends.
@@ -296,7 +296,7 @@ def render_scatter_regression(vis_df: pd.DataFrame, numeric_params: List[str]) -
 
 def render_forecast(vis_df: pd.DataFrame, numeric_params: List[str]) -> None:
     """
-    Renders a 7-day forecast for selected water parameters using Exponential Smoothing. [cite: uploaded:data_analytics_tab.py]
+    Renders a 7-day forecast for selected water parameters using Exponential Smoothing.
 
     This provides a basic projection of future parameter levels based on historical data.
 
@@ -374,6 +374,61 @@ def render_forecast(vis_df: pd.DataFrame, numeric_params: List[str]) -> None:
         else:
             st.info("No forecast can be displayed with current selections or data.")
 
+def render_anomaly_detection(vis_df: pd.DataFrame, numeric_params: List[str]) -> None:
+    """
+    Renders an anomaly detection chart for selected water parameters.
+
+    Args:
+        vis_df (pd.DataFrame): The DataFrame containing the water test data.
+        numeric_params (List[str]): A list of numeric parameter column names.
+    """
+    with st.expander("🚨 Anomaly Detection", expanded=False):
+        if len(numeric_params) < 2:
+            st.info("Need at least two numeric parameters to detect anomalies.")
+            return
+
+        anomaly_params = st.multiselect(
+            "Select parameters for anomaly detection:",
+            options=numeric_params,
+            default=numeric_params[:4] if len(numeric_params) >= 4 else numeric_params,
+            key="anomaly_detection_params"
+        )
+
+        if len(anomaly_params) < 2:
+            st.info("Please select at least two parameters for anomaly detection.")
+            return
+
+        # Detect anomalies in the data
+        df_with_anomalies = detect_anomalies(vis_df, anomaly_params)
+        anomalies = df_with_anomalies[df_with_anomalies['anomaly'] == -1]
+
+        # Create a chart to visualize the anomalies
+        base_chart = alt.Chart(df_with_anomalies).mark_line(point=True).encode(
+            x='date:T',
+            y=alt.Y(alt.repeat("layer"), type='quantitative'),
+            color=alt.Color(alt.repeat("layer"), type='nominal')
+        ).repeat(
+            layer=anomaly_params
+        )
+
+        anomaly_points = alt.Chart(anomalies).mark_circle(
+            size=100,
+            color='red'
+        ).encode(
+            x='date:T',
+            y=alt.Y(alt.repeat("layer"), type='quantitative')
+        ).repeat(
+            layer=anomaly_params
+        )
+
+        st.altair_chart(base_chart + anomaly_points, use_container_width=True)
+
+        if not anomalies.empty:
+            st.write("Detected Anomalies:")
+            st.dataframe(anomalies[['date'] + anomaly_params])
+        else:
+            st.success("No anomalies detected in the selected parameters.")
+
 
 def _get_min_max_dates(cur: sqlite3.Cursor, tank_id: int) -> tuple[Optional[datetime.date], Optional[datetime.date]]:
     """
@@ -411,7 +466,7 @@ def _get_min_max_dates(cur: sqlite3.Cursor, tank_id: int) -> tuple[Optional[date
 
 def data_analytics_tab() -> None:
     """
-    Renders the main "Data & Analytics" tab for the AquaLog application. [cite: uploaded:data_analytics_tab.py]
+    Renders the main "Data & Analytics" tab for the AquaLog application.
 
     This tab provides various tools for analyzing water test data, including
     an interactive dashboard, raw data table, rolling averages, correlation matrix,
@@ -470,6 +525,7 @@ def data_analytics_tab() -> None:
         "correlation": ("🔗 Correlation Matrix", render_correlation_matrix),
         "scatter": ("🔍 Scatter & Regression", render_scatter_regression),
         "forecast": ("📈 7-Day Forecast", render_forecast),
+        "anomaly_detection": ("🚨 Anomaly Detection", render_anomaly_detection),
     }
     
     # --- UI Rendering Controls ---
