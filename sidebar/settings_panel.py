@@ -33,17 +33,19 @@ def render_analytics_settings() -> None:
     """
     st.subheader("📊 Data & Analytics Tab")
     analytics_panels: Dict[str, str] = {
+        "interactive": "🔬 Interactive Dashboard",
         "raw_data": "🗂️ Raw Data Table",
         "rolling_avg": "🔄 30-Day Rolling Averages",
         "correlation": "🔗 Correlation Matrix",
         "scatter": "🔍 Scatter & Regression",
         "forecast": "📈 7-Day Forecast",
+        "anomaly_detection": "🚨 Anomaly Detection", # Added this line
     }
     st.multiselect(
         "Select and reorder panels to display on the analytics tab",
         options=list(analytics_panels.keys()),
         format_func=lambda key: analytics_panels[key],
-        default=list(analytics_panels.keys()),
+        default=[k for k in analytics_panels.keys() if k != 'interactive'],
         key="dashboard_panels"
     )
 
