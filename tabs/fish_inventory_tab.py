@@ -69,6 +69,7 @@ def fish_inventory_tab(key_prefix: str = "") -> None:
                 with st.container(border=True):
                     cols = st.columns([1, 3, 1, 1])
                     owned_id = row['owned_fish_id']
+                    common_name = row.get('common_name', 'Unnamed')
                     
                     with cols[0]:
                         if 'image_url' in row and row['image_url'] and str(row['image_url']).startswith('http'):
@@ -86,13 +87,16 @@ def fish_inventory_tab(key_prefix: str = "") -> None:
                         )
                         if st.button("Update", key=f"{key_prefix}save_fish_qty_{owned_id}"):
                             owned_fish_repo.update_quantity(owned_id, quantity)
-                            show_toast("✅ Quantity Updated", f"Set {row['common_name']} quantity to {quantity}.")
+                            show_toast("✅ Quantity Updated", f"Set {common_name} quantity to {quantity}.")
+                            st.rerun()
+                    
+                    with cols[3]:
+                        st.write("") 
+                        st.write("") 
+                        if st.button('🗑️ Delete', key=f"{key_prefix}del_owned_fish_{owned_id}"):
+                            owned_fish_repo.remove_from_tank(owned_id)
+                            show_toast('🗑️ Removed', f"{common_name} removed from {tank_name}")
                             st.rerun()
 
-                    if cols[3].button('🗑️', key=f"{key_prefix}del_owned_fish_{owned_id}"):
-                        owned_fish_repo.remove_from_tank(owned_id)
-                        show_toast('🗑️ Removed', f"{row['common_name']} removed from {tank_name}")
-                        st.rerun()
-                    st.divider()
     except Exception as e:
         st.error(f"An error occurred in the fish inventory tab: {e}")
