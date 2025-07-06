@@ -62,7 +62,7 @@ def render_inventory_search(
     for _, row in filtered.iterrows():
         with st.container(border=True):
             item_id = row[f'{item_type}_id']
-            name = row.get(f'{item_type}_name', 'Unnamed')
+            name = row.get(f'{item_type}_name') or row.get('common_name', 'Unnamed')
 
             cols = st.columns([1, 4, 1])
 
@@ -72,13 +72,19 @@ def render_inventory_search(
             with cols[1]:
                 display_details_fn(row)
 
-            if cols[2].button('➕ Add to My Tank', key=f'{key_prefix}add_{item_type}_{item_id}'):
-                try:
-                    owned_repo.add_to_tank(item_id, tank_id, name)
-                    show_toast('✅ Added', f'{name} added to your tank')
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Couldn't add {item_type}: {e}")
+            with cols[2]:
+                quantity = st.number_input("Add Qty", min_value=1, value=1, step=1, key=f"{key_prefix}add_qty_{item_type}_{item_id}")
+                if st.button('➕ Add', key=f'{key_prefix}add_{item_type}_{item_id}'):
+                    try:
+                        if item_type == 'plant':
+                            owned_repo.add_to_tank(item_id, tank_id, name, quantity)
+                        else: # For fish
+                            owned_repo.add_to_tank(item_id, tank_id, quantity)
+
+                        show_toast('✅ Added', f'{quantity}x {name} added to your tank')
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Couldn't add {item_type}: {e}")
 
 def render_add_new_item_form(
     item_type: str,

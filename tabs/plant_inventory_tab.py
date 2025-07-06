@@ -14,6 +14,7 @@ import pandas as pd
 import streamlit as st
 from aqualog_db.repositories import TankRepository, PlantRepository, OwnedPlantRepository
 from .inventory_tab_helpers import render_inventory_search, render_add_new_item_form
+from utils import show_toast
 
 def _display_plant_details(row: pd.Series) -> None:
     """Displays the details for a plant."""
@@ -64,13 +65,31 @@ def plant_inventory_tab(key_prefix: str = "") -> None:
         else:
             for _, row in owned.iterrows():
                 with st.container(border=True):
-                    cols = st.columns([1, 4, 1])
+                    cols = st.columns([1, 3, 1, 1])
                     pid = row['plant_id']
-                    _display_plant_details(row)
+                    name = row['display_name']
 
-                    if cols[2].button('🗑️', key=f'{key_prefix}del_owned_plant_{pid}'):
+                    if 'thumbnail_url' in row and row['thumbnail_url'] and str(row['thumbnail_url']).startswith('http'):
+                        cols[0].image(row['thumbnail_url'], width=80)
+
+                    with cols[1]:
+                        _display_plant_details(row)
+                    
+                    with cols[2]:
+                        quantity = st.number_input(
+                            "Qty",
+                            min_value=1,
+                            value=int(row.get('quantity', 1)),
+                            key=f"{key_prefix}qty_plant_{pid}"
+                        )
+                        if st.button("Update", key=f"{key_prefix}save_plant_qty_{pid}"):
+                            owned_plant_repo.update_quantity(pid, tid, quantity)
+                            show_toast("✅ Quantity Updated", f"Set {name} quantity to {quantity}.")
+                            st.rerun()
+
+                    if cols[3].button('🗑️', key=f'{key_prefix}del_owned_plant_{pid}'):
                         owned_plant_repo.remove_from_tank(pid, tid)
-                        st.toast(f"🗑️ Removed {row['display_name']} from {tank_name}")
+                        show_toast('🗑️ Removed', f'{name} removed from {tank_name}')
                         st.rerun()
                     st.divider()
     except Exception as e:

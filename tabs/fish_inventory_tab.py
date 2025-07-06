@@ -12,6 +12,7 @@ import streamlit as st
 import pandas as pd
 from aqualog_db.repositories import TankRepository, FishRepository, OwnedFishRepository
 from .inventory_tab_helpers import render_inventory_search, render_add_new_item_form
+from utils import show_toast
 
 def _display_fish_details(row: pd.Series) -> None:
     """Displays the details for a fish."""
@@ -66,12 +67,31 @@ def fish_inventory_tab(key_prefix: str = "") -> None:
         else:
             for _, row in owned.iterrows():
                 with st.container(border=True):
+                    cols = st.columns([1, 3, 1, 1])
                     owned_id = row['owned_fish_id']
-                    _display_fish_details(row)
+                    
+                    with cols[0]:
+                        if 'image_url' in row and row['image_url'] and str(row['image_url']).startswith('http'):
+                            st.image(row['image_url'], width=80)
 
-                    if st.button('🗑️', key=f"{key_prefix}del_owned_fish_{owned_id}"):
+                    with cols[1]:
+                        _display_fish_details(row)
+
+                    with cols[2]:
+                        quantity = st.number_input(
+                            "Qty",
+                            min_value=1,
+                            value=int(row.get('quantity', 1)),
+                            key=f"{key_prefix}qty_fish_{owned_id}"
+                        )
+                        if st.button("Update", key=f"{key_prefix}save_fish_qty_{owned_id}"):
+                            owned_fish_repo.update_quantity(owned_id, quantity)
+                            show_toast("✅ Quantity Updated", f"Set {row['common_name']} quantity to {quantity}.")
+                            st.rerun()
+
+                    if cols[3].button('🗑️', key=f"{key_prefix}del_owned_fish_{owned_id}"):
                         owned_fish_repo.remove_from_tank(owned_id)
-                        st.toast(f"🗑️ Removed {row['common_name']} from {tank_name}")
+                        show_toast('🗑️ Removed', f"{row['common_name']} removed from {tank_name}")
                         st.rerun()
                     st.divider()
     except Exception as e:
