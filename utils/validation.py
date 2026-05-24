@@ -164,26 +164,30 @@ def is_out_of_range(
 
     # Special-case handling for CO₂ indicator, which is categorical (color-based).
     if param == "co2_indicator":
+        # Instantiate TankRepository once here rather than inside a deeper branch.
+        # Note: callers that check co2_indicator in a loop (e.g. warnings_tab)
+        # should ideally pass tank_info in to avoid repeated DB calls, but that
+        # would require an API change. This is at least contained to one call per
+        # is_out_of_range invocation.
         tank_repo = TankRepository()
         tank_info = tank_repo.get_by_id(tank_id)
         if not tank_info or not tank_info.get("has_co2", True):
-            return False # No warning if the tank does not have CO2 enabled
+            return False  # No warning if the tank does not have CO2 enabled
 
         if isinstance(value, pd.Series):
             return (~value.eq("Green")).any()
         if isinstance(value, str):
             if value == "Blue":
                 if test_time:
-                    
-                    custom_on_hour = tank_info.get("co2_on_hour") if tank_info else None
-                    custom_off_hour = tank_info.get("co2_off_hour") if tank_info else None
+                    custom_on_hour = tank_info.get("co2_on_hour")
+                    custom_off_hour = tank_info.get("co2_off_hour")
 
                     # Determine schedule to use: custom if both are set, otherwise global default
                     if custom_on_hour is not None and custom_off_hour is not None:
                         on_hour_start, on_hour_end = custom_on_hour, custom_off_hour
                     else:
                         on_hour_start, on_hour_end = CO2_ON_SCHEDULE
-                    
+
                     current_hour = test_time.hour
 
                     is_on_period = False
@@ -193,12 +197,14 @@ def is_out_of_range(
                     else:
                         # Period DOES span midnight (e.g., 22 to 6)
                         is_on_period = (on_hour_start <= current_hour or current_hour < on_hour_end)
-                    
+
                     if not is_on_period:
-                        return False # Suppress warning
-                return value != "Green"
+                        return False  # Suppress warning: CO2 is expected to be off right now
+                # If test_time is None we cannot determine whether CO2 is scheduled
+                # to be on, so we conservatively treat Blue as out-of-range.
+                return True
             elif value == "Yellow":
-                return True # Yellow (high) is always a warning
+                return True  # Yellow (high CO2) is always a warning
         return False
 
     custom_range_repo = CustomRangeRepository()

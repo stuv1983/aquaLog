@@ -11,7 +11,7 @@ range and specific parameters.
 
 from __future__ import annotations
 from typing import Any, List, Dict, TypedDict, Optional
-from datetime import date, datetime # Corrected import: import datetime class
+from datetime import date, datetime
 
 import pandas as pd
 import streamlit as st
@@ -21,6 +21,9 @@ from config import SAFE_RANGES, ACTION_PLANS, LOW_ACTION_PLANS
 from utils import calculate_alkaline_buffer_dose, calculate_equilibrium_dose, calculate_fritzzyme7_dose
 from utils.localization import format_with_units
 from utils.validation import is_out_of_range
+# _build_banner_details and show_parameter_advice live canonically in alerts.py.
+# Import them here instead of duplicating.
+from utils.ui.alerts import show_parameter_advice
 
 # Define a list of valid water parameters that are consistently checked for warnings.
 VALID_PARAMETERS: list[str] = ["ph", "ammonia", "nitrite", "nitrate", "temperature", "kh", "gh", "co2_indicator"]
@@ -39,55 +42,6 @@ class WarningEntry(TypedDict, total=False):
     low_warnings: List[WarningParamDetail]
     high_warnings: List[WarningParamDetail]
     fish_compatibility_warnings: List[str]
-
-def _build_banner_details(param: str, value: float, low: float, high: float) -> str:
-    """
-    Constructs a formatted string detailing an out-of-range parameter and its
-    associated action plan for display in warning banners or advice cards.
-    """
-    if value < low:
-        plan = LOW_ACTION_PLANS.get(param, ["No plan available."])
-        return (f"- **{param.upper()}**: Too low ({format_with_units(value, param)} < "
-                f"{format_with_units(low, param)}); " + "; ".join(plan))
-    
-    plan = ACTION_PLANS.get(param, ["No plan available."])
-    return (f"- **{param.upper()}**: Too high ({format_with_units(value, param)} > "
-            f"{format_with_units(high, param)}); " + "; ".join(plan))
-
-
-def show_parameter_advice(param: str, value: float) -> None:
-    """
-    Displays formatted advice for a single parameter based on whether its value
-    is too low, too high, or within the safe range.
-    """
-    if param not in SAFE_RANGES:
-        st.warning(f"Unknown parameter: {param}")
-        return
-        
-    low, high = SAFE_RANGES[param]
-    formatted_value = format_with_units(value, param)
-    
-    if value < low:
-        with st.container(border=True):
-            st.warning(f"⚠️ {param.upper()} is too LOW ({formatted_value})")
-            st.caption(f"Safe range: {format_with_units(low, param)}–{format_with_units(high, param)}")
-            for line in LOW_ACTION_PLANS.get(param, ["No plan available."]):
-                st.write(f"• {line}")
-        return
-        
-    if value > high:
-        with st.container(border=True):
-            st.error(f"❗ {param.upper()} is too HIGH ({formatted_value})")
-            st.caption(f"Safe range: {format_with_units(low, param)}–{format_with_units(high, param)}")
-            for line in ACTION_PLANS.get(param, ["No plan available."]):
-                st.write(f"• {line}")
-        return
-        
-    st.success(
-        f"✓ {param.upper()} ({formatted_value}) is within safe range "
-        f"({format_with_units(low, param)}–{format_with_units(high, param)})",
-        icon="✓"
-    )
 
 
 def warnings_tab(key_prefix: str = "") -> None:

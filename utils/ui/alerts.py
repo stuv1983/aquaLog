@@ -8,17 +8,16 @@ the user. Includes functions for showing toast messages, formatted parameter
 advice cards, and a prominent banner for out-of-range water test results.
 """
 
-from __future__ import annotations # Already present, ensuring consistency
+from __future__ import annotations
 
+from datetime import datetime
 from typing import Optional, Any
 import streamlit as st
 from config import SAFE_RANGES, ACTION_PLANS, LOW_ACTION_PLANS
 
-# FIXED: Corrected the relative import paths for both validation and localization
 from ..validation import is_out_of_range
 from ..localization import format_with_units
 
-# Import WaterTestRecord TypedDict
 from aqualog_db.repositories.water_test import WaterTestRecord
 
 
@@ -115,48 +114,52 @@ def show_out_of_range_banner(*_args: Any, **_kwargs: Any) -> None:
     Returns:
         None: This function renders UI elements and does not return any value.
     """
-    # Import WaterTestRepository locally to break a potential circular dependency.
     from aqualog_db.repositories import WaterTestRepository
-    # Import is_out_of_range locally as it's part of the core logic to check status.
     from utils.validation import is_out_of_range
 
-    # Get the currently selected tank ID from Streamlit's session state.
     tank_id = st.session_state.get("tank_id")
     if not tank_id:
-        return # Do nothing if no tank is selected.
+        return
 
     repo = WaterTestRepository()
-    latest_test: Optional[WaterTestRecord] = repo.get_latest_for_tank(tank_id) # Explicitly type latest_test
+    latest_test: Optional[WaterTestRecord] = repo.get_latest_for_tank(tank_id)
 
     if not latest_test:
-        return # Do nothing if no water test data is available for the tank.
+        return
+
+    # Parse test_time so the CO₂ schedule suppression logic in is_out_of_range
+    # can suppress "CO₂ low" warnings outside the injection window. Previously
+    # test_time was not passed here, so the suppression never fired.
+    test_time = None
+    raw_date = latest_test.get("date")
+    if raw_date:
+        try:
+            test_time = datetime.fromisoformat(raw_date).time()
+        except (ValueError, TypeError):
+            pass
 
     out_of_range_found = False
-    
-    # Define the relevant parameters to check for out-of-range values.
     relevant_params = ["ph", "ammonia", "nitrite", "nitrate", "temperature", "kh", "gh", "co2_indicator"]
 
-    # Iterate through parameters to check if any are out of range.
     for param in relevant_params:
         value = latest_test.get(param)
         if value is not None:
-            # Call the validation utility function to check if the parameter is out of range.
             if is_out_of_range(
                 param,
                 value,
-                tank_id=tank_id, # Pass tank_id for custom range lookup
-                ph=latest_test.get("ph"),       # Pass pH for ammonia calculation
-                temp_c=latest_test.get("temperature") # Pass temperature for ammonia calculation
+                tank_id=tank_id,
+                ph=latest_test.get("ph"),
+                temp_c=latest_test.get("temperature"),
+                test_time=test_time,  # Fixed: was not passed before; CO₂ schedule suppression now works
             ):
                 out_of_range_found = True
-                break # A single out-of-range parameter is enough to show the banner.
+                break
 
     if out_of_range_found:
-        # Display the Streamlit warning banner.
         st.warning(
             "⚠️ The most recent water test has out-of-range parameters. "
             "Check the 'Warnings' tab for details.",
-            icon="❗" # Display an exclamation icon.
+            icon="❗",
         )
 
 

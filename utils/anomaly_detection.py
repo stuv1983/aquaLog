@@ -30,8 +30,11 @@ def detect_anomalies(df: pd.DataFrame, params: list[str]) -> pd.DataFrame:
     if df.empty or not params:
         return df
 
-    # Select the relevant columns and drop rows with missing values
-    data = df[params].dropna()
+    # Select the relevant columns and drop rows with missing values.
+    # .copy() is required here: assigning a new column to a slice of a DataFrame
+    # triggers a SettingWithCopyWarning in pandas and may silently fail in future
+    # versions. Working on an explicit copy avoids this entirely.
+    data = df[params].dropna().copy()
 
     if data.empty:
         return df
@@ -42,7 +45,7 @@ def detect_anomalies(df: pd.DataFrame, params: list[str]) -> pd.DataFrame:
     model = IsolationForest(contamination='auto', random_state=42)
     predictions = model.fit_predict(data)
 
-    # Add the predictions to the DataFrame
+    # Add the predictions to the explicit copy — safe from SettingWithCopyWarning.
     data['anomaly'] = predictions
 
     # Merge the anomaly predictions back into the original DataFrame

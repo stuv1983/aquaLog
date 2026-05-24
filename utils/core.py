@@ -32,8 +32,15 @@ def cache_data(func: Callable) -> Callable:
     Returns:
         Callable: The wrapped, cached function.
     """
-    @st.cache_data(show_spinner=False) # Apply Streamlit's data caching. show_spinner=False hides default spinner.
-    @wraps(func) # Preserves function metadata (e.g., name, docstring)
+    # @wraps must be applied BEFORE @st.cache_data in terms of execution order.
+    # Decorators are applied bottom-up, so writing @wraps first (outer) and
+    # letting @st.cache_data (inner) operate on `func` directly ensures Streamlit
+    # builds the cache key from the original function's identity and signature,
+    # not from the wrapper. Previously the ordering was reversed, which meant
+    # st.cache_data saw `wrapper` as the function to cache — effectively a no-op
+    # because every call to `cache_data` creates a new `wrapper` object.
+    @wraps(func)
+    @st.cache_data(show_spinner=False)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         return func(*args, **kwargs)
     return wrapper

@@ -59,7 +59,11 @@ TOO_HIGH_THRESHOLDS: dict[str, float] = {
     "kh":            8.0,
     "gh":            10.0,
     "co2_indicator": 2.0,  # Corresponds to "Yellow" indicator
-    "ammonia":       0.02, # Any non-zero unionized ammonia is too high (specific for calculation)
+    # NOTE: This threshold is for *unionized* NH₃ (calculated via nh3_fraction),
+    # NOT total ammonia. It is only consumed by the special-case branch in
+    # is_out_of_range() and should not be compared directly against raw ammonia
+    # readings. Named "ammonia" for dict-key consistency with other parameters.
+    "ammonia":       0.02,
 }
 
 # Action plans provided to the user when a parameter is detected as "too low".
@@ -178,7 +182,7 @@ UNIT_SYSTEMS: dict[str, dict[str, str]] = {
         "nitrite":       "ppm",
         "nitrate":       "ppm",
         "ph":            "",
-        "kh":            "°dKH",  # General Hardness used for KH in some imperial contexts
+        "kh":            "°dKH",  # Carbonate Hardness — same unit in Imperial contexts
         "gh":            "°GH",
         "co2_indicator": "",
     },
@@ -237,17 +241,20 @@ class WeeklyEmailTimeConfig(TypedDict):
 
 # Configuration for the weekly summary email feature.
 # This dictionary holds all necessary settings for sending automated email reports.
-WEEKLY_EMAIL_TIME: WeeklyEmailTimeConfig = { # Updated type hint to use TypedDict
-    'day_of_week': 'mon',         # Day of the week to send the email (e.g., 'mon', 'tue')
-    'hour': 9,                    # Hour to send the email (24-hour format)
-    'minute': 0,                  # Minute to send the email
-    'from_address': 'your_email@example.com', # Sender's email address
-    'smtp': {                     # SMTP server settings
-        'host': 'smtp.example.com', # SMTP host
-        'port': 587,                # SMTP port (e.g., 587 for TLS)
-        'tls': True,                # Use TLS encryption
-        'username': 'smtp_user',    # SMTP username
-        'password': 'smtp_password',# SMTP password (consider environment variables for production)
+WEEKLY_EMAIL_TIME: WeeklyEmailTimeConfig = {
+    'day_of_week': 'mon',
+    'hour': 9,
+    'minute': 0,
+    'from_address': os.environ.get('AQUALOG_EMAIL_FROM', 'your_email@example.com'),
+    'smtp': {
+        'host':     os.environ.get('AQUALOG_SMTP_HOST', 'smtp.example.com'),
+        'port':     int(os.environ.get('AQUALOG_SMTP_PORT', '587')),
+        'tls':      os.environ.get('AQUALOG_SMTP_TLS', 'true').lower() == 'true',
+        # Credentials are read from environment variables so they are never
+        # committed to source control. Set AQUALOG_SMTP_USER and
+        # AQUALOG_SMTP_PASS in your deployment environment or a .env file.
+        'username': os.environ.get('AQUALOG_SMTP_USER', ''),
+        'password': os.environ.get('AQUALOG_SMTP_PASS', ''),
     },
 }
 

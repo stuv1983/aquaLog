@@ -68,7 +68,9 @@ def overview_tab() -> None:
     # Display the date and time of the latest test prominently
     test_date_time_obj = datetime.fromisoformat(latest_test['date']) # Corrected usage here
     test_time_for_co2 = test_date_time_obj.time()
-    st.markdown(f"Last updated: **{test_date_time_obj.strftime('%Y-%m-%d %H:%M %p')}**")
+    # Use 12-hour clock (%I) with AM/PM (%p). Previously %H (24-hour) was paired
+    # with %p, which is contradictory — %p is meaningless alongside %H.
+    st.markdown(f"Last updated: **{test_date_time_obj.strftime('%Y-%m-%d %I:%M %p')}**")
 
     # Parameters to display as metrics
     metrics_params = ["ph", "ammonia", "nitrite", "nitrate", "temperature", "kh", "gh"]
