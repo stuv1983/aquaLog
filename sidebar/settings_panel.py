@@ -232,7 +232,7 @@ def render_delete_tank_confirmation_section(tid: int, tank_map: Dict[int, TankRe
     else:
         name = tank_map[tid]["name"]
         st.warning(f"🚨 Permanently delete tank **'{name}'** and **ALL** its associated data (water tests, plants, fish, equipment, maintenance). This action **cannot** be undone.")
-        confirm = st.checkbox(f"I understand and want to delete ALL tests for '{name}'", key=confirm_ck)
+        confirm = st.checkbox(f"I understand and want to permanently delete tank '{name}' and ALL its data", key=confirm_ck)
         
         col_yes, col_cancel = st.columns(2)
         with col_yes:

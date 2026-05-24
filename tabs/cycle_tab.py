@@ -47,8 +47,12 @@ def _is_tank_cycled(df: pd.DataFrame) -> bool:
     # Get the last 3 test results for analysis.
     recent_tests = df.tail(3)
 
-    # Get safe upper limits for ammonia and nitrite from configuration.
-    # These are typically 0 ppm for a cycled tank.
+    # Get safe upper limits for ammonia and nitrite from the global config.
+    # Both are 0.0 ppm — meaning any detectable trace will mark the tank as not cycled.
+    # This is intentionally strict: even 0.01 ppm ammonia means nitrification is
+    # still active. Custom ranges are intentionally not used here because the
+    # cycling criterion (ammonia = 0, nitrite = 0) is a biological fact, not a
+    # user preference.
     ammonia_safe_high = SAFE_RANGES.get("ammonia", (0, 0))[1]
     nitrite_safe_high = SAFE_RANGES.get("nitrite", (0, 0))[1]
 

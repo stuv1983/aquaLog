@@ -383,9 +383,14 @@ def data_analytics_tab() -> None:
     """
     Renders the main "Data & Analytics" tab for the AquaLog application.
     """
-    tank_id: int = st.session_state.get("tank_id", 1)
+    tank_id: int = st.session_state.get("tank_id", 0)
     tank_repo = TankRepository()
     tanks = tank_repo.fetch_all()
+
+    if not tank_id:
+        st.info("Please select a tank from the sidebar to see analytics.")
+        return
+
     tank_name = next((t["name"] for t in tanks if t["id"] == tank_id), f"Tank #{tank_id}")
     st.header(f"📊 {translate('Data & Analytics')} — {tank_name}")
 

@@ -172,10 +172,9 @@ def maintenance_tab() -> None:
         next_due = None
         # Calculate next due date if linked to an active cycle.
         if selected_cycle_id is not None:
-            if selected_cycle_id in [c['id'] for c in active_cycles]:
-                selected_cycle = next(c for c in active_cycles if c['id'] == selected_cycle_id)
-                next_due = date_in + timedelta(days=selected_cycle['frequency_days'])
-                st.info(f"Next due will be automatically set to {next_due.strftime('%Y-%m-%d')} based on cycle frequency")
+            selected_cycle = next(c for c in active_cycles if c['id'] == selected_cycle_id)
+            next_due = date_in + timedelta(days=selected_cycle['frequency_days'])
+            st.info(f"Next due will be automatically set to {next_due.strftime('%Y-%m-%d')} based on cycle frequency")
         
         submitted = st.form_submit_button("💾 Save Entry")
 

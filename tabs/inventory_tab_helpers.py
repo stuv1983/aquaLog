@@ -45,7 +45,13 @@ def render_inventory_search(
     if not query:
         return
 
-    search_cols = [col for col in master.columns if master[col].dtype == 'object']
+    # Build a searchable string from all text columns, but exclude ID columns —
+    # including them would cause searches like "1" to match every record whose
+    # primary or foreign key happens to contain that digit.
+    search_cols = [
+        col for col in master.columns
+        if master[col].dtype == 'object' and not col.endswith('_id')
+    ]
     if not search_cols:
         st.info(f"No searchable fields for {item_type}.")
         return

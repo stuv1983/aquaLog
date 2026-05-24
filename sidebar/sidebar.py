@@ -42,12 +42,11 @@ def sidebar_entry() -> None:
     # Fetch all tanks from the database to populate the tank selector
     tanks = TankRepository().fetch_all()
     
-    # Create a map of tank IDs to their names and volumes for easy access
-    # Using TankRecord to provide more specific type hinting for tank details
-    tank_map: Dict[int, TankRecord] = { # Refined type hint
-        t["id"]: TankRecord(name=t["name"], volume_l=t.get("volume_l", 0.0)) # Cast to TankRecord
-        for t in tanks
-    }
+    # Build a map of tank_id → full tank dict. Previously this used TankRecord(...)
+    # as a constructor, which silently stripped extra fields (has_co2, co2_on_hour,
+    # co2_off_hour, volume_l, etc.) that downstream components — particularly
+    # water_test_form — rely on. Pass the full dict from the DB instead.
+    tank_map: Dict[int, TankRecord] = {t["id"]: t for t in tanks}
 
     # Render the tank selection dropdown at the top of the sidebar
     render_tank_selector(tank_map)

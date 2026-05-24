@@ -70,6 +70,14 @@ def _load_failed_tests(tank_id: int | None) -> _pd.DataFrame:
     mask = _pd.Series(False, index=numeric_df.index)
     # Iterate through each parameter and its safe range to build the mask.
     for col, (low, high) in SAFE_RANGES.items():
+        # co2_indicator is categorical (Green/Blue/Yellow), not numeric.
+        # Numeric coercion above turns its string values into NaN, so the
+        # < / > comparisons would never match. Skip it here; the Warnings tab
+        # handles it separately via is_out_of_range().
+        if col == "co2_indicator":
+            if col in numeric_df.columns:
+                mask |= ~numeric_df[col].isin(["Green", _pd.NA, None]) & numeric_df[col].notna()
+            continue
         if col in numeric_df.columns:
             # Check if value is less than low OR greater than high.
             mask |= (numeric_df[col] < low) | (numeric_df[col] > high)

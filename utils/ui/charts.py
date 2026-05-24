@@ -19,14 +19,11 @@ from config import SAFE_RANGES
 # ────────────────────────────────────────────────────────────────
 # Known numeric measurement keys
 # ────────────────────────────────────────────────────────────────
+# Known numeric measurement keys.
+# A set of parameter names (column keys) that are expected to hold numeric
+# measurement values in DataFrames. Used for consistent data-type coercion
+# across charting and analytical functions.
 KNOWN_NUMERIC: set[str] = {
-    """
-    A set of parameter names (column keys) that are expected to hold numeric
-    measurement values in DataFrames.
-    This set is used for consistent data type coercion across the application's
-    charting and analytical functions, ensuring numerical columns are treated
-    as floats for plotting.
-    """
     "ph", "ammonia", "nitrite", "nitrate",
     "temperature", "kh", "gh",
 }
