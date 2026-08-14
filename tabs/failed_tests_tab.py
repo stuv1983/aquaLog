@@ -15,7 +15,7 @@ import streamlit as st
 # 1. Import repositories instead of legacy functions
 from aqualog_db.repositories import TankRepository, WaterTestRepository
 
-from utils import clean_numeric_df, is_mobile, translate, format_with_units
+from utils import clean_numeric_df, is_mobile, translate, format_with_units, is_out_of_range
 from config import SAFE_RANGES
 from components import highlight_out_of_range
 
@@ -25,14 +25,75 @@ from components import highlight_out_of_range
 # Helper – get tank‑scoped dataframe of *failed* tests only
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _co2_failure_mask(df: _pd.DataFrame, tank_id: int | None) -> _pd.Series:
+    """
+    Builds a boolean mask flagging rows whose ``co2_indicator`` reading counts as
+    a failure, using the canonical `utils.validation.is_out_of_range` validator.
+
+    Delegating to the validator keeps this tab consistent with the Warnings tab:
+    "Blue" is suppressed outside the tank's CO₂ injection window, and tanks with
+    CO₂ disabled never fail on this parameter. Because the CO₂ verdict depends
+    only on the colour and the hour of the test, results are memoised per
+    (colour, hour) pair so the validator's per-call DB lookups run at most a
+    handful of times instead of once per row.
+
+    Args:
+        df (_pd.DataFrame): Water test rows. Must contain a ``co2_indicator``
+                            column; an optional ``date`` column supplies the
+                            test timestamp used for schedule-aware suppression.
+        tank_id (int | None): The tank the readings belong to. When None, no row
+                              can be evaluated and an all-False mask is returned.
+
+    Returns:
+        _pd.Series: A boolean Series aligned with `df.index`, True where the
+                    CO₂ reading is out of range.
+    """
+    empty_mask = _pd.Series(False, index=df.index, dtype=bool)
+    if tank_id is None or "co2_indicator" not in df.columns:
+        return empty_mask
+
+    # `clean_numeric_df` already coerces 'date' to datetime, but this helper is
+    # cheap enough to re-run and keeps the function usable on raw frames too.
+    if "date" in df.columns:
+        timestamps = _pd.to_datetime(df["date"], errors="coerce").tolist()
+    else:
+        timestamps = [None] * len(df)
+
+    cache: dict[tuple[str, int | None], bool] = {}
+    flags: list[bool] = []
+    for raw_value, timestamp in zip(df["co2_indicator"].tolist(), timestamps):
+        # Blank / missing readings are simply "not tested", never a failure.
+        if not isinstance(raw_value, str) or not raw_value.strip():
+            flags.append(False)
+            continue
+
+        value = raw_value.strip()
+        test_time = timestamp.time() if timestamp is not None and _pd.notna(timestamp) else None
+        key = (value, test_time.hour if test_time is not None else None)
+        if key not in cache:
+            cache[key] = bool(
+                is_out_of_range(
+                    "co2_indicator",
+                    value,
+                    tank_id=tank_id,
+                    test_time=test_time,
+                )
+            )
+        flags.append(cache[key])
+
+    return _pd.Series(flags, index=df.index, dtype=bool)
+
+
 def _load_failed_tests(tank_id: int | None) -> _pd.DataFrame:
     """
     Loads all water test records for a given tank and filters them to return
     only those records where at least one parameter is outside its defined
     `SAFE_RANGES`.
 
-    The function ensures numeric types for comparison and handles potential
-    missing values during filtering.
+    Numeric parameters are compared directly against `SAFE_RANGES`, while the
+    categorical `co2_indicator` is evaluated by `is_out_of_range()` (see
+    `_co2_failure_mask`) so that CO₂ schedule and per-tank CO₂ settings are
+    respected exactly as they are on the Warnings tab.
 
     Args:
         tank_id (int | None): The ID of the tank to load failed tests for.
@@ -62,7 +123,11 @@ def _load_failed_tests(tank_id: int | None) -> _pd.DataFrame:
     
     # Coerce all columns relevant to SAFE_RANGES to numeric to avoid string/float comparisons.
     # Non-numeric values will become NaN after coercion.
+    # co2_indicator is deliberately excluded: it is categorical (Green/Blue/Yellow)
+    # and coercing it would destroy the very values `_co2_failure_mask` needs.
     for col in SAFE_RANGES:
+        if col == "co2_indicator":
+            continue
         if col in numeric_df.columns:
             numeric_df[col] = _pd.to_numeric(numeric_df[col], errors='coerce')
 
@@ -70,18 +135,17 @@ def _load_failed_tests(tank_id: int | None) -> _pd.DataFrame:
     mask = _pd.Series(False, index=numeric_df.index)
     # Iterate through each parameter and its safe range to build the mask.
     for col, (low, high) in SAFE_RANGES.items():
-        # co2_indicator is categorical (Green/Blue/Yellow), not numeric.
-        # Numeric coercion above turns its string values into NaN, so the
-        # < / > comparisons would never match. Skip it here; the Warnings tab
-        # handles it separately via is_out_of_range().
+        # Handled below by the canonical validator, which is schedule-aware.
         if col == "co2_indicator":
-            if col in numeric_df.columns:
-                mask |= ~numeric_df[col].isin(["Green", _pd.NA, None]) & numeric_df[col].notna()
             continue
         if col in numeric_df.columns:
             # Check if value is less than low OR greater than high.
             mask |= (numeric_df[col] < low) | (numeric_df[col] > high)
-            
+
+    # Categorical CO₂ check, delegated to is_out_of_range() so this tab agrees
+    # with the Warnings tab on schedule-based and no-CO₂-tank suppression.
+    mask |= _co2_failure_mask(numeric_df, tank_id)
+
     return numeric_df[mask] # Return only the rows that are out of range
 
 # ─────────────────────────────────────────────────────────────────────────────

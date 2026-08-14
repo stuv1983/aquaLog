@@ -119,7 +119,13 @@ def _highlight(v: float, lo: float, hi: float) -> str:
     """
     if lo is None or hi is None or pd.isna(v):
         return ""
-    return "background-color: red; color: white;" if (v < lo or v > hi) else ""
+    try:
+        val = float(v)
+    except (TypeError, ValueError):
+        # Categorical columns (e.g. co2_indicator) carry string values that
+        # cannot be range-compared; leave them unstyled rather than raising.
+        return ""
+    return "background-color: red; color: white;" if (val < lo or val > hi) else ""
 
 
 def highlight_out_of_range(df: pd.DataFrame, safe_ranges: dict[str, tuple[float, float]]) -> Styler: # Refined safe_ranges type

@@ -36,19 +36,24 @@ HARD_LIMITS: dict[str, tuple[float, float]] = {
 
 def arrow_safe(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Ensures that the 'date' column in a Pandas DataFrame is of `datetime64[ns]` dtype.
+    Ensures that the 'date' column in a Pandas DataFrame is a datetime dtype.
     This is necessary for compatibility with Streamlit's Arrow serialization,
     which can otherwise cause issues when displaying DataFrames with date columns.
+
+    Any datetime64 resolution is accepted: pandas picks the unit itself (pandas 3
+    infers `datetime64[us]` from ISO date strings, earlier versions used `[ns]`),
+    and Arrow serialises all of them. Testing for one exact unit would re-convert
+    an already-converted column on every call.
 
     Args:
         df (pd.DataFrame): The input Pandas DataFrame.
 
     Returns:
         pd.DataFrame: A copy of the DataFrame with the 'date' column coerced to
-                      `datetime64[ns]`. Non-coercible values in the 'date' column
+                      a datetime dtype. Non-coercible values in the 'date' column
                       will become `NaT` (Not a Time).
     """
-    if "date" in df.columns and df["date"].dtype != "datetime64[ns]":
+    if "date" in df.columns and not pd.api.types.is_datetime64_any_dtype(df["date"]):
         df = df.copy()
         df["date"] = pd.to_datetime(df["date"], errors="coerce")
     return df

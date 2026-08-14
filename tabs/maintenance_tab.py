@@ -123,8 +123,10 @@ def maintenance_tab() -> None:
     # Fetch active cycles to allow linking new entries to a cycle.
     active_cycles: List[MaintenanceCycleRecord] = [c for c in maintenance_repo.fetch_maintenance_cycles(tank_id) if c['is_active']] # Explicitly type active_cycles
     
-    # Initialize selected_cycle_id outside the conditional block
-    selected_cycle_id = None 
+    # Initialize outside the conditional block; `selected_cycle` is resolved once
+    # inside the form and reused so the lookup cannot go stale mid-render.
+    selected_cycle_id = None
+    selected_cycle: MaintenanceCycleRecord | None = None
 
     # Form for adding a new maintenance log entry.
     with st.form("add_maintenance_form", clear_on_submit=True):
@@ -147,9 +149,17 @@ def maintenance_tab() -> None:
                 selected_cycle_id = selected_option["value"]
                 
                 m_type_value = ""
+                # Resolve with a default: a cycle retained in widget state may have
+                # been deactivated or deleted, and a bare next() would raise
+                # StopIteration and break the whole tab.
                 if selected_cycle_id:
+                    selected_cycle = next((c for c in active_cycles if c['id'] == selected_cycle_id), None)
+                    if selected_cycle is None:
+                        # Stale selection – fall back to a custom entry.
+                        selected_cycle_id = None
+
+                if selected_cycle is not None:
                     # If a cycle is selected, pre-fill the maintenance type and disable editing.
-                    selected_cycle = next(c for c in active_cycles if c['id'] == selected_cycle_id)
                     m_type_value = selected_cycle['type']
                     m_type = st.text_input("Type*", value=m_type_value, disabled=True, help="The type of maintenance performed.")
                 else:
@@ -170,9 +180,9 @@ def maintenance_tab() -> None:
         notes = st.text_area("Notes (optional)", help="Any additional notes about this specific event.")
         
         next_due = None
-        # Calculate next due date if linked to an active cycle.
-        if selected_cycle_id is not None:
-            selected_cycle = next(c for c in active_cycles if c['id'] == selected_cycle_id)
+        # Calculate next due date if linked to an active cycle. Reuses the cycle
+        # resolved above, so no second (potentially failing) lookup is needed.
+        if selected_cycle is not None:
             next_due = date_in + timedelta(days=selected_cycle['frequency_days'])
             st.info(f"Next due will be automatically set to {next_due.strftime('%Y-%m-%d')} based on cycle frequency")
         

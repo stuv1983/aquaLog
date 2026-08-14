@@ -5,14 +5,31 @@ from datetime import time
 
 pd = pytest.importorskip('pandas')
 
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+# `utils/validation.py` does `from config import ...` and
+# `from aqualog_db.repositories import ...`, so the project root must be importable.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 # Stub streamlit for modules that expect it
 st = types.ModuleType('streamlit')
 st.session_state = {}
 sys.modules['streamlit'] = st
 
-module_path = pathlib.Path(__file__).resolve().parents[1] / 'utils' / 'validation.py'
-spec = importlib.util.spec_from_file_location('validation', module_path)
+# validation.py also uses the relative import `from .chemistry import nh3_fraction`,
+# which only resolves if the module is loaded under a package-qualified name.
+# Register a lightweight `utils` package (rather than importing the real
+# `utils/__init__.py`, which pulls in the whole Streamlit UI layer) so the
+# relative import resolves against utils/ on disk.
+if 'utils' not in sys.modules:
+    utils_pkg = types.ModuleType('utils')
+    utils_pkg.__path__ = [str(ROOT / 'utils')]
+    sys.modules['utils'] = utils_pkg
+
+module_path = ROOT / 'utils' / 'validation.py'
+spec = importlib.util.spec_from_file_location('utils.validation', module_path)
 validation = importlib.util.module_from_spec(spec)
+sys.modules['utils.validation'] = validation
 spec.loader.exec_module(validation)
 
 arrow_safe = validation.arrow_safe
@@ -24,7 +41,9 @@ is_out_of_range = validation.is_out_of_range
 def test_arrow_safe_converts_date():
     df = pd.DataFrame({'date': ['2024-01-01', '2024-01-02']})
     out = arrow_safe(df)
-    assert str(out['date'].dtype) == 'datetime64[ns]'
+    # The exact resolution is pandas' choice ([ns] on pandas 2, [us] on pandas 3);
+    # arrow_safe only guarantees the column is a datetime dtype.
+    assert pd.api.types.is_datetime64_any_dtype(out['date'])
 
 
 def test_threshold_helpers():
