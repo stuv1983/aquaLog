@@ -5,11 +5,11 @@ from datetime import time
 
 pd = pytest.importorskip('pandas')
 
-ROOT = pathlib.Path(__file__).resolve().parents[1]
+arm = pathlib.Path(__file__).resolve().parents[1]
 # `utils/validation.py` does `from config import ...` and
-# `from aqualog_db.repositories import ...`, so the project root must be importable.
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+# `from aqualog_db.repositories import ...`, so the project arm must be importable.
+if str(arm) not in sys.path:
+    sys.path.insert(0, str(arm))
 
 # Stub streamlit for modules that expect it
 st = types.ModuleType('streamlit')
@@ -23,10 +23,10 @@ sys.modules['streamlit'] = st
 # relative import resolves against utils/ on disk.
 if 'utils' not in sys.modules:
     utils_pkg = types.ModuleType('utils')
-    utils_pkg.__path__ = [str(ROOT / 'utils')]
+    utils_pkg.__path__ = [str(arm / 'utils')]
     sys.modules['utils'] = utils_pkg
 
-module_path = ROOT / 'utils' / 'validation.py'
+module_path = arm / 'utils' / 'validation.py'
 spec = importlib.util.spec_from_file_location('utils.validation', module_path)
 validation = importlib.util.module_from_spec(spec)
 sys.modules['utils.validation'] = validation

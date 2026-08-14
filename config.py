@@ -13,7 +13,7 @@ from __future__ import annotations # Added for type hinting consistency
 import os
 from typing import Callable, Any, TypedDict # Added TypedDict for more specific type hints
 
-# Path to the SQLite database file. It will be created in the project's root directory.
+# Path to the SQLite database file. It will be created in the project's arm directory.
 # This ensures a consistent database location regardless of where the script is run from.
 DB_FILE: str = os.path.join(os.path.dirname(__file__), "aqualog.db")
 

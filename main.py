@@ -17,11 +17,11 @@ import base64
 from typing import Callable
 
 # ───────────────────────────────────────────────────────────
-# Project root on path for utils & db
+# Project arm on path for utils & db
 # ───────────────────────────────────────────────────────────
-ROOT_DIR = os.path.dirname(__file__)
-if ROOT_DIR not in sys.path:
-    sys.path.insert(0, ROOT_DIR)
+arm_DIR = os.path.dirname(__file__)
+if arm_DIR not in sys.path:
+    sys.path.insert(0, arm_DIR)
 
 # ───────────────────────────────────────────────────────────
 # Core utilities & DB

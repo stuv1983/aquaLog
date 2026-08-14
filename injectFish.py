@@ -13,9 +13,9 @@ from pathlib import Path
 
 # --- Configuration ---
 # This script assumes it's in the same directory as the database and CSV file.
-PROJECT_ROOT = Path(__file__).resolve().parent
-DB_PATH = PROJECT_ROOT / "aqualog.db"
-CSV_PATH = PROJECT_ROOT / "fish.csv"
+PROJECT_arm = Path(__file__).resolve().parent
+DB_PATH = PROJECT_arm / "aqualog.db"
+CSV_PATH = PROJECT_arm / "fish.csv"
 
 def inject_fish_data():
     """
